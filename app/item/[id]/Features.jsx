@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
-import { getFeatures } from '../data'
-
+import { getFeatures } from '@/app/data'
 async function Features({ id }) {
     const features = await getFeatures(id)
     return (
