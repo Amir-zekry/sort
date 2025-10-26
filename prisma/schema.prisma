@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model order {
+  id            String      @id @default(uuid())
+  status        String      @default("pending")
+  total         Float
+  customerId    String?
+  paymentMethod String?
+  paymentStatus String?
+  type          String?
+  createdAt     DateTime?   @default(now())
+  customer      customer?   @relation(fields: [customerId], references: [id])
+  items         orderItem[]
+}
+
+model item {
+  id          String      @id @default(uuid())
+  name        String
+  price       Float
+  stock       Int?
+  createdAt   DateTime?   @default(now())
+  profit      Float?
+  Image       String?
+  discription String?
+  cartItem    cartItem[]
+  feature     feature[]
+  orders      orderItem[]
+}
+
+model customer {
+  id        String    @id @default(uuid())
+  name      String
+  number    String
+  address   String
+  email     String?
+  createdAt DateTime? @default(now())
+  cartId    String?
+  cart      cart?     @relation(fields: [cartId], references: [id])
+  orders    order[]
+}
+
+model orderItem {
+  orderId  String
+  itemId   String
+  quantity Int
+  item     item   @relation(fields: [itemId], references: [id])
+  order    order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@id([orderId, itemId])
+}
+
+model cart {
+  id       String     @id @default(uuid())
+  items    cartItem[]
+  customer customer[]
+}
+
+model cartItem {
+  cartId   String
+  itemId   String
+  quantity Int
+  cart     cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  item     item   @relation(fields: [itemId], references: [id])
+
+  @@id([cartId, itemId])
+}
+
+model feature {
+  id        String  @id
+  h1        String
+  p         String
+  itemId    String?
+  image_url String?
+  item      item?   @relation(fields: [itemId], references: [id])
+}
