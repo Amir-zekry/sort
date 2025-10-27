@@ -17,7 +17,7 @@ export async function getProductById(id) {
             where: { id }
         })
     } catch (error) {
-        throw new Error('faild to fetch the product')
+        throw error
     }
 }
 export async function getFeatures(id) {

@@ -10,7 +10,7 @@ import ItemReviewH1 from './ItemReviewH1'
 async function Item({ params }) {
     const { id } = await params
     return (
-        <div className='space-y-20'>
+        <div className='space-y-20 bg-black'>
             <Hero id={id} />
             {/* <MainFeature /> */}
             <FeaturesH1 />

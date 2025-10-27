@@ -6,7 +6,7 @@ async function Features({ id }) {
     return (
         <>
             {features.map((feature, index) => (
-                <div key={feature.id} className='flex flex-col w-full items-center'>
+                <div key={feature.id} className='flex flex-col w-full items-center px-8'>
                     <div className='flex flex-col items-center space-y-1 mb-6'>
                         <h1 className='text-5xl font-bold'>{feature.h1}</h1>
                     </div>
@@ -23,7 +23,7 @@ async function Features({ id }) {
                             alt="feature image"
                             className="rounded-2xl"
                         />
-                        <p className="text-muted-foreground text-lg leading-relaxed max-w-md">
+                        <p className="text-muted-foreground text-lg leading-relaxed max-w-md text-right">
                             {feature.p}
                         </p>
                     </div>

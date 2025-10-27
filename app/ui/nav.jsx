@@ -23,10 +23,47 @@ import {
 } from "@/components/ui/sheet"
 function Nav() {
     return (
-        <nav className='px-4 w-full mb-2 py-2 fixed'>
-            <Link href='/' className='flex items-center'>
-                <Image src='/logo.png' width={60} height={60} alt='logo' />
-            </Link>
+        <nav
+            style={{
+                backgroundImage: "url('/alcantara.jpg')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+            }}
+            className="px-1 w-full py-1 bg-cover bg-center text-white"
+        >
+            <div className="mx-auto flex items-center justify-between border-2 border-dashed border-red-500 p-1">
+                <Link href="/" className="flex items-center">
+                    <Image src="/logo.png" width={48} height={48} alt="logo" />
+                </Link>
+
+                {/* Desktop navigation */}
+                <div className="hidden md:flex items-center space-x-6">
+                    <Link href="/products" className="text-sm font-medium hover:opacity-80">Products</Link>
+                </div>
+
+                {/* Mobile: cart + hamburger (sheet) */}
+                <div className="md:hidden flex items-center gap-2">
+                    <Sheet>
+                        <SheetTrigger asChild>
+                            <Button variant="ghost" className="p-2">
+                                <Menu />
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent side="right" className="w-64">
+                            <SheetHeader>
+                                <SheetTitle>Menu</SheetTitle>
+                                <SheetDescription>Navigate the site</SheetDescription>
+                            </SheetHeader>
+
+                            <ul className="mt-4 space-y-4">
+                                <li>
+                                    <Link href="/" className="block text-base font-medium">Products</Link>
+                                </li>
+                            </ul>
+                        </SheetContent>
+                    </Sheet>
+                </div>
+            </div>
         </nav>
     )
 }
