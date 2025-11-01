@@ -24,21 +24,16 @@ import {
 function Nav() {
     return (
         <nav
-            style={{
-                backgroundImage: "url('/alcantara.jpg')",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-            }}
-            className="px-1 w-full py-1 bg-cover bg-center text-white"
+            className="px-1 w-full py-1 bg-cover bg-center text-white bg-muted/40"
         >
-            <div className="mx-auto flex items-center justify-between border-2 border-dashed border-red-500 p-1">
+            <div className="mx-auto flex items-center justify-between p-1">
                 <Link href="/" className="flex items-center">
                     <Image src="/logo.png" width={48} height={48} alt="logo" />
                 </Link>
 
                 {/* Desktop navigation */}
                 <div className="hidden md:flex items-center space-x-6">
-                    <Link href="/products" className="text-sm font-medium hover:opacity-80">Products</Link>
+                    <Link href="/" className="text-sm font-medium hover:opacity-80">Products</Link>
                 </div>
 
                 {/* Mobile: cart + hamburger (sheet) */}

@@ -3,15 +3,25 @@ import { PrismaClient } from "@prisma/client";
 
 const db = new PrismaClient()
 
-export async function addToCart(formData) {
+export async function createOrder(formData) {
     try {
-        return await db.cartItem.create({
+        await db.order.create({
             data: {
-                itemId: formData.get('itemId'),
-                quantity: parseInt(formData.get('quantity'))
+                total: parseFloat(formData.get('total')),
+                customer: {
+                    create: {
+                        name: formData.get('FullName'),
+                        number: formData.get('PhoneNumber'),
+                        address: formData.get('Address'),
+                        governorate: formData.get('Governorate'),
+                    },
+                },
+                item: {
+                    connect: { id: (formData.get('itemId')) }
+                }
             }
         })
     } catch (error) {
-        throw new Error('faild to add to cart')
+        throw new Error('Failed to create order: ' + error.message)
     }
 }

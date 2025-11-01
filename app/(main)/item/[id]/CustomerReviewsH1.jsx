@@ -1,16 +1,17 @@
 'use client'
 import { motion } from "framer-motion"
-function FeaturesH1() {
+function CustomerReviewsH1() {
     return (
         <motion.h1
-            className='flex w-full items-center justify-center md:text-9xl text-6xl'
+            id='features'
+            className='flex w-full items-center justify-center md:text-9xl text-6xl mb-20'
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ amount: 'all' }}
         >
-            مميزات المنتج
+            تقييمات العملاء
         </motion.h1>
     )
 }
 
-export default FeaturesH1
+export default CustomerReviewsH1

@@ -3,7 +3,7 @@ import Products from "./products";
 
 export default function Home() {
   return (
-    <div className="w-screen flex justify-center items-center px-4">
+    <div className="max-w-screen min-h-screen flex justify-center items-start mt-5 px-4">
       <Products />
     </div>
   );
