@@ -1,9 +1,11 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
+import { unstable_noStore } from "next/cache";
 
 const db = new PrismaClient()
 
 export async function getProducts() {
+    unstable_noStore()
     try {
         return await db.item.findMany()
     } catch (error) {
