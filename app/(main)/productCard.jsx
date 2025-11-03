@@ -11,7 +11,7 @@ function ProductCard({ product }) {
             <CardContent className='flex justify-center items-center'>
                 <Image
                     className='hover:scale-110 transition-all duration-300'
-                    src={`/${product.Image}`}
+                    src={`/${product.image}`}
                     width={300}
                     height={300}
                     alt={product.name}
