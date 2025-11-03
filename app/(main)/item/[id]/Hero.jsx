@@ -18,7 +18,7 @@ async function Hero({ id }) {
 
             <div>
                 <Image
-                    src={`/${item.Image}`}
+                    src={`/${item.heroImage}`}
                     width={600}
                     height={600}
                     alt={item.name}

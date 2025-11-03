@@ -39,7 +39,8 @@ model item {
   price        Float
   createdAt    DateTime       @default(now())
   profit       Float
-  Image        String
+  image        String
+  heroImage    String
   discription  String
   feature      feature[]
   imageGallery imageGallery[]
