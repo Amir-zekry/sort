@@ -10,12 +10,11 @@ datasource db {
 model customer {
   id          String   @id @default(uuid())
   name        String
-  number      String
+  number      String   @unique
   address     String
   createdAt   DateTime @default(now())
   governorate String
-  orderId     String?
-  order       order?   @relation(fields: [orderId], references: [id])
+  orders      order[]
 }
 
 model feature {
@@ -42,17 +41,19 @@ model item {
   profit       Float
   Image        String
   discription  String
-  orderId      String?
   feature      feature[]
   imageGallery imageGallery[]
-  order        order?         @relation(fields: [orderId], references: [id])
+  orders       order[]
 }
 
 model order {
-  id        String     @id @default(uuid())
-  status    String     @default("pending")
-  total     Float
-  createdAt DateTime   @default(now())
-  customer  customer[]
-  item      item[]
+  id         String    @id @default(uuid())
+  status     String    @default("pending")
+  total      Float
+  createdAt  DateTime  @default(now())
+  customerId String?
+  itemId     String?
+  notes      String?
+  customer   customer? @relation(fields: [customerId], references: [id])
+  item       item?     @relation(fields: [itemId], references: [id])
 }

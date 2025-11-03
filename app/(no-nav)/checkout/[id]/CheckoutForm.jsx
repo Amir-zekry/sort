@@ -35,9 +35,9 @@ export default function CheckoutForm({ price, id }) {
     })
     return (
         <Form {...form} >
-            <div className='flex flex-col gap-y-8 min-w-[40vw] max-w-[40vw] items-end'>
-                <h1 className="flex w-[30vw] text-left text-3xl">بيانات الشحن</h1>
-                <form action={createOrder} className="space-y-4 min-w-[30vw] max-w-[30vw] ">
+            <div className='flex flex-col gap-y-8 md:min-w-[40vw] md:max-w-[40vw] items-end'>
+                <h1 className="flex md:w-[30vw] w-full text-left text-3xl">بيانات الشحن</h1>
+                <form action={createOrder} className="space-y-4 md:min-w-[30vw] md:max-w-[30vw] ">
                     <FormField
                         control={form.control}
                         name="FullName"
@@ -75,6 +75,9 @@ export default function CheckoutForm({ price, id }) {
                                 <FormControl>
                                     <Select
                                         dir='rtl'
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                        value={field.value}
                                         {...field}
                                     >
                                         <SelectTrigger className="w-full">
