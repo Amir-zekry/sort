@@ -33,7 +33,7 @@ function Nav() {
 
                 {/* Desktop navigation */}
                 <div className="hidden md:flex items-center space-x-6">
-                    <Link href="/" className="text-sm font-medium hover:opacity-80">Products</Link>
+                    <Link href="/" className="text-sm font-medium hover:opacity-80">المنتجات</Link>
                 </div>
 
                 {/* Mobile: cart + hamburger (sheet) */}
@@ -46,13 +46,13 @@ function Nav() {
                         </SheetTrigger>
                         <SheetContent side="right" className="w-64">
                             <SheetHeader>
-                                <SheetTitle>Menu</SheetTitle>
-                                <SheetDescription>Navigate the site</SheetDescription>
+                                <SheetTitle>القائمة</SheetTitle>
+                                <SheetDescription>تصفح الموقع</SheetDescription>
                             </SheetHeader>
 
                             <ul className="mt-4 space-y-4">
                                 <li>
-                                    <Link href="/" className="block text-base font-medium">Products</Link>
+                                    <Link href="/" className="block text-base font-medium">المنتجات</Link>
                                 </li>
                             </ul>
                         </SheetContent>
