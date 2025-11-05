@@ -11,9 +11,21 @@ async function Hero({ id }) {
             <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-4">
                 <h1 className="text-2xl md:text-4xl font-bold">{item.name}</h1>
                 <p className="max-w-xs md:max-w-md text-sm md:text-base text-right">{item.discription}</p>
-                <Button className="w-full md:w-auto px-6 py-2 rounded-lg text-white font-semibold tracking-wide hover:cursor-pointer carbon-fiber shadow-md shadow-red-500 hover:scale-90 hover:shadow-lg">
-                    <Link href='#features'>اعرف اكتر</Link>
-                </Button>
+
+                {/* --- Price Section --- */}
+                <div className="text-2xl font-semibold text-red-500">
+                    {item.price ? `${item.price} EGP` : 'السعر غير متوفر'}
+                </div>
+
+                {/* --- Buy Now Button --- */}
+                <div className='flex md:flex-row md:justify-start justify-center items-center  space-x-4'>
+                    <Button className="w-1/2 md:w-auto px-6 py-2 rounded-lg text-white font-semibold tracking-wide carbon-fiber shadow-md shadow-red-500 hover:scale-90 hover:shadow-lg">
+                        <Link href="#features">اعرف اكتر</Link>
+                    </Button>
+                    <Button className="w-1/2 md:w-auto px-6 py-2 rounded-lg text-white font-semibold tracking-wide carbon-fiber shadow-md shadow-red-500 hover:scale-90 hover:shadow-lg">
+                        <Link href={`/checkout/${id}`}>اشتري دلوقتي</Link>
+                    </Button>
+                </div>
             </div>
 
             <div>

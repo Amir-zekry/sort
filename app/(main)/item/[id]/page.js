@@ -14,7 +14,7 @@ import CustomerReviews from './CustomerReviews'
 import CustomerReviewsH1 from './CustomerReviewsH1'
 import HowToUse from './HowToUse'
 import HowToUseH1 from './HowToUseH1'
-import BuyNowButton from './BuyNowButton'
+import BuyNow from './BuyNow'
 async function Item({ params }) {
     const { id } = await params
     return (
@@ -33,9 +33,9 @@ async function Item({ params }) {
             <CustomerReviews id={id} />
             <WhyUsH1 />
             <WhyUs />
-            <BuyNowButton id={id} />
             <FaqH1 />
             <Faq />
+            <BuyNow id={id} />
         </div>
     )
 }
