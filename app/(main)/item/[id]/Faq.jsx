@@ -14,7 +14,7 @@ function Faq() {
             className="w-3/4 justify-center mx-auto"
             defaultValue="item-1"
         >
-            <AccordionItem value="item-1">
+            <AccordionItem value="item-2">
                 <AccordionTrigger>هل ممكن استرجع المنتج؟</AccordionTrigger>
                 <AccordionContent className="flex flex-col gap-4 text-balance">
                     <p className="text-right">
@@ -25,7 +25,7 @@ function Faq() {
                     </p>
                 </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="item-2">
+            <AccordionItem value="item-3">
                 <AccordionTrigger>امتي هستلم المنتج؟</AccordionTrigger>
                 <AccordionContent className="flex flex-col gap-4 text-balance">
                     <p className="text-right">
