@@ -14,7 +14,10 @@ async function ProductData({ id }) {
                             <Image src={item.image} alt={item.name} width={75} height={75} />
                         </CardContent>
                     </Card>
-                    <p>{item.name}</p>
+                    <div>
+                        <p>{item.name}</p>
+                        <p className='text-red-500'>{item.note}</p>
+                    </div>
                 </div>
                 <p > L.E. {item.price}</p>
             </div>
