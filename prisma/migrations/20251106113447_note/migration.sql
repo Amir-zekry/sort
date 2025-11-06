@@ -40,6 +40,7 @@ CREATE TABLE "item" (
     "image" TEXT NOT NULL,
     "heroImage" TEXT NOT NULL,
     "discription" TEXT NOT NULL,
+    "note" TEXT,
 
     CONSTRAINT "item_pkey" PRIMARY KEY ("id")
 );

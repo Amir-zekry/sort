@@ -11,7 +11,7 @@ async function ProductData({ id }) {
                 <div className='flex items-center space-x-2'>
                     <Card className='p-0 border-white'>
                         <CardContent className='p-0'>
-                            <Image src={`/${item.image}`} alt={item.name} width={75} height={75} />
+                            <Image src={item.image} alt={item.name} width={75} height={75} />
                         </CardContent>
                     </Card>
                     <p>{item.name}</p>

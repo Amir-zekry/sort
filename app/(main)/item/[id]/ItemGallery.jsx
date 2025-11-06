@@ -30,7 +30,7 @@ export default async function ItemGallery({ id }) {
                                 <div className="p-1">
                                     <Card>
                                         <CardContent className="flex aspect-square items-center justify-center p-6">
-                                            <Image src={`/${image.image_url}`} alt="Item Image" width={300} height={300} className="object-contain" />
+                                            <Image src={image.image_url} alt="Item Image" width={300} height={300} className="object-contain" />
                                         </CardContent>
                                     </Card>
                                 </div>

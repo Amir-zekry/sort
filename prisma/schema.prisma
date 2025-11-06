@@ -42,6 +42,7 @@ model item {
   image        String
   heroImage    String
   discription  String
+  note         String?
   feature      feature[]
   imageGallery imageGallery[]
   orders       order[]

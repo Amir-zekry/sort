@@ -35,7 +35,7 @@ async function Features({ id }) {
 
                                 {/* Image last on mobile */}
                                 <Image
-                                    src={`/${feature.image_url}`}
+                                    src={feature.image_url}
                                     width={500}
                                     height={500}
                                     alt="feature image"
