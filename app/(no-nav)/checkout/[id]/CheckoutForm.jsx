@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { createOrder } from "@/app/actions"
+import { useActionState } from "react"
 export default function CheckoutForm({ price, id }) {
     const form = useForm({
         defaultValues: {
@@ -33,11 +34,13 @@ export default function CheckoutForm({ price, id }) {
             Notes: '',
         }
     })
+    const initialState = { loading: false, errors: {} }
+    const [state, formAction, loading] = useActionState(createOrder, initialState)
     return (
         <Form {...form} >
             <div className='flex flex-col gap-y-8 md:min-w-[40vw] md:max-w-[40vw] items-end'>
                 <h1 className="flex md:w-[30vw] w-full text-left text-3xl">بيانات الشحن</h1>
-                <form action={createOrder} className="space-y-4 md:min-w-[30vw] md:max-w-[30vw] ">
+                <form action={formAction} className="space-y-4 md:min-w-[30vw] md:max-w-[30vw] ">
                     <FormField
                         control={form.control}
                         name="FullName"
@@ -47,7 +50,7 @@ export default function CheckoutForm({ price, id }) {
                                 <FormControl>
                                     <Input placeholder="" {...field} />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage >{state.errors?.FullName}</FormMessage>
                             </FormItem>
                         )}
                     />
@@ -62,7 +65,7 @@ export default function CheckoutForm({ price, id }) {
                                 <FormControl>
                                     <Input placeholder="" {...field} />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage >{state.errors?.PhoneNumber}</FormMessage>
                             </FormItem>
                         )}
                     />
@@ -74,23 +77,27 @@ export default function CheckoutForm({ price, id }) {
                                 <FormLabel>المحافظة</FormLabel>
                                 <FormControl>
                                     <Select
+                                        value={field.value}  // ← Missing
+                                        onValueChange={field.onChange}  // ← Missing
                                         dir='rtl'
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                        value={field.value}
-                                        {...field}
                                     >
                                         <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="المحافظه" />
+                                            <SelectValue placeholder="اختر المحافظة" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="Cairo">القاهرة</SelectItem>
                                             <SelectItem value="Giza">الجيزة</SelectItem>
                                             <SelectItem value="Alexandria">الإسكندرية</SelectItem>
+                                            <SelectItem value="Other">اخري</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </FormControl>
-                                <FormMessage />
+                                <input
+                                    type="hidden"
+                                    name="Governorate"
+                                    value={field.value || ""}
+                                />
+                                <FormMessage >{state.errors?.Governorate}</FormMessage>
                             </FormItem>
                         )}
                     />
@@ -103,7 +110,7 @@ export default function CheckoutForm({ price, id }) {
                                 <FormControl>
                                     <Input placeholder="" {...field} />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage >{state.errors?.Address}</FormMessage>
                             </FormItem>
                         )}
                     />

@@ -2,10 +2,30 @@
 import { PrismaClient } from "@prisma/client";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { redirect } from "next/navigation";
+import z from "zod";
 
 const db = new PrismaClient()
 
-export async function createOrder(formData) {
+const formSchema = z.object({
+    FullName: z.string().min(1, "الاسم مطلوب"),
+    PhoneNumber: z.string().min(1, "رقم الهاتف مطلوب"),
+    Address: z.string().min(1, "العنوان مطلوب"),
+    Governorate: z.string().min(1, "المحافظة مطلوبة")
+})
+
+export async function createOrder(state, formData) {
+    const parsedData = formSchema.safeParse({
+        FullName: formData.get('FullName'),
+        PhoneNumber: formData.get('PhoneNumber'),
+        Address: formData.get('Address'),
+        Governorate: formData.get('Governorate'), // Handles select input default
+    });
+    if (!parsedData.success) {
+        return {
+            errors: parsedData.error.flatten().fieldErrors,
+        };
+    }
+    const { FullName, PhoneNumber, Address, Governorate } = parsedData.data;
     try {
         const order = await db.order.create({
             data: {
@@ -13,12 +33,12 @@ export async function createOrder(formData) {
                 notes: formData.get('Notes'),
                 customer: {
                     connectOrCreate: {
-                        where: { number: formData.get('PhoneNumber') },
+                        where: { number: PhoneNumber },
                         create: {
-                            name: formData.get('FullName'),
-                            number: formData.get('PhoneNumber'),
-                            address: formData.get('Address'),
-                            governorate: formData.get('Governorate'),
+                            name: FullName,
+                            number: PhoneNumber,
+                            address: Address,
+                            governorate: Governorate,
                         },
                     },
                 },
@@ -29,9 +49,9 @@ export async function createOrder(formData) {
         });
         redirect(`/confirmation?orderId=${order.id}`)
     } catch (error) {
-        console.error(error);
-        if (isRedirectError(error)) {
-            throw error;
+        if (!isRedirectError(error)) {
+            console.error("Order creation failed:", error)
         }
+        throw error // still let redirect work
     }
 }
