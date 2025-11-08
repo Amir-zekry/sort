@@ -1,11 +1,8 @@
 import Image from 'next/image'
 import React from 'react'
-import { getFeatures } from '@/app/data'
 import { Empty, EmptyDescription, EmptyHeader } from '@/components/ui/empty'
 
-async function Features({ id }) {
-    const features = await getFeatures(id)
-
+async function Features({ features }) {
     return (
         <div >
             {features.length === 0 ? (

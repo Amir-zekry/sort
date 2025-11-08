@@ -1,24 +1,36 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
-import { unstable_noStore } from "next/cache";
-
 const db = new PrismaClient()
 
 export async function getProducts() {
-    unstable_noStore()
     try {
-        return await db.item.findMany()
+        return await db.item.findMany({
+            select: {
+                id: true,
+                name: true,
+                price: true,
+                image: true
+            }
+        })
     } catch (error) {
-        throw new Error('faild to fetch products')
+        console.log(error)
     }
 }
 export async function getProductById(id) {
     try {
         return await db.item.findUnique({
-            where: { id }
+            where: { id },
+            select: {
+                name: true,
+                discription: true,
+                price: true,
+                heroImage: true,
+                feature: true,
+                imageGallery: true,
+            },
         })
     } catch (error) {
-        throw new Error('Failed to fetch product by ID')
+        console.log(error);
     }
 }
 export async function getFeatures(id) {
@@ -29,7 +41,7 @@ export async function getFeatures(id) {
             }
         })
     } catch (error) {
-        throw new Error('Failed to fetch features for this item')
+        console.log(error)
     }
 }
 export async function getImages(id) {
@@ -81,7 +93,7 @@ export async function getReviews(productId) {
             .map(({ _rating, ...rest }) => rest);
 
         return top4;
-    } catch (err) {
-        throw new Error(`Failed to fetch reviews: ${err.message}`)
+    } catch (error) {
+        console.log(error)
     }
 }

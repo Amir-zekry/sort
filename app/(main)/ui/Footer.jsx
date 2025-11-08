@@ -35,7 +35,7 @@ export default function Footer() {
                                     01552333223
                                 </a>
                             </li>
-                            <div className="flex items-center space-x-4">
+                            <div className="flex items-center gap-x-4">
                                 <li className="flex items-center gap-2">
                                     <Link href="https://wa.me/201552333223" target="_blank" className="flex items-center gap-2 hover:text-primary">
                                         <FaWhatsapp className="w-6 h-6" />

@@ -8,12 +8,10 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel"
-import { getImages } from "@/app/data"
 import Image from "next/image"
 import { Empty, EmptyDescription, EmptyHeader } from "@/components/ui/empty"
 
-export default async function ItemGallery({ id }) {
-    const images = await getImages(id)
+export default async function ItemGallery({ images }) {
     return (
         <div>
             {images.length === 0 ? (

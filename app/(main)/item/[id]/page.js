@@ -15,16 +15,24 @@ import CustomerReviewsH1 from './CustomerReviewsH1'
 import HowToUse from './HowToUse'
 import HowToUseH1 from './HowToUseH1'
 import BuyNow from './BuyNow'
+import { getProductById } from '@/app/data'
 async function Item({ params }) {
     const { id } = await params
+    const item = await getProductById(id)
+    const name = item.name
+    const description = item.discription
+    const price = item.price
+    const heroImage = item.heroImage
+    const features = item.feature
+    const images = item.imageGallery
     return (
         <div className='space-y-20 bg-black'>
-            <Hero id={id} />
+            <Hero id={id} name={name} price={price} description={description} heroImage={heroImage} />
             {/* <MainFeature /> */}
             <FeaturesH1 />
-            <Features id={id} />
+            <Features features={features} />
             <ItemGalleryH1 />
-            <ItemGallery id={id} />
+            <ItemGallery images={images} />
             {/* <HowToUseH1 />
             <HowToUse /> */}
             {/* <ItemReviewH1 />
@@ -35,7 +43,7 @@ async function Item({ params }) {
             <WhyUs />
             <FaqH1 />
             <Faq />
-            <BuyNow id={id} />
+            <BuyNow id={id} name={name} price={price} />
         </div>
     )
 }
