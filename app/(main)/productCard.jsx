@@ -9,13 +9,14 @@ function ProductCard({ product }) {
     return (
         <Card onClick={() => router.push(`/item/${product.id}`)} className='hover:border-purple-500 cursor-pointer'>
             <CardContent className='flex justify-center items-center'>
-                <Image
-                    className='hover:scale-110 transition-all duration-300'
-                    src={product.image}
-                    width={300}
-                    height={300}
-                    alt={product.name}
-                />
+                <div className="relative w-72 h-72">
+                    <Image
+                        src={product.image}
+                        alt={product.name}
+                        fill
+                        className="object-contain hover:scale-105 transition-transform"
+                    />
+                </div>
             </CardContent>
             <CardFooter>
                 <Button variant='ghost' className='flex rounded-3xl items-center py-2'>

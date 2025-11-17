@@ -4,6 +4,8 @@ const db = new PrismaClient()
 
 export async function getProducts() {
     try {
+        // Mimic slow request
+        await new Promise(resolve => setTimeout(resolve, 2000)); // 2 seconds delay
         return await db.item.findMany({
             select: {
                 id: true,

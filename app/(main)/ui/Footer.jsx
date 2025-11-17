@@ -7,7 +7,8 @@ import Link from "next/link"
 
 export default function Footer() {
     return (
-        <footer className="bg-muted/40 border-t max-w-screen">
+        <footer className="max-w-screen px-4">
+            <Separator/>
             <div className="py-10">
                 <div className="grid md:grid-cols-3 gap-8 px-4 max-w-full">
                     {/* القسم الأول */}

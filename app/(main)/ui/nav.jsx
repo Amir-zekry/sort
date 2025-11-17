@@ -24,7 +24,7 @@ import {
 function Nav() {
     return (
         <nav
-            className="px-1 w-full py-1 bg-cover bg-center text-white bg-muted/40"
+            className="px-1 w-full py-1 bg-cover bg-center text-white"
         >
             <div className="mx-auto flex items-center justify-between p-1">
                 <Link href="/" className="flex items-center">
