@@ -88,7 +88,7 @@ export default function CheckoutForm({ price, id }) {
                                             <SelectItem value="Cairo">القاهرة</SelectItem>
                                             <SelectItem value="Giza">الجيزة</SelectItem>
                                             <SelectItem value="Alexandria">الإسكندرية</SelectItem>
-                                            <SelectItem value="Other">اخري</SelectItem>
+                                            <SelectItem value="Other">اخرى</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </FormControl>
