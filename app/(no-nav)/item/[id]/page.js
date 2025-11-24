@@ -25,9 +25,10 @@ async function Item({ params }) {
     const heroImage = item.heroImage
     const features = item.feature
     const images = item.imageGallery
+    const heroImagePhone = item.heroImagePhone
     return (
         <div className='space-y-20 bg-black'>
-            <Hero id={id} name={name} price={price} description={description} heroImage={heroImage} />
+            <Hero id={id} name={name} description={description} heroImage={heroImage} heroImagePhone={heroImagePhone} />
             {/* <MainFeature /> */}
             <FeaturesH1 />
             <Features features={features} />

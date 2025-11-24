@@ -39,6 +39,7 @@ CREATE TABLE "item" (
     "profit" DOUBLE PRECISION NOT NULL,
     "image" TEXT NOT NULL,
     "heroImage" TEXT NOT NULL,
+    "heroImagePhone" TEXT,
     "discription" TEXT NOT NULL,
     "note" TEXT,
 

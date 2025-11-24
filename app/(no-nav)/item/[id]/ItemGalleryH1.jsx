@@ -4,7 +4,7 @@ function ItemGalleryH1() {
     return (
         <motion.h1
             id='features'
-            className='flex w-full items-center justify-center md:text-9xl text-6xl mb-20'
+            className='flex w-full items-center justify-center text-2xl mb-20'
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ amount: 'all' }}

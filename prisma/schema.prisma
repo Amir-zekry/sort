@@ -34,13 +34,14 @@ model imageGallery {
 }
 
 model item {
-  id           String         @id @default(uuid())
-  name         String
-  price        Float
-  createdAt    DateTime       @default(now())
-  profit       Float
-  image        String
-  heroImage    String
+  id             String   @id @default(uuid())
+  name           String
+  price          Float
+  createdAt      DateTime @default(now())
+  profit         Float
+  image          String
+  heroImage      String
+  heroImagePhone String?
   discription  String
   note         String?
   feature      feature[]
