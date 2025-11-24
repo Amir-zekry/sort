@@ -5,7 +5,15 @@ import Link from 'next/link'
 
 async function Hero({ id, name, price, description, heroImage }) {
     return (
-        <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 px-6 py-12 md:h-screen h-screen mb-0">
+        <div
+        style={{
+            backgroundImage: heroImage ? `url(${heroImage})` : undefined,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+        }}
+         className="flex flex-col md:flex-row items-center justify-right gap-8 md:gap-12 px-24 py-12 md:h-screen h-screen mb-0"
+         >
             <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-4">
                 <h1 className="text-2xl md:text-4xl font-bold">{name}</h1>
                 <p className="max-w-xs md:max-w-md text-sm md:text-base text-right">{description}</p>
@@ -26,7 +34,7 @@ async function Hero({ id, name, price, description, heroImage }) {
                 </div>
             </div>
 
-            <div>
+            {/* <div>
                 <Image
                     src={heroImage}
                     width={600}
@@ -34,7 +42,7 @@ async function Hero({ id, name, price, description, heroImage }) {
                     alt={name}
                     className="w-80 h-80 md:w-96 md:h-96 object-contain"
                 />
-            </div>
+            </div> */}
         </div>
     )
 }
