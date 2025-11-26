@@ -1,11 +1,13 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
+import { unstable_cacheTag, unstable_cacheLife } from "next/cache";
 const db = new PrismaClient()
 
 export async function getProducts() {
+    'use cache'
+    unstable_cacheTag('products-list')
+    unstable_cacheLife({ revalidate: 60 })
     try {
-        // Mimic slow request
-        await new Promise(resolve => setTimeout(resolve, 2000)); // 2 seconds delay
         return await db.item.findMany({
             select: {
                 id: true,
