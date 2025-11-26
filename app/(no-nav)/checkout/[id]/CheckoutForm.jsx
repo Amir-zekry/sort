@@ -32,6 +32,7 @@ export default function CheckoutForm({ price, id }) {
             Governorate: '',
             Address: '',
             Notes: '',
+            quantity: 1
         }
     })
     const initialState = { loading: false, errors: {} }
@@ -41,6 +42,19 @@ export default function CheckoutForm({ price, id }) {
             <div className='flex flex-col gap-y-8 md:min-w-[40vw] md:max-w-[40vw] items-end'>
                 <h1 className="flex md:w-[30vw] w-full text-left text-3xl">بيانات الشحن</h1>
                 <form action={formAction} className="space-y-4 md:min-w-[30vw] md:max-w-[30vw] ">
+                    <FormField
+                        control={form.control}
+                        name="quantity"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>الكميه</FormLabel>
+                                <FormControl>
+                                    <Input type='number' placeholder="" {...field} />
+                                </FormControl>
+                                <FormMessage >{state.errors?.quantity}</FormMessage>
+                            </FormItem>
+                        )}
+                    />
                     <FormField
                         control={form.control}
                         name="FullName"

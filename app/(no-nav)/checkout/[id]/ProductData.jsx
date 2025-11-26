@@ -23,7 +23,7 @@ async function ProductData({ id }) {
             </div>
             <div className='flex items-center justify-between md:w-[30vw] w-[80vw]'>
                 <h2>التوصيل</h2>
-                <p>L.E. 0</p>
+                <p>مجاني</p>
             </div>
             <div className='flex items-center justify-between md:w-[30vw] w-[80vw] mt-10'>
                 <h2 className='font-bold'>المجموع</h2>

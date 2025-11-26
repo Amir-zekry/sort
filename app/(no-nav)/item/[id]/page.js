@@ -16,6 +16,8 @@ import HowToUse from './HowToUse'
 import HowToUseH1 from './HowToUseH1'
 import BuyNow from './BuyNow'
 import { getProductById } from '@/app/data'
+import KeySpecs from './keySpecs'
+import KeySpecsH1 from './KeySpecsH1'
 async function Item({ params }) {
     const { id } = await params
     const item = await getProductById(id)
@@ -38,6 +40,8 @@ async function Item({ params }) {
             <HowToUse /> */}
             {/* <ItemReviewH1 />
             <ItemReview /> */}
+            <KeySpecsH1 />
+            <KeySpecs />
             <CustomerReviewsH1 />
             <CustomerReviews id={id} />
             <WhyUsH1 />

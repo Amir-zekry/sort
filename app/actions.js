@@ -10,7 +10,8 @@ const formSchema = z.object({
     FullName: z.string().min(1, "الاسم مطلوب"),
     PhoneNumber: z.string().min(1, "رقم الهاتف مطلوب"),
     Address: z.string().min(1, "العنوان مطلوب"),
-    Governorate: z.string().min(1, "المحافظة مطلوبة")
+    Governorate: z.string().min(1, "المحافظة مطلوبة"),
+    quantity: z.coerce.number().min(1, "الكمية يجب أن تكون على الأقل 1")
 })
 
 export async function createOrder(state, formData) {
@@ -18,19 +19,21 @@ export async function createOrder(state, formData) {
         FullName: formData.get('FullName'),
         PhoneNumber: formData.get('PhoneNumber'),
         Address: formData.get('Address'),
-        Governorate: formData.get('Governorate'), // Handles select input default
+        Governorate: formData.get('Governorate'),
+        quantity: formData.get('quantity') // Handles select input default
     });
     if (!parsedData.success) {
         return {
             errors: parsedData.error.flatten().fieldErrors,
         };
     }
-    const { FullName, PhoneNumber, Address, Governorate } = parsedData.data;
+    const { FullName, PhoneNumber, Address, Governorate, quantity } = parsedData.data;
     try {
         const order = await db.order.create({
             data: {
                 total: parseFloat(formData.get('total')),
                 notes: formData.get('Notes'),
+                quantity: quantity,
                 customer: {
                     connectOrCreate: {
                         where: { number: PhoneNumber },

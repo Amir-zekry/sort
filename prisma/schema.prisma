@@ -57,6 +57,7 @@ model order {
   customerId String?
   itemId     String?
   notes      String?
+  quantity   Int       @default(1)
   customer   customer? @relation(fields: [customerId], references: [id])
   item       item?     @relation(fields: [itemId], references: [id])
 }
