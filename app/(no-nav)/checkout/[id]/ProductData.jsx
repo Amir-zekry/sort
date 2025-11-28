@@ -36,7 +36,6 @@ async function ProductData({ id }) {
                 </div>
             </div>
             <div className='flex items-center justify-between md:w-[30vw] w-[80vw] mt-10'>
-                <h2>الرقم التعريفي للمنتج</h2>
                 <p>{id}</p>
             </div>
         </div>
