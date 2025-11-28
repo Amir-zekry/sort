@@ -20,7 +20,8 @@ import KeySpecs from './keySpecs'
 import KeySpecsH1 from './KeySpecsH1'
 async function Item({ params }) {
     const { id } = await params
-    const item = await getProductById(id)
+    const numId = parseInt(id)
+    const item = await getProductById(numId)
     const name = item.name
     const description = item.discription
     const price = item.price

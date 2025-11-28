@@ -21,7 +21,7 @@ model feature {
   id        String  @id @default(uuid())
   h1        String
   p         String
-  itemId    String?
+  itemId    Int?
   image_url String
   item      item?   @relation(fields: [itemId], references: [id])
 }
@@ -29,12 +29,12 @@ model feature {
 model imageGallery {
   id        String  @id @default(uuid())
   image_url String
-  itemId    String?
+  itemId    Int?
   item      item?   @relation(fields: [itemId], references: [id])
 }
 
 model item {
-  id             String   @id @default(uuid())
+  id             Int   @id @default(autoincrement())
   name           String
   price          Float
   createdAt      DateTime @default(now())
@@ -55,7 +55,7 @@ model order {
   total      Float
   createdAt  DateTime  @default(now())
   customerId String?
-  itemId     String?
+  itemId     Int?
   notes      String?
   quantity   Int       @default(1)
   customer   customer? @relation(fields: [customerId], references: [id])
