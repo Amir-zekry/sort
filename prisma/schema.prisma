@@ -10,7 +10,7 @@ datasource db {
 model customer {
   id          String   @id @default(uuid())
   name        String
-  number      String   @unique
+  number      String
   address     String
   createdAt   DateTime @default(now())
   governorate String

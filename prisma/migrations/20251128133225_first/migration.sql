@@ -33,6 +33,7 @@ CREATE TABLE "imageGallery" (
 -- CreateTable
 CREATE TABLE "item" (
     "id" TEXT NOT NULL,
+    "sku" TEXT,
     "name" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -55,12 +56,16 @@ CREATE TABLE "order" (
     "customerId" TEXT,
     "itemId" TEXT,
     "notes" TEXT,
+    "quantity" INTEGER NOT NULL DEFAULT 1,
 
     CONSTRAINT "order_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "customer_number_key" ON "customer"("number");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "item_sku_key" ON "item"("sku");
 
 -- AddForeignKey
 ALTER TABLE "feature" ADD CONSTRAINT "feature_itemId_fkey" FOREIGN KEY ("itemId") REFERENCES "item"("id") ON DELETE SET NULL ON UPDATE CASCADE;

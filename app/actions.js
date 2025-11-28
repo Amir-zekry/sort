@@ -29,21 +29,21 @@ export async function createOrder(state, formData) {
     }
     const { FullName, PhoneNumber, Address, Governorate, quantity } = parsedData.data;
     try {
+        const customer = await db.customer.create({
+            data: {
+                name: FullName,
+                number: PhoneNumber,
+                address: Address,
+                governorate: Governorate,
+            }
+        })
         const order = await db.order.create({
             data: {
                 total: parseFloat(formData.get('total')),
                 notes: formData.get('Notes'),
                 quantity: quantity,
                 customer: {
-                    connectOrCreate: {
-                        where: { number: PhoneNumber },
-                        create: {
-                            name: FullName,
-                            number: PhoneNumber,
-                            address: Address,
-                            governorate: Governorate,
-                        },
-                    },
+                    connect: { id: customer.id }
                 },
                 item: {
                     connect: { id: formData.get('itemId') },
