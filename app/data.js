@@ -32,7 +32,8 @@ export async function getProductById(id) {
                 feature: true,
                 imageGallery: true,
                 image: true,
-                heroImagePhone: true
+                heroImagePhone: true,
+                sku: true
             },
         })
     } catch (error) {
