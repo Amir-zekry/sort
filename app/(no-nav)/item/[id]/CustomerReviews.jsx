@@ -32,7 +32,7 @@ export default async function CustomerReviews({ id }) {
                             target="_blank"
                             href={`https://docs.google.com/forms/d/e/1FAIpQLScW1Zi64BX4M8L_dlw7fdTLwKWuqu3wvcTzhdVHeez_Zk5RUA/viewform?usp=pp_url&entry.919258661=${id}`}
                         >
-                            قيم المنتح <ArrowUpLeft />
+                            قيم المنتج <ArrowUpLeft />
                         </Link>
                     </EmptyContent>
                 </Empty>
@@ -70,7 +70,7 @@ export default async function CustomerReviews({ id }) {
                         className="text-muted-foreground hover:text-muted pr-2 flex items-center"
                         href={`https://docs.google.com/forms/d/e/1FAIpQLScW1Zi64BX4M8L_dlw7fdTLwKWuqu3wvcTzhdVHeez_Zk5RUA/viewform?usp=pp_url&entry.919258661=${id}`}
                     >
-                        قيم المنتج
+                        قيم المنتج <ArrowUpLeft />
                     </Link>
                 </div>
             }

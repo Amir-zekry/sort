@@ -46,13 +46,16 @@ function Hero({ id, name, description, heroImage, heroImagePhone }) {
                 </p>
 
                 <div className="flex gap-4 pt-4 md:justify-normal justify-center">
-                    <Button className="px-6 py-2 rounded-lg font-semibold tracking-wide shadow-md shadow-red-500 hover:scale-95">
-                        <Link href="#features">اعرف اكتر</Link>
-                    </Button>
-
-                    <Button className="px-6 py-2 rounded-lg font-semibold tracking-wide shadow-md shadow-red-500 hover:scale-95">
-                        <Link href={`/checkout/${id}`}>اشتري دلوقتي</Link>
-                    </Button>
+                    <Link href="#features">
+                        <Button className="px-6 py-2 cursor-pointer rounded-lg font-semibold tracking-wide shadow-md shadow-red-500 hover:scale-95">
+                            اعرف اكتر
+                        </Button>
+                    </Link>
+                    <Link href={`/checkout/${id}`} className="block w-fit">
+                        <Button className="cursor-pointer px-6 py-2 rounded-lg font-semibold tracking-wide shadow-md shadow-red-500 hover:scale-95">
+                            اشتري دلوقتي
+                        </Button>
+                    </Link>
                 </div>
             </div>
 

@@ -144,7 +144,9 @@ export default function CheckoutForm({ price, id }) {
                     <input type="hidden" name="total" value={price} />
                     <input type="hidden" name="itemId" value={id} />
                     <div className="flex justify-start">
-                        <Button type="submit">تاكيد</Button>
+                        <Button
+                        className='cursor-pointer'
+                         type="submit">تاكيد</Button>
                     </div>
                 </form>
             </div>

@@ -17,12 +17,11 @@ async function BuyNow({ id, name, price }) {
                 <p className="text-yellow-400 text-sm md:text-base font-medium">
                     الكمية محدودة — اطلب الآن قبل ما تخلص!
                 </p>
-
-                <Button className="mt-4 text-lg bg-red-600 hover:bg-red-700 text-white font-semibold shadow-lg shadow-red-500/30 hover:scale-95 transition">
-                    <Link href={`/checkout/${id}`} className="block px-6 py-2">
+                <Link href={`/checkout/${id}`}>
+                    <Button className="text-lg bg-red-600 hover:bg-red-700 text-white font-semibold shadow-lg shadow-red-500/30 hover:scale-95 transition cursor-pointer">
                         اشتري الآن 🚀
-                    </Link>
-                </Button>
+                    </Button>
+                </Link>
             </div>
         </section>
     )
