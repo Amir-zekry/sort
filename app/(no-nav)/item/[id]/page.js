@@ -40,8 +40,8 @@ async function Item({ params }) {
             <HowToUse /> */}
             {/* <ItemReviewH1 />
             <ItemReview /> */}
-            <KeySpecsH1 />
-            <KeySpecs />
+            {/* <KeySpecsH1 />
+            <KeySpecs /> */}
             <CustomerReviewsH1 />
             <CustomerReviews id={id} />
             <WhyUsH1 />
