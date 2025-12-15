@@ -59,7 +59,6 @@ model order {
   customerId    String?
   itemId        String?
   notes         String?
-  paymentMethod String?   @default("cod")
   quantity      Int       @default(1)
   customer      customer? @relation(fields: [customerId], references: [id])
   item          item?     @relation(fields: [itemId], references: [id])
