@@ -48,17 +48,34 @@ model item {
   feature        feature[]
   imageGallery   imageGallery[]
   orders         order[]
+  // cartItems cartItem[]
 }
 
 model order {
-  id         String    @id @default(uuid())
-  status     String    @default("pending")
-  total      Float
-  createdAt  DateTime  @default(now())
-  customerId String?
-  itemId     String?
-  notes      String?
-  quantity   Int       @default(1)
-  customer   customer? @relation(fields: [customerId], references: [id])
-  item       item?     @relation(fields: [itemId], references: [id])
+  id            String    @id @default(uuid())
+  status        String    @default("pending")
+  total         Float
+  createdAt     DateTime  @default(now())
+  customerId    String?
+  itemId        String?
+  notes         String?
+  paymentMethod String?   @default("cod")
+  quantity      Int       @default(1)
+  customer      customer? @relation(fields: [customerId], references: [id])
+  item          item?     @relation(fields: [itemId], references: [id])
 }
+
+// model cart {
+//   id        String   @id @default(uuid())
+//   createdAt DateTime @default(now())
+//   cartItems cartItem[]
+// }
+
+// model cartItem {
+//   id       String @id @default(uuid())
+//   cartId   String?
+//   itemId   String?
+//   quantity Int    @default(1)
+//   cart     cart?  @relation(fields: [cartId], references: [id])
+//   item     item?  @relation(fields: [itemId], references: [id])
+// }   

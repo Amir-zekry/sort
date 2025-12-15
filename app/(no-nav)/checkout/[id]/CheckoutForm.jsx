@@ -40,7 +40,7 @@ export default function CheckoutForm({ price, id, image, name, note }) {
             Governorate: '',
             Address: '',
             Notes: '',
-            quantity: quantity
+            quantity: quantity,
         }
     })
     const initialState = { loading: false, errors: {} }
@@ -52,29 +52,6 @@ export default function CheckoutForm({ price, id, image, name, note }) {
                 <div className='flex flex-col gap-y-8 md:min-w-[40vw] md:max-w-[40vw] items-end'>
                     <h1 className="flex md:w-[30vw] w-full text-left text-3xl">بيانات الشحن</h1>
                     <form action={formAction} className="space-y-4 md:min-w-[30vw] md:max-w-[30vw] ">
-                        <FormField
-                            control={form.control}
-                            name="quantity"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>الكميه</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            type="number"
-                                            min="1"
-                                            value={quantity}
-                                            onChange={(e) => {
-                                                const q = Number(e.target.value);
-                                                setQuantity(q);
-                                                field.onChange(q);
-                                            }}
-                                        />
-                                    </FormControl>
-                                    <FormMessage>{state.errors?.quantity}</FormMessage>
-                                </FormItem>
-                            )}
-                        />
                         <FormField
                             control={form.control}
                             name="FullName"
@@ -148,6 +125,11 @@ export default function CheckoutForm({ price, id, image, name, note }) {
                                 </FormItem>
                             )}
                         />
+                        <FormLabel>طريقة الدفع</FormLabel>
+                        <div className="flex gap-x-2 w-1/2 items-center p-4 border-2 border-purple-400 rounded-md">
+                            <label className="text-nowrap">الدفع عند الاستلام</label>
+                            <Input className='size-3/4' type='radio' value="cod" defaultChecked />
+                        </div>
                         <FormField
                             control={form.control}
                             name="Notes"
@@ -163,6 +145,7 @@ export default function CheckoutForm({ price, id, image, name, note }) {
                         />
                         <input type="hidden" name="total" value={total} />
                         <input type="hidden" name="itemId" value={id} />
+                        <input type="hidden" name="quantity" value={quantity} />
                         <div className="flex justify-start">
                             <Button
                                 className='cursor-pointer'
@@ -173,7 +156,7 @@ export default function CheckoutForm({ price, id, image, name, note }) {
             </Form>
             <Separator orientation="vertical" className="hidden md:block" />
             <Separator orientation="horizontal" className="block md:hidden" />
-            <ProductData id={id} price={price} image={image} name={name} note={note} total={total} quantity={quantity} />
+            <ProductData id={id} price={price} image={image} name={name} note={note} total={total} quantity={quantity} setQuantity={setQuantity} />
         </div>
     )
 }

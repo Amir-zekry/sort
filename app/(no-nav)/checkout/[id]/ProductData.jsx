@@ -1,8 +1,9 @@
+import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import Image from 'next/image'
 import React from 'react'
 
-function ProductData({ id, price, image, name, note, total, quantity }) {
+function ProductData({ id, price, image, name, note, total, quantity, setQuantity }) {
     return (
         <div className='items-start md:max-w-[40vw] md:min-w-[40vw] space-y-5'>
             <div className='flex items-center justify-between md:w-[30vw] w-[80vw]'>
@@ -20,7 +21,11 @@ function ProductData({ id, price, image, name, note, total, quantity }) {
             </div>
             <div className='flex items-center justify-between md:w-[30vw] w-[80vw]'>
                 <h2>الكميه</h2>
-                <p>{quantity}</p>
+                <div>
+                    <Button onClick={() => setQuantity(quantity - 1)} disabled={quantity <= 1}>-</Button>
+                    <span className='mx-2'>{quantity}</span>
+                    <Button onClick={() => setQuantity(quantity + 1)}>+</Button>
+                </div>
             </div>
             <div className='flex items-center justify-between md:w-[30vw] w-[80vw]'>
                 <h2>التوصيل</h2>
