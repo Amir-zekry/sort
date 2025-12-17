@@ -99,7 +99,27 @@ export default function CheckoutForm({ price, id, image, name, note }) {
                                                 <SelectItem value="Cairo">القاهرة</SelectItem>
                                                 <SelectItem value="Giza">الجيزة</SelectItem>
                                                 <SelectItem value="Alexandria">الإسكندرية</SelectItem>
-                                                <SelectItem value="Other">اخرى</SelectItem>
+                                                <SelectItem value="Aswan">أسوان</SelectItem>
+                                                <SelectItem value="Asyut">أسيوط</SelectItem>
+                                                <SelectItem value="Beheira">البحيرة</SelectItem>
+                                                <SelectItem value="Beni Suef">بني سويف</SelectItem>
+                                                <SelectItem value="Dakahlia">الدقهلية</SelectItem>
+                                                <SelectItem value="Damietta">دمياط</SelectItem> 
+                                                <SelectItem value="Faiyum">الفيوم</SelectItem>
+                                                <SelectItem value="Gharbia">الغربية</SelectItem>
+                                                <SelectItem value="Ismailia">الإسماعيلية</SelectItem>
+                                                <SelectItem value="Kafr El Sheikh">كفر الشيخ</SelectItem>
+                                                <SelectItem value="Luxor">الأقصر</SelectItem>
+                                                <SelectItem value="Matruh">مطروح</SelectItem>
+                                                <SelectItem value="Minya">المنيا</SelectItem>
+                                                <SelectItem value="Monufia">المنوفية</SelectItem>
+                                                <SelectItem value="Port Said">بورسعيد</SelectItem>
+                                                <SelectItem value="Qalyubia">القليوبية</SelectItem>
+                                                <SelectItem value="Qena">قنا</SelectItem>
+                                                <SelectItem value="Red Sea">البحر الأحمر</SelectItem>
+                                                <SelectItem value="Sharqia">الشرقية</SelectItem>
+                                                <SelectItem value="Sohag">سوهاج</SelectItem>
+                                                <SelectItem value="Suez">السويس</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </FormControl>
