@@ -36,7 +36,7 @@ function Hero({ id, name, description, heroImage, heroImagePhone }) {
             {/* --- Dark overlay for contrast --- */}
 
             {/* --- Content --- */}
-            <div className="relative z-10 max-w-xl text-white space-y-4">
+            <div className="relative z-10 max-w-xl text-white mix-blend-difference space-y-4">
                 <h1 className="text-3xl md:text-5xl font-bold md:text-right text-center">
                     {name}
                 </h1>
