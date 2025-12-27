@@ -1,12 +1,18 @@
 import Products from "./products";
 import { Suspense } from "react";
 import ProductsSkeleton from "./ProductsSkeleton";
+import Categories from "./Categories";
 
-export default function Home() {
+export default async function Home({ searchParams }) {
+  const { category } = await searchParams
   return (
-    <div className="max-w-screen min-h-screen flex justify-center items-start mt-5 px-4">
-      <Suspense fallback={<ProductsSkeleton />}>
-        <Products />
+    <div className="max-w-screen min-h-screen flex justify-center items-start mt-5 px-4 gap-x-5">
+      <Categories />
+      <Suspense
+        key={category}
+        fallback={<ProductsSkeleton />}
+      >
+        <Products category={category} />
       </Suspense>
     </div>
   );

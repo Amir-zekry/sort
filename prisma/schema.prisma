@@ -45,6 +45,7 @@ model item {
   heroImagePhone String?
   discription    String
   note           String?
+  catergory      String?
   feature        feature[]
   imageGallery   imageGallery[]
   orders         order[]
@@ -52,16 +53,16 @@ model item {
 }
 
 model order {
-  id            String    @id @default(uuid())
-  status        String    @default("pending")
-  total         Float
-  createdAt     DateTime  @default(now())
-  customerId    String?
-  itemId        String?
-  notes         String?
-  quantity      Int       @default(1)
-  customer      customer? @relation(fields: [customerId], references: [id])
-  item          item?     @relation(fields: [itemId], references: [id])
+  id         String    @id @default(uuid())
+  status     String    @default("pending")
+  total      Float
+  createdAt  DateTime  @default(now())
+  customerId String?
+  itemId     String?
+  notes      String?
+  quantity   Int       @default(1)
+  customer   customer? @relation(fields: [customerId], references: [id])
+  item       item?     @relation(fields: [itemId], references: [id])
 }
 
 // model cart {

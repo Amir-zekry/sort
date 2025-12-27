@@ -3,10 +3,15 @@ import { PrismaClient } from "@prisma/client";
 import { unstable_cacheTag, unstable_cacheLife } from "next/cache";
 const db = new PrismaClient()
 
-export async function getProducts() {
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+export async function getProducts(category) {
     'use cache'
     unstable_cacheTag('products-list')
     unstable_cacheLife({ revalidate: 60 })
+    // await sleep(9000) // 2 seconds
     try {
         return await db.item.findMany({
             select: {
@@ -14,12 +19,15 @@ export async function getProducts() {
                 name: true,
                 price: true,
                 image: true
-            }
+            },
+            where: { catergory: category },
+            orderBy: {createdAt: 'desc'}
         })
     } catch (error) {
         console.log(error)
     }
 }
+
 export async function getProductById(id) {
     try {
         return await db.item.findUnique({
