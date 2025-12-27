@@ -7,7 +7,7 @@ function Categories() {
         { label: 'الكل', value: 'all' },
         { label: 'عربيتك', value: 'car' },
         { label: 'دولابك', value: 'closet' },
-        {label: 'رياضتك', value: 'sports' },
+        { label: 'رياضتك', value: 'sports' },
     ]
 
     const pathname = usePathname()
@@ -16,7 +16,7 @@ function Categories() {
 
     const activeCategory = searchParams.get('category') || 'all'
 
-    function handleCategoryClick(category) {
+    function handleCategoryChange(category) {
         const params = new URLSearchParams(searchParams.toString())
 
         if (category === 'all') {
@@ -29,17 +29,40 @@ function Categories() {
     }
 
     return (
-        <div className="w-32">
-            <h2 className="text-muted-foreground">الفئات</h2>
+        <div className="w-full md:w-32">
+            <h2 className="text-muted-foreground mb-2 md:block hidden">الفئات</h2>
 
-            <ul className="flex flex-col gap-3 mt-4 text-sm">
+            {/* Mobile Select */}
+            <select
+                value={activeCategory}
+                onChange={(e) => handleCategoryChange(e.target.value)}
+                className="
+                    md:hidden
+                    w-full
+                    rounded-md
+                    border
+                    px-3
+                    py-2
+                    text-sm
+                    bg-background
+                "
+            >
+                {categories.map((category) => (
+                    <option key={category.value} value={category.value}>
+                        {category.label}
+                    </option>
+                ))}
+            </select>
+
+            {/* Desktop List */}
+            <ul className="hidden md:flex flex-col gap-3 mt-4 text-sm">
                 {categories.map((category) => {
                     const isActive = activeCategory === category.value
 
                     return (
                         <li
                             key={category.value}
-                            onClick={() => handleCategoryClick(category.value)}
+                            onClick={() => handleCategoryChange(category.value)}
                             className={`
                                 cursor-pointer
                                 transition-colors
