@@ -30,13 +30,6 @@ function Nav() {
                 <Link href="/" className="flex items-center">
                     <Image src="/logo.png" width={48} height={48} alt="logo" />
                 </Link>
-
-                {/* Desktop navigation */}
-                <div className="hidden md:flex items-center space-x-6">
-                    <Link href="/" className="text-sm font-medium hover:opacity-80">المنتجات</Link>
-                </div>
-
-                {/* Mobile: cart + hamburger (sheet) */}
                 <div className="md:hidden flex items-center gap-2">
                     <Sheet>
                         <SheetTrigger asChild>

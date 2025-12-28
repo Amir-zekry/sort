@@ -33,8 +33,8 @@ export default function Footer() {
                         <h3 className="text-xl font-semibold mb-3">تواصل معانا</h3>
                         <ul className="space-y-4 text-sm text-muted-foreground">
                             <li className="flex items-center gap-2">
-                                <a href="tel:01552333223" className="hover:text-primary">
-                                    01552333223 <Phone size={24} />
+                                <a href="tel:01552333223" className="hover:text-primary flex items-center gap-2">
+                                  <Phone size={16} />  01552333223 
                                 </a>
                             </li>
                             <div className="flex items-center gap-x-4">

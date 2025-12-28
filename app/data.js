@@ -7,7 +7,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export async function getProducts(category) {
+export async function getProducts(category, sort) {
     'use cache'
     unstable_cacheTag('products-list')
     unstable_cacheLife({ revalidate: 60 })
@@ -21,7 +21,9 @@ export async function getProducts(category) {
                 image: true
             },
             where: { catergory: category },
-            orderBy: {createdAt: 'desc'}
+            orderBy: sort === 'low price' ? { price: 'asc' } :
+                sort === 'high price' ? { price: 'desc' } :
+                    { createdAt: 'desc' }
         })
     } catch (error) {
         console.log(error)
