@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/sheet"
 import Cart from "../Cart"
 import SearchBar from "../Search"
+import { Suspense } from "react"
 function Nav() {
     return (
         <nav
@@ -32,13 +33,17 @@ function Nav() {
                 <Link href="/" className="flex items-center">
                     <Image src="/logo.png" width={48} height={48} alt="logo" />
                 </Link>
-                <div className="md:block hidden">
-                    <SearchBar />
-                </div>
-                <div className="flex items-center gap-x-2">
-                    <div className="md:hidden">
+                <Suspense fallback={null}>
+                    <div className="md:block hidden">
                         <SearchBar />
                     </div>
+                </Suspense>
+                <div className="flex items-center gap-x-2">
+                    <Suspense fallback={null}>
+                        <div className="md:hidden">
+                            <SearchBar />
+                        </div>
+                    </Suspense>
                     <Cart />
                     <div className="md:hidden flex items-center gap-2">
                         <Sheet>
