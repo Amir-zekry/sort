@@ -4,7 +4,6 @@ import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
 import React, { useState } from 'react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
-import { useDebouncedCallback } from 'use-debounce'
 import {
     Sheet,
     SheetContent,
@@ -20,7 +19,7 @@ function SearchBar() {
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState('')
 
-    const handelSearch = useDebouncedCallback((search) => {
+    function handelSearch(search) {
         const params = new URLSearchParams(searchParams.toString())
 
         if (!search) {
@@ -30,7 +29,7 @@ function SearchBar() {
         }
 
         router.push(`${pathname}?${params.toString()}`, { scroll: false })
-    }, 300)
+    }
 
     // Called when user presses Enter / Go
     const submitSearch = () => {
