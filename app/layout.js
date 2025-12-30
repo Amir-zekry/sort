@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
 import TikTokPixel from "./TiktokPixel";
 import Cart from "./ui/Cart";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
         <TikTokPixel />
         {/* <Cart /> */}
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );
