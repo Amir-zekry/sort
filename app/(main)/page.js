@@ -7,6 +7,7 @@ import Sort from "./Sort";
 export default async function Home({ searchParams }) {
   const { category } = await searchParams
   const { sort } = await searchParams
+  const {search} = await searchParams
   return (
     <div className="max-w-screen min-h-screen flex md:flex-row flex-col md:justify-center justify-start items-start mt-5 px-4 md:gap-x-5 gap-y-5">
       <Categories />
@@ -14,10 +15,10 @@ export default async function Home({ searchParams }) {
         <Sort />
       </div>
       <Suspense
-        key={[category, sort]}
+        key={[category, sort, search]}
         fallback={<ProductsSkeleton />}
       >
-        <Products category={category} sort={sort} />
+        <Products category={category} sort={sort} search={search} />
       </Suspense>
       <div className="hidden md:block">
         <Sort />

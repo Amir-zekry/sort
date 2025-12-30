@@ -21,6 +21,8 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
+import Cart from "../Cart"
+import SearchBar from "../Search"
 function Nav() {
     return (
         <nav
@@ -30,26 +32,30 @@ function Nav() {
                 <Link href="/" className="flex items-center">
                     <Image src="/logo.png" width={48} height={48} alt="logo" />
                 </Link>
-                <div className="md:hidden flex items-center gap-2">
-                    <Sheet>
-                        <SheetTrigger asChild>
-                            <Button variant="ghost" className="p-2">
-                                <Menu />
-                            </Button>
-                        </SheetTrigger>
-                        <SheetContent side="right" className="w-64">
-                            <SheetHeader>
-                                <SheetTitle>القائمة</SheetTitle>
-                                <SheetDescription>تصفح الموقع</SheetDescription>
-                            </SheetHeader>
+                <div className="md:block hidden">
+                    <SearchBar />
+                </div>
+                <div className="flex items-center gap-x-2">
+                    <div className="md:hidden">
+                        <SearchBar />
+                    </div>
+                    <Cart />
+                    <div className="md:hidden flex items-center gap-2">
+                        <Sheet>
+                            <SheetTrigger asChild>
+                                <Menu size={24} />
+                            </SheetTrigger>
+                            <SheetContent side="right" className="w-64">
+                                <SheetHeader>
+                                    <SheetTitle>القائمة</SheetTitle>
+                                    <SheetDescription>تصفح الموقع</SheetDescription>
+                                </SheetHeader>
 
-                            <ul className="mt-4 space-y-4">
-                                <li>
-                                    <Link href="/" className="block text-base font-medium">المنتجات</Link>
-                                </li>
-                            </ul>
-                        </SheetContent>
-                    </Sheet>
+                                <ul className="mt-4 space-y-4">
+                                </ul>
+                            </SheetContent>
+                        </Sheet>
+                    </div>
                 </div>
             </div>
         </nav>
