@@ -104,7 +104,7 @@ export default function CheckoutForm({ price, id, image, name, note }) {
                                                 <SelectItem value="Beheira">البحيرة</SelectItem>
                                                 <SelectItem value="Beni Suef">بني سويف</SelectItem>
                                                 <SelectItem value="Dakahlia">الدقهلية</SelectItem>
-                                                <SelectItem value="Damietta">دمياط</SelectItem> 
+                                                <SelectItem value="Damietta">دمياط</SelectItem>
                                                 <SelectItem value="Faiyum">الفيوم</SelectItem>
                                                 <SelectItem value="Gharbia">الغربية</SelectItem>
                                                 <SelectItem value="Ismailia">الإسماعيلية</SelectItem>
@@ -168,6 +168,7 @@ export default function CheckoutForm({ price, id, image, name, note }) {
                         <input type="hidden" name="quantity" value={quantity} />
                         <div className="flex justify-start">
                             <Button
+                                disabled={loading}
                                 className='cursor-pointer'
                                 type="submit">تاكيد</Button>
                         </div>
