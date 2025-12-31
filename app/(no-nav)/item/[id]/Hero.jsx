@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import AddToCart from './AddToCart'
 
 function Hero({ id, name, description, heroImage, heroImagePhone }) {
     return (
@@ -56,6 +57,7 @@ function Hero({ id, name, description, heroImage, heroImagePhone }) {
                             اشتري دلوقتي
                         </Button>
                     </Link>
+                    {/* <AddToCart id={id} /> */}
                 </div>
             </div>
 

@@ -29,9 +29,10 @@ import { Separator } from '@/components/ui/separator'
 import { useEffect } from "react"
 export default function CheckoutForm({ price, id, image, name, note }) {
     const [quantity, setQuantity] = useState(1)
-    const [total, setTotal] = useState(price * quantity)
+    const shipping = 45
+    const [total, setTotal] = useState(shipping + price * quantity)
     useEffect(() => {
-        setTotal(quantity * price)
+        setTotal(shipping + quantity * price)
     }, [quantity])
     const form = useForm({
         defaultValues: {

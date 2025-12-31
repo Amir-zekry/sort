@@ -23,14 +23,14 @@ model feature {
   p         String
   itemId    String?
   image_url String
-  item      item?   @relation(fields: [itemId], references: [id])
+  item      item?   @relation(fields: [itemId], references: [id], onDelete: Cascade)
 }
 
 model imageGallery {
   id        String  @id @default(uuid())
   image_url String
   itemId    String?
-  item      item?   @relation(fields: [itemId], references: [id])
+  item      item?   @relation(fields: [itemId], references: [id], onDelete: Cascade)
 }
 
 model item {
@@ -49,7 +49,7 @@ model item {
   feature        feature[]
   imageGallery   imageGallery[]
   orders         order[]
-  // cartItems cartItem[]
+  cartItems      cartItem[]
 }
 
 model order {
@@ -61,21 +61,21 @@ model order {
   itemId     String?
   notes      String?
   quantity   Int       @default(1)
-  customer   customer? @relation(fields: [customerId], references: [id])
-  item       item?     @relation(fields: [itemId], references: [id])
+  customer   customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  item       item?     @relation(fields: [itemId], references: [id], onDelete: SetNull)
 }
 
-// model cart {
-//   id        String   @id @default(uuid())
-//   createdAt DateTime @default(now())
-//   cartItems cartItem[]
-// }
+model cart {
+  id        String     @id @default(uuid())
+  createdAt DateTime   @default(now())
+  cartItems cartItem[]
+}
 
-// model cartItem {
-//   id       String @id @default(uuid())
-//   cartId   String?
-//   itemId   String?
-//   quantity Int    @default(1)
-//   cart     cart?  @relation(fields: [cartId], references: [id])
-//   item     item?  @relation(fields: [itemId], references: [id])
-// }   
+model cartItem {
+  id       String @id @default(uuid())
+  cartId   String
+  itemId   String
+  quantity Int    @default(1)
+  cart     cart?  @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  item     item?  @relation(fields: [itemId], references: [id], onDelete: Cascade)
+}

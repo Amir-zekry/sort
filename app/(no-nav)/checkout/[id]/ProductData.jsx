@@ -29,8 +29,10 @@ function ProductData({ id, price, image, name, note, total, quantity, setQuantit
             </div>
             <div className='flex items-center justify-between md:w-[30vw] w-[80vw]'>
                 <h2>التوصيل</h2>
-                <p>مجاني</p>
-            </div>
+                <div className='flex items-center gap-x-2 font-bold'>
+                    <p>45</p>
+                    <p>L.E</p>
+                </div>            </div>
             <div className='flex items-center justify-between md:w-[30vw] w-[80vw]'>
                 <h2 className='font-bold'>المجموع</h2>
                 <div className='flex items-center gap-x-2 font-bold'>

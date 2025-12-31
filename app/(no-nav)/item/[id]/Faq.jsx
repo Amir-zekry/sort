@@ -21,7 +21,7 @@ function Faq() {
                         ايوه, ممكن تسترجع المنتج خلال <span className="font-extrabold text-2xl">14 يوم</span> من تاريخ الاستلام
                     </p>
                     <p className="text-right">
-                        ٍSort سهلت خدمة ما بعد البيع من خلال تقديم طلب الاستبدال او الاسترجاع بالدخول على موقع جودة وملىء استمارة خدمة ما بعد البيع <Link href='https://www.jawdaonline.com/egy-request' target="_blank" className="text-purple-500">https://www.jawdaonline.com/egy-request</Link> كمان هتقدر تتابع حالة الطلب من نفس اللينك
+                        EG MEN سهلت خدمة ما بعد البيع من خلال تقديم طلب الاستبدال او الاسترجاع بالدخول على موقع جودة وملىء استمارة خدمة ما بعد البيع <Link href='https://www.jawdaonline.com/egy-request' target="_blank" className="text-purple-500">https://www.jawdaonline.com/egy-request</Link> كمان هتقدر تتابع حالة الطلب من نفس اللينك
                     </p>
                 </AccordionContent>
             </AccordionItem>
