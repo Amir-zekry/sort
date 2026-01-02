@@ -19,7 +19,7 @@ export default async function ConfirmationPage({ searchParams }) {
             <div className="flex items-center gap-x-6">
                 <Link
                     target="_blank"
-                    href="https://www.tiktok.com/@sort7169">
+                    href="https://www.tiktok.com/@egmen223">
                     <FaTiktok size={24} />
                 </Link>
                 <Separator orientation="vertical" className="h-6" />

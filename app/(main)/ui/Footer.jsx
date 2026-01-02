@@ -17,7 +17,7 @@ export default function Footer() {
                         <h3 className="text-xl font-semibold mb-3">عنّا</h3>
                         <p className="text-sm text-muted-foreground leading-relaxed">
                             احنا بنقدم منتجات بجوده عاليه مجربينها بنفسنا .. وكل المنتجات معاها ضمان استرجاع واستبدال .. عشان تشتري وانت متطمن
-                            <br /><span className="text-purple-500">كل احتياجات الراجل المصري موجوده عندنا | EG MEN</span>
+                            <br /><span className="text-purple-500"> هدفنا اننا نوفر كل احتياجات الراجل المصري | EG MEN</span>
                         </p>
                     </div>
 

@@ -47,10 +47,10 @@ export default function CheckoutForm({ price, id, image, name, note }) {
     const initialState = { loading: false, errors: {} }
     const [state, formAction, loading] = useActionState(createOrder, initialState)
     return (
-        <div className="flex md:flex-row flex-col-reverse h-screen justify-center md:items-start items-center gap-y-5 px-5 md:gap-x-10 py-10 bg-black">
+        <div className="flex md:flex-row flex-col-reverse min-h-screen justify-center md:items-start items-center gap-y-5 px-5 md:gap-x-10 py-10 bg-black">
 
             <Form {...form} >
-                <div className='flex flex-col gap-y-8 md:min-w-[40vw] md:max-w-[40vw] items-end'>
+                <div className='flex flex-col gap-y-8 md:min-w-[40vw] md:max-w-[40vw] w-full md:items-end'>
                     <h1 className="flex md:w-[30vw] w-full text-left text-3xl">بيانات الشحن</h1>
                     <form action={formAction} className="space-y-4 md:min-w-[30vw] md:max-w-[30vw] ">
                         <FormField
@@ -170,13 +170,16 @@ export default function CheckoutForm({ price, id, image, name, note }) {
                         <div className="flex justify-start">
                             <Button
                                 disabled={loading}
-                                className='cursor-pointer'
+                                className='cursor-pointer w-full'
                                 type="submit">تاكيد</Button>
                         </div>
                     </form>
                 </div>
             </Form>
-            <Separator orientation="vertical" className="hidden md:block" />
+            <Separator
+                orientation="vertical"
+                className="hidden md:block min-h-[600px]"
+            />
             <Separator orientation="horizontal" className="block md:hidden" />
             <ProductData id={id} price={price} image={image} name={name} note={note} total={total} quantity={quantity} setQuantity={setQuantity} />
         </div>
