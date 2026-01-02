@@ -3,6 +3,7 @@ import "@/app/globals.css";
 import TikTokPixel from "./TiktokPixel";
 import Cart from "./ui/Cart";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
         <TikTokPixel />
         {/* <Cart /> */}
         {children}
+        <Analytics />
         <SpeedInsights />
       </body>
     </html>
