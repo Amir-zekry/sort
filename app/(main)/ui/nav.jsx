@@ -24,6 +24,7 @@ import {
 import Cart from "../Cart"
 import SearchBar from "../Search"
 import { Suspense } from "react"
+import UserData from "../User"
 function Nav() {
     return (
         <nav
@@ -38,13 +39,14 @@ function Nav() {
                         <SearchBar />
                     </div>
                 </Suspense>
-                <div className="flex items-center gap-x-2">
+                <div className="flex items-center gap-x-4">
                     <Suspense fallback={null}>
                         <div className="md:hidden">
                             <SearchBar />
                         </div>
                     </Suspense>
                     <Cart />
+                    <UserData />
                     <div className="md:hidden flex items-center gap-2">
                         <Sheet>
                             <SheetTrigger asChild>
@@ -55,9 +57,6 @@ function Nav() {
                                     <SheetTitle>القائمة</SheetTitle>
                                     <SheetDescription>تصفح الموقع</SheetDescription>
                                 </SheetHeader>
-
-                                <ul className="mt-4 space-y-4">
-                                </ul>
                             </SheetContent>
                         </Sheet>
                     </div>

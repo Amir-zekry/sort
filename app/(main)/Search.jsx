@@ -11,6 +11,7 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet'
+import { Button } from '@/components/ui/button'
 
 function SearchBar() {
     const pathname = usePathname()
@@ -55,9 +56,7 @@ function SearchBar() {
             <div className="md:hidden">
                 <Sheet open={open} onOpenChange={setOpen}>
                     <SheetTrigger asChild>
-                        <button aria-label="Search">
                             <Search size={24} />
-                        </button>
                     </SheetTrigger>
 
                     <SheetContent side="right" className="pt-10">

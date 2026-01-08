@@ -79,3 +79,11 @@ model cartItem {
   cart     cart?  @relation(fields: [cartId], references: [id], onDelete: Cascade)
   item     item?  @relation(fields: [itemId], references: [id], onDelete: Cascade)
 }
+
+model user {
+  id          String   @id @default(uuid())
+  name        String
+  phoneNumber String   @unique
+  password    String
+  createdAt   DateTime @default(now())
+}
