@@ -1,17 +1,5 @@
-import { Button } from "@/components/ui/button"
-import {
-    NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuIndicator,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    NavigationMenuTrigger,
-    NavigationMenuViewport,
-    navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
 import Link from "next/link"
-import { ShoppingCart, Menu } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import Image from "next/image"
 import {
     Sheet,
@@ -21,11 +9,13 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import Cart from "../Cart"
+import Cart from "../../Cart"
 import SearchBar from "../Search"
 import { Suspense } from "react"
 import UserData from "../User"
-function Nav() {
+import { auth } from "@/auth"
+async function Nav() {
+    const session = await auth()
     return (
         <nav
             className="px-1 w-full py-1 bg-cover bg-center text-white"
@@ -45,7 +35,9 @@ function Nav() {
                             <SearchBar />
                         </div>
                     </Suspense>
-                    <Cart />
+                    {session && (
+                        <Cart />
+                    )}
                     <UserData />
                     <div className="md:hidden flex items-center gap-2">
                         <Sheet>

@@ -57,7 +57,7 @@ function Hero({ id, name, description, heroImage, heroImagePhone }) {
                             اشتري دلوقتي
                         </Button>
                     </Link>
-                    {/* <AddToCart id={id} /> */}
+                    <AddToCart id={id} />
                 </div>
             </div>
 

@@ -29,10 +29,10 @@ export default async function ConfirmationPage({ searchParams }) {
                     <FaWhatsapp size={24} />
                 </Link>
             </div>
-            {/* <div>
-                <h2> تصفح متجرنا, بنوفر عليه كل المنتجات ال محتاج ليها كل راجل مصري  </h2>
+            <div>
+                <h2> تصفح متجرنا, هدفنا اننا نوفر عليه كل المنتجات ال محتاج ليها اي راجل مصري  </h2>
                 <Link href="/" className="text-purple-600 underline">اذهب إلى المتجر</Link>
-            </div> */}
+            </div>
         </div>
     )
 }

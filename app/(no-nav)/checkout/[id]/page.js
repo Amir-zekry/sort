@@ -1,16 +1,24 @@
 import React from 'react'
-import CheckoutForm from './CheckoutForm'
+import CheckoutForm from '../CheckoutForm'
 import { getProductById } from '@/app/data'
+import { redirect } from 'next/navigation'
 
 async function page({ params }) {
     const { id } = await params
     const item = await getProductById(id)
-    const price = item.price
-    const image = item.image
-    const name = item.name
-    const note = item.note
     return (
-        <CheckoutForm price={price} id={id} image={image} name={name} note={note} />
+        <CheckoutForm
+            mode='single'
+            items={[
+                {
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    image: item.image,
+                    quantity: 1,
+                }
+            ]}
+        />
     )
 }
 

@@ -12,8 +12,11 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { signup } from "@/app/actions";
-import { useActionState } from "react"
+import { use, useActionState, useEffect } from "react"
 import Link from "next/link"
+import { success } from "zod"
+import { toast } from "sonner"
+import { useRouter, useSearchParams } from "next/navigation"
 
 
 export function SignupForm({ className, ...props }) {
@@ -21,9 +24,22 @@ export function SignupForm({ className, ...props }) {
     pending: false,
     fieldErrors: {},
     formErrors: [],
-    data: {}
+    data: {},
+    success: null
   }
   const [state, action, pending] = useActionState(signup, initialState)
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get("callbackUrl") || "/login"
+
+  useEffect(() => {
+    if (state.success) {
+      router.push(`/login?callbackUrl=${callbackUrl}`)
+      toast.success("تم انشاء الحساب بنجاح، يمكنك تسجيل الدخول الآن")
+    }
+  }, [state.success])
+
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
@@ -67,7 +83,7 @@ export function SignupForm({ className, ...props }) {
                     <Input id="confirm-password" type="password" name='confirmed-password' placeholder='********' />
                   </Field>
                 </Field>
-                <FieldError>{state.formErrors[0]}</FieldError>
+                <FieldError>{state.formErrors?.[0]}</FieldError>
               </Field>
               <Field>
                 <Button
@@ -79,7 +95,7 @@ export function SignupForm({ className, ...props }) {
               </Field>
               <FieldSeparator />
               <FieldDescription className="text-center">
-                عندك حساب؟ <Link href="/login">تسجيل الدخول</Link>
+                عندك حساب؟ <Link href={`/login?callbackUrl=${callbackUrl}`}>تسجيل الدخول</Link>
               </FieldDescription>
             </FieldGroup>
           </form>

@@ -4,9 +4,9 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { redirect } from "next/navigation";
 import { hash } from "bcryptjs";
 import z from "zod";
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
-import { th } from "zod/v4/locales";
+import { revalidatePath } from "next/cache";
 
 const db = new PrismaClient()
 
@@ -19,7 +19,6 @@ export async function createOrder(state, formData) {
         PhoneNumber: z.string().min(1, "رقم الهاتف مطلوب"),
         Address: z.string().min(1, "العنوان مطلوب"),
         Governorate: z.string().min(1, "المحافظة مطلوبة"),
-        quantity: z.coerce.number().min(1, "الكمية يجب أن تكون على الأقل 1")
     })
 
     const parsedData = formSchema.safeParse({
@@ -27,36 +26,63 @@ export async function createOrder(state, formData) {
         PhoneNumber: formData.get('PhoneNumber'),
         Address: formData.get('Address'),
         Governorate: formData.get('Governorate'),
-        quantity: formData.get('quantity') // Handles select input default
     });
     if (!parsedData.success) {
         return {
             errors: parsedData.error.flatten().fieldErrors,
         };
     }
-    const { FullName, PhoneNumber, Address, Governorate, quantity } = parsedData.data;
-    try {
-        const customer = await db.customer.create({
-            data: {
-                name: FullName,
-                number: PhoneNumber,
-                address: Address,
-                governorate: Governorate,
-            }
+    const { FullName, PhoneNumber, Address, Governorate } = parsedData.data;
+    const items = JSON.parse(formData.get('items')) // 🔥 important
+
+    // 1️⃣ Fetch items from DB (security)
+    const dbItems = await db.item.findMany({
+        where: { id: { in: items.map(i => i.itemId) } }
+    })
+    let total = 45 // shipping
+    const orderItemsData = items.map(i => {
+        const item = dbItems.find(d => d.id === i.itemId)
+        total += item.price * i.quantity
+
+        return {
+            itemId: item.id,
+            quantity: i.quantity,
+        }
+    })
+    const mode = formData.get('mode')
+    const userId = formData.get('userId')
+    let cart
+    if (mode === 'cart' && userId) {
+        cart = await db.cart.findUnique({
+            where: { userId: userId },
+            select: { id: true }
         })
+    }
+    try {
         const order = await db.order.create({
             data: {
-                total: parseFloat(formData.get('total')),
+                total: total,
                 notes: formData.get('Notes'),
-                quantity: quantity,
                 customer: {
-                    connect: { id: customer.id }
+                    create: {
+                        name: FullName,
+                        number: PhoneNumber,
+                        address: Address,
+                        governorate: Governorate,
+                    }
                 },
-                item: {
-                    connect: { id: formData.get('itemId') },
-                },
+                items: {
+                    createMany: {
+                        data: orderItemsData
+                    }
+                }
             },
         });
+        await db.cartItem.deleteMany({
+            where: {
+                cartId: cart.id
+            }
+        })
         redirect(`/confirmation?orderId=${order.id}`)
     } catch (error) {
         if (!isRedirectError(error)) {
@@ -65,10 +91,7 @@ export async function createOrder(state, formData) {
         throw error // still let redirect work
     }
 }
-
-
 export async function signup(state, formData) {
-
     const signupSchema = z.object({
         name: z.string().min(1, "الاسم مطلوب"),
         phoneNumber: z
@@ -101,7 +124,26 @@ export async function signup(state, formData) {
             }
         };
     }
+
+    // CHECK IF PHONE NUMBER EXISTS
     const { phoneNumber, password, name } = parsedData.data;
+    const existingUser = await db.user.findUnique({
+        where: { phoneNumber },
+    })
+
+    if (existingUser) {
+        return {
+            success: false,
+            fieldErrors: {
+                phoneNumber: ["رقم الهاتف مسجل بالفعل"],
+            },
+            data: {
+                name: formData.get('name'),
+                phoneNumber: formData.get('phoneNumber'),
+            }
+
+        }
+    }
     const hashedPassword = await hash(password, 10);
     try {
         await db.user.create({
@@ -111,12 +153,16 @@ export async function signup(state, formData) {
                 name: name,
             }
         })
-        redirect("/login")
+        return {
+            success: true,
+        }
     } catch (error) {
-        throw error
+        return {
+            success: false,
+            formErrors: ["حدث خطأ أثناء إنشاء الحساب. حاول مرة أخرى."],
+        }
     }
 }
-
 export async function getUserFromDb(phoneNumber) {
     try {
         return await db.user.findUnique({
@@ -128,7 +174,6 @@ export async function getUserFromDb(phoneNumber) {
         console.error("Error fetching user from DB:", error);
     }
 }
-
 export async function authenticate(state, formData) {
     const signinSchema = z.object({
         phoneNumber: z
@@ -156,8 +201,11 @@ export async function authenticate(state, formData) {
         await signIn("credentials", {
             phoneNumber: phoneNumber,
             password: password,
-            redirectTo: "/",
+            redirect: false,
         })
+        return {
+            success: true,
+        }
     } catch (error) {
         if (error instanceof AuthError) {
             switch (error.type) {
@@ -177,6 +225,105 @@ export async function authenticate(state, formData) {
                     }
             }
         }
-        throw error
+        return {
+            message: "حدث خطأ غير متوقع. حاول مرة أخرى"
+        }
+    }
+}
+export async function signOutServerAction(state, formData) {
+    try {
+        await signOut({
+            redirect: false,
+        })
+        return {
+            success: true
+        }
+    } catch (error) {
+        return {
+            success: false
+        }
+    }
+}
+export async function addToCart(userId, itemId) {
+    try {
+        let cart = await db.cart.findUnique({
+            where: {
+                userId: userId,
+            },
+            include: {
+                cartItems: true,
+            },
+        });
+        if (!cart) {
+            cart = await db.cart.create({
+                data: {
+                    user: {
+                        connect: { id: userId },
+                    },
+                },
+                include: {
+                    cartItems: true,
+                },
+            });
+        }
+        if (cart.cartItems.some(ci => ci.itemId === itemId)) {
+            return {
+                success: false,
+                message: "العنصر موجود بالفعل في العربه"
+            }
+        }
+        await db.cartItem.create({
+            data: {
+                cart: {
+                    connect: { id: cart.id },
+                },
+                item: {
+                    connect: { id: itemId },
+                },
+            },
+        });
+        return {
+            success: true,
+            message: "تمت إضافة العنصر إلى العربه بنجاح"
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: "حدث خطأ أثناء إضافة العنصر إلى العربه"
+        }
+    }
+}
+export async function increaseCartItemQuantity(cartItemId) {
+    try {
+        await db.cartItem.update({
+            where: {
+                id: cartItemId,
+            },
+            data: {
+                quantity: {
+                    increment: 1
+                },
+            }
+        })
+        revalidatePath('/')
+    } catch (error) {
+        console.error(error)
+    }
+}
+export async function decreaseCartItemQuantity(cartItemId) {
+    try {
+        await db.cartItem.update({
+            where: {
+                id: cartItemId,
+            },
+            data: {
+                quantity: {
+                    decrement: 1
+                },
+            }
+        })
+        revalidatePath('/')
+    } catch (error) {
+        console.error(error)
     }
 }

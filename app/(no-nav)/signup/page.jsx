@@ -1,6 +1,23 @@
 import { SignupForm } from "@/components/signup-form"
-
-export default function SignupPage() {
+import { auth } from "@/auth";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+export default async function SignupPage() {
+  const session = await auth()
+  if (session) {
+    return (
+      <div className="flex justify-center items-center h-screen flex-col gap-6">
+        <p className="text-center text-lg">
+          صباح الفل يسطا انت مسجل الدخول اصلا
+        </p>
+        <Link href={'/'} >
+          <Button>
+            ارجع للصفحة الرئيسية
+          </Button>
+        </Link>
+      </div>
+    )
+  }
   return (
     <div
       className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">

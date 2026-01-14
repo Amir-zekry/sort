@@ -24,16 +24,10 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { createOrder } from "@/app/actions"
 import { useActionState, useState } from "react"
-import ProductData from './ProductData'
+import ProductData from "./ProductData"
 import { Separator } from '@/components/ui/separator'
-import { useEffect } from "react"
-export default function CheckoutForm({ price, id, image, name, note }) {
-    const [quantity, setQuantity] = useState(1)
-    const shipping = 45
-    const [total, setTotal] = useState(shipping + price * quantity)
-    useEffect(() => {
-        setTotal(shipping + quantity * price)
-    }, [quantity])
+export default function CheckoutForm({ mode, items, userId }) {
+    const [localItems, setLocalItems] = useState(items)
     const form = useForm({
         defaultValues: {
             FullName: '',
@@ -41,7 +35,6 @@ export default function CheckoutForm({ price, id, image, name, note }) {
             Governorate: '',
             Address: '',
             Notes: '',
-            quantity: quantity,
         }
     })
     const initialState = { loading: false, errors: {} }
@@ -164,9 +157,18 @@ export default function CheckoutForm({ price, id, image, name, note }) {
                                 </FormItem>
                             )}
                         />
-                        <input type="hidden" name="total" value={total} />
-                        <input type="hidden" name="itemId" value={id} />
-                        <input type="hidden" name="quantity" value={quantity} />
+                        <input
+                            type="hidden"
+                            name="items"
+                            value={JSON.stringify(
+                                localItems.map(i => ({
+                                    itemId: i.id,
+                                    quantity: i.quantity,
+                                }))
+                            )}
+                        />
+                        <input type="hidden" name="mode" value={mode} />
+                        <input type="hidden" name="userId" value={userId} />
                         <div className="flex justify-start">
                             <Button
                                 disabled={loading}
@@ -181,7 +183,11 @@ export default function CheckoutForm({ price, id, image, name, note }) {
                 className="hidden md:block min-h-[600px]"
             />
             <Separator orientation="horizontal" className="block md:hidden" />
-            <ProductData id={id} price={price} image={image} name={name} note={note} total={total} quantity={quantity} setQuantity={setQuantity} />
+            <ProductData
+                items={localItems}
+                setItems={setLocalItems}
+                mode={mode}
+            />
         </div>
     )
 }

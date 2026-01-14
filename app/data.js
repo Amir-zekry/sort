@@ -35,12 +35,12 @@ export async function getProducts(category, sort, search) {
         console.log(error)
     }
 }
-
 export async function getProductById(id) {
     try {
         return await db.item.findUnique({
             where: { id },
             select: {
+                id: true,
                 name: true,
                 discription: true,
                 price: true,
@@ -49,7 +49,6 @@ export async function getProductById(id) {
                 imageGallery: true,
                 image: true,
                 heroImagePhone: true,
-                sku: true
             },
         })
     } catch (error) {
@@ -116,6 +115,28 @@ export async function getReviews(productId) {
             .map(({ _rating, ...rest }) => rest);
 
         return top4;
+    } catch (error) {
+        console.log(error)
+    }
+}
+export async function getCartItems(userId) {
+    const cart = await db.cart.findUnique({
+        where: {
+            userId
+        }
+    })
+    try {
+        return await db.cartItem.findMany({
+            where: {
+                cartId: cart.id
+            },
+            include: {
+                item: true
+            }, 
+            orderBy: {
+                itemId: 'asc'
+            }
+        })
     } catch (error) {
         console.log(error)
     }

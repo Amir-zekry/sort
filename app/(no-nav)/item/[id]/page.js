@@ -18,6 +18,8 @@ import BuyNow from './BuyNow'
 import { getProductById } from '@/app/data'
 import KeySpecs from './keySpecs'
 import KeySpecsH1 from './KeySpecsH1'
+import Cart from '@/app/Cart'
+import { auth } from '@/auth'
 async function Item({ params }) {
     const { id } = await params
     const item = await getProductById(id)
@@ -28,8 +30,15 @@ async function Item({ params }) {
     const features = item.feature
     const images = item.imageGallery
     const heroImagePhone = item.heroImagePhone
+    const session = await auth()
     return (
         <div className='space-y-20 bg-black'>
+            {session &&
+                <div className='fixed top-4 left-4 text-black z-50 rounded-full p-4 w-14 h-14 flex items-center justify-center bg-linear-to-r from-purple-500 to-pink-500 shadow-lg'>
+                    <Cart />
+                </div>
+            }
+
             <Hero id={id} name={name} description={description} heroImage={heroImage} heroImagePhone={heroImagePhone} />
             {/* <MainFeature /> */}
             <FeaturesH1 />

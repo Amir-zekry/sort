@@ -11,19 +11,31 @@ import {
   FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { signIn } from "@/auth"
 import Link from "next/link"
-import { useActionState } from "react"
+import { useActionState, useEffect } from "react"
 import { authenticate } from "@/app/actions"
+import { toast } from "sonner"
+import { useRouter, useSearchParams } from "next/navigation"
 
 export function LoginForm({ className, ...props }) {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get("callbackUrl") || "/"
   const initialState = {
     errors: {},
     pending: false,
     message: null,
+    success: null,
     data: {}
   }
   const [state, action, pending] = useActionState(authenticate, initialState)
+
+  useEffect(() => {
+    if (state.success === true) {
+      router.push(callbackUrl)
+      toast.success('تم تسجيل الدخول بنجاح')
+    }
+  }, [state.success, state.message])
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
@@ -81,7 +93,7 @@ export function LoginForm({ className, ...props }) {
               </Field>
               <FieldSeparator />
               <FieldDescription className="text-center">
-                معندكش حساب؟ <Link href="/signup">انشاء حساب</Link>
+                معندكش حساب؟ <Link href={`/signup?callbackUrl=${callbackUrl}`}>انشاء حساب</Link>
               </FieldDescription>
             </FieldGroup>
           </form>
