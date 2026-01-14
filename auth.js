@@ -19,7 +19,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new Error("Invalid credentials.")
         }
 
-        const valid = compareSync(credentials.password, user.password)
+        const valid = compareSync(credentials.password, user?.password)
         if (!valid) {
           throw new Error("Invalid credentials")
         }
