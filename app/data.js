@@ -128,7 +128,7 @@ export async function getCartItems(userId) {
     try {
         return await db.cartItem.findMany({
             where: {
-                cartId: cart.id
+                cartId: cart?.id
             },
             include: {
                 item: true
