@@ -1,5 +1,5 @@
 import React from 'react'
-import CheckoutForm from '../CheckoutForm'
+import CheckoutForm from '@/features/checkout/components/CheckoutForm'
 import { getProductById } from '@/app/server/data'
 import { redirect } from 'next/navigation'
 

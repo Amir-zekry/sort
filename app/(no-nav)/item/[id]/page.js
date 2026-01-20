@@ -1,63 +1,38 @@
-import React from 'react'
-import Hero from './Hero'
-import Features from './Features'
-import FeaturesH1 from './FeaturesH1'
-import Faq from './Faq'
-import FaqH1 from './FaqH1'
-import ItemReview from './ItemReview'
-import ItemReviewH1 from './ItemReviewH1'
-import WhyUs from './WhyUs'
-import WhyUsH1 from './WhyUsH1'
-import ItemGallery from './ItemGallery'
-import ItemGalleryH1 from './ItemGalleryH1'
-import CustomerReviews from './CustomerReviews'
-import CustomerReviewsH1 from './CustomerReviewsH1'
-import HowToUse from './HowToUse'
-import HowToUseH1 from './HowToUseH1'
-import BuyNow from './BuyNow'
-import { getProductById } from '@/app/server/data'
-import KeySpecs from './keySpecs'
-import KeySpecsH1 from './KeySpecsH1'
+import React, { Suspense } from 'react'
+import Hero from '@/features/singleItem/components/Hero'
+import Features from '@/features/singleItem/components/Features'
+import Faq from '@/features/singleItem/components/Faq'
+import WhyUs from '@/features/singleItem/components/WhyUs'
+import ItemGallery from '@/features/singleItem/components/ItemGallery'
+import CustomerReviews from '@/features/singleItem/components/CustomerReviews'
+import BuyNow from '@/features/singleItem/components/BuyNow'
 import Cart from '@/features/cart/components/Cart'
-import { auth } from '@/features/authentications/utils/auth'
+import HeroSkeleton from '@/features/singleItem/skeletons/HeroSkeleton'
+import FeaturesSkeleton from '@/features/singleItem/skeletons/FeaturesSkeleton'
+import ItemsGallerySkeleton from '@/features/singleItem/skeletons/ItemsGallerySkeleton'
+import CustomerReviewsSkeleton from '@/features/singleItem/skeletons/CustomerReviewsSkeleton'
 async function Item({ params }) {
     const { id } = await params
-    const item = await getProductById(id)
-    const name = item.name
-    const description = item.discription
-    const price = item.price
-    const heroImage = item.heroImage
-    const features = item.feature
-    const images = item.imageGallery
-    const heroImagePhone = item.heroImagePhone
-    const session = await auth()
     return (
-        <div className='space-y-20 bg-black'>
-            {session &&
-                <div className='fixed top-4 left-4 text-black z-50 rounded-full p-4 w-14 h-14 flex items-center justify-center bg-linear-to-r from-purple-500 to-pink-500 shadow-lg'>
-                    <Cart />
-                </div>
-            }
-
-            <Hero id={id} name={name} description={description} heroImage={heroImage} heroImagePhone={heroImagePhone} />
-            {/* <MainFeature /> */}
-            <FeaturesH1 />
-            <Features features={features} />
-            <ItemGalleryH1 />
-            <ItemGallery images={images} />
-            {/* <HowToUseH1 />
-            <HowToUse /> */}
-            {/* <ItemReviewH1 />
-            <ItemReview /> */}
-            {/* <KeySpecsH1 />
-            <KeySpecs /> */}
-            <CustomerReviewsH1 />
-            <CustomerReviews id={id} />
-            <WhyUsH1 />
+        <div className='space-y-2'>
+            <div className='fixed top-4 left-4 text-black z-50 rounded-full p-4 w-14 h-14 flex items-center justify-center bg-linear-to-r from-purple-500 to-pink-500 shadow-lg'>
+                <Cart />
+            </div>
+            <Suspense fallback={<HeroSkeleton />}>
+                <Hero itemId={id} />
+            </Suspense>
+            <Suspense fallback={<FeaturesSkeleton />}>
+                <Features itemId={id} />
+            </Suspense>
+            <Suspense fallback={<ItemsGallerySkeleton />}>
+                <ItemGallery itemId={id} />
+            </Suspense>
+            <Suspense fallback={<CustomerReviewsSkeleton />}>
+                <CustomerReviews id={id} />
+            </Suspense>
             <WhyUs />
-            <FaqH1 />
             <Faq />
-            <BuyNow id={id} name={name} price={price} />
+            <BuyNow id={id} />
         </div>
     )
 }

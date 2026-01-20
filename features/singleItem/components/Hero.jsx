@@ -2,35 +2,28 @@ import React from 'react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import AddToCart from '@/features/cart/components/AddToCart'
+import { getHeroSetionData } from '@/features/singleItem/server/data'
 
-function Hero({ id, name, description, heroImage, heroImagePhone }) {
+
+async function Hero({ itemId }) {
+    const heroData = await getHeroSetionData(itemId)
     return (
         <div
-            className="
-                relative 
-                w-full 
-                h-screen 
-                flex 
-                md:items-center
-                items-start
-                px-8 md:px-24 
-                py-24
-            "
-        >
+            className="relative w-full h-screen flex md:items-center items-start px-8 md:px-24 py-24">
 
             {/* --- Background for Desktop --- */}
-            {heroImage && (
+            {heroData.heroImage && (
                 <div
                     className="hidden md:block absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${heroImage})` }}
+                    style={{ backgroundImage: `url(${heroData.heroImage})` }}
                 />
             )}
 
             {/* --- Background for Mobile --- */}
-            {heroImagePhone && (
+            {heroData.heroImagePhone && (
                 <div
                     className="md:hidden absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${heroImagePhone})` }}
+                    style={{ backgroundImage: `url(${heroData.heroImagePhone})` }}
                 />
             )}
 
@@ -39,11 +32,11 @@ function Hero({ id, name, description, heroImage, heroImagePhone }) {
             {/* --- Content --- */}
             <div className="relative z-10 max-w-xl text-white mix-blend-difference space-y-4">
                 <h1 className="text-3xl md:text-5xl font-bold md:text-right text-center">
-                    {name}
+                    {heroData.name}
                 </h1>
 
                 <p className="text-sm md:text-lg opacity-90 md:text-right text-center">
-                    {description}
+                    {heroData.discription}
                 </p>
 
                 <div className="flex gap-4 pt-4 md:justify-normal justify-center">
@@ -52,12 +45,12 @@ function Hero({ id, name, description, heroImage, heroImagePhone }) {
                             اعرف اكتر
                         </Button>
                     </Link>
-                    <Link href={`/checkout/${id}`} className="block w-fit">
+                    <Link href={`/checkout/${heroData.id}`} className="block w-fit">
                         <Button className="cursor-pointer px-6 py-2 rounded-lg font-semibold tracking-wide shadow-md shadow-red-500 hover:scale-95">
                             اشتري دلوقتي
                         </Button>
                     </Link>
-                    <AddToCart id={id} />
+                    <AddToCart id={heroData.id} />
                 </div>
             </div>
 

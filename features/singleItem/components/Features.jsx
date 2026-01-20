@@ -1,20 +1,17 @@
 import Image from 'next/image'
 import React from 'react'
-import { Empty, EmptyDescription, EmptyHeader } from '@/components/ui/empty'
+import { getFeatures } from '@/features/singleItem/server/data'
+import FeaturesH1 from './FeaturesH1'
 
-async function Features({ features }) {
+async function Features({ itemId }) {
+    const features = await getFeatures(itemId)
+    if (features.length == 0) return
     return (
-        <div >
-            {features.length === 0 ? (
-                <Empty>
-                    <EmptyHeader>
-                        <EmptyDescription>لا توجد ميزات لهذا المنتج حاليا !</EmptyDescription>
-                    </EmptyHeader>
-                </Empty>
-            ) : (
+            <div>
+                <FeaturesH1 />
                 <div className='flex flex-col gap-y-10'>
                     {features.map((feature, index) => (
-                        <div key={feature.id} className="flex flex-col w-full items-center px-4 md:px-8">
+                        <div key={feature.image_url} className="flex flex-col w-full items-center px-4 md:px-8">
                             {/* Title */}
                             <div className="flex flex-col items-center space-y-1 mb-4 md:mb-8">
                                 <h1 className="text-3xl md:text-5xl font-bold text-center">{feature.h1}</h1>
@@ -42,8 +39,7 @@ async function Features({ features }) {
                         </div>
                     ))}
                 </div>
-            )}
-        </div>
+            </div>
     )
 }
 

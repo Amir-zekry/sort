@@ -1,13 +1,10 @@
 "use client"
 
 import { useForm } from "react-hook-form"
-import { z } from "zod"
-
 import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -22,9 +19,9 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { createOrder } from "@/app/server/actions"
+import { createOrder } from "@/features/checkout/server/actions"
 import { useActionState, useState } from "react"
-import ProductData from "./ProductData"
+import ProductData from "@/features/checkout/components/ProductData"
 import { Separator } from '@/components/ui/separator'
 export default function CheckoutForm({ mode, items, userId }) {
     const [localItems, setLocalItems] = useState(items)
@@ -40,7 +37,7 @@ export default function CheckoutForm({ mode, items, userId }) {
     const initialState = { loading: false, errors: {} }
     const [state, formAction, loading] = useActionState(createOrder, initialState)
     return (
-        <div className="flex md:flex-row flex-col-reverse min-h-screen justify-center md:items-start items-center gap-y-5 px-5 md:gap-x-10 py-10 bg-black">
+        <div className="flex md:flex-row flex-col-reverse min-h-screen justify-center md:items-start items-center gap-y-5 px-5 md:gap-x-10 py-10">
 
             <Form {...form} >
                 <div className='flex flex-col gap-y-8 md:min-w-[40vw] md:max-w-[40vw] w-full md:items-end'>

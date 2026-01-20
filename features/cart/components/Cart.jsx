@@ -42,7 +42,7 @@ async function Cart() {
                     <div>
                         {cartItems.map((item) => (
                             <div key={item.id} className="flex items-start justify-between p-2 border-b">
-                                <div className="w-16 h-16 bg-black border rounded-lg relative p-2">
+                                <div className="w-16 h-16 border rounded-lg relative p-2">
                                     <RemoveAnItemButton itemId={item.id} userID={userID} />
                                     <div className="w-full h-full relative">
                                         <Image
@@ -73,7 +73,7 @@ async function Cart() {
                         <Separator />
                         <div className='flex justify-between items-center'>
                             <p>المجموع</p>
-                            <p>{total}</p>
+                            <p>{total} ج.م</p>
                         </div>
                         <Separator />
                         <div className='w-full flex items-center justify-center'>

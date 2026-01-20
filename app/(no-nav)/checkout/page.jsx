@@ -1,6 +1,6 @@
 import { auth } from '@/features/authentications/utils/auth'
 import React from 'react'
-import CheckoutForm from './CheckoutForm'
+import CheckoutForm from '@/features/checkout/components/CheckoutForm'
 import { getCartItems } from '@/features/cart/server/data'
 import { redirect } from 'next/navigation'
 
