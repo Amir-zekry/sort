@@ -1,4 +1,4 @@
-import { auth } from "@/auth"
+import { auth } from "@/features/authentications/utils/auth"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { User } from "lucide-react"
 import SignOut from "./SignOut"

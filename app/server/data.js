@@ -3,38 +3,6 @@ import { PrismaClient } from "@prisma/client";
 import { unstable_cacheTag, unstable_cacheLife } from "next/cache";
 const db = new PrismaClient()
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms))
-}
-
-export async function getProducts(category, sort, search) {
-    'use cache'
-    unstable_cacheTag('products-list')
-    unstable_cacheLife({ revalidate: 60 })
-    // await sleep(9000) // 2 seconds
-    try {
-        return await db.item.findMany({
-            select: {
-                id: true,
-                name: true,
-                price: true,
-                image: true
-            },
-            where: {
-                catergory: category,
-                name: {
-                    contains: search,
-                    mode: 'insensitive'
-                }
-            },
-            orderBy: sort === 'low price' ? { price: 'asc' } :
-                sort === 'high price' ? { price: 'desc' } :
-                    { createdAt: 'desc' }
-        })
-    } catch (error) {
-        console.log(error)
-    }
-}
 export async function getProductById(id) {
     try {
         return await db.item.findUnique({
@@ -115,28 +83,6 @@ export async function getReviews(productId) {
             .map(({ _rating, ...rest }) => rest);
 
         return top4;
-    } catch (error) {
-        console.log(error)
-    }
-}
-export async function getCartItems(userId) {
-    const cart = await db.cart.findUnique({
-        where: {
-            userId
-        }
-    })
-    try {
-        return await db.cartItem.findMany({
-            where: {
-                cartId: cart?.id
-            },
-            include: {
-                item: true
-            }, 
-            orderBy: {
-                itemId: 'asc'
-            }
-        })
     } catch (error) {
         console.log(error)
     }

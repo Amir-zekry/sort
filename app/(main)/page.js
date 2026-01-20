@@ -1,8 +1,8 @@
-import Products from "./products";
+import Products from "@/features/items/components/products";
 import { Suspense } from "react";
-import ProductsSkeleton from "./ProductsSkeleton";
-import Categories from "./Categories";
-import Sort from "./Sort";
+import ProductsSkeleton from "@/features/items/components/ProductsSkeleton";
+import Categories from "@/features/items/components/Categories";
+import Sort from "@/features/items/components/Sort";
 
 export default async function Home({ searchParams }) {
   const { category } = await searchParams

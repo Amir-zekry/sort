@@ -9,11 +9,11 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import Cart from "../../Cart"
-import SearchBar from "../Search"
+import Cart from "../../../features/cart/components/Cart"
+import SearchBar from "../../../features/items/components/Search"
 import { Suspense } from "react"
-import UserData from "../User"
-import { auth } from "@/auth"
+import UserData from "../../../features/authentications/components/User"
+import { auth } from "@/features/authentications/utils/auth"
 async function Nav() {
     const session = await auth()
     return (

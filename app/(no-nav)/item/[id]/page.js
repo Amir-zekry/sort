@@ -15,11 +15,11 @@ import CustomerReviewsH1 from './CustomerReviewsH1'
 import HowToUse from './HowToUse'
 import HowToUseH1 from './HowToUseH1'
 import BuyNow from './BuyNow'
-import { getProductById } from '@/app/data'
+import { getProductById } from '@/app/server/data'
 import KeySpecs from './keySpecs'
 import KeySpecsH1 from './KeySpecsH1'
-import Cart from '@/app/Cart'
-import { auth } from '@/auth'
+import Cart from '@/features/cart/components/Cart'
+import { auth } from '@/features/authentications/utils/auth'
 async function Item({ params }) {
     const { id } = await params
     const item = await getProductById(id)

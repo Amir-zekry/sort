@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/empty"
 import { Button } from "@/components/ui/button"
 
-import { getReviews } from "@/app/data"
+import { getReviews } from "@/app/server/data"
 import Link from "next/link"
 
 

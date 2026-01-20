@@ -1,6 +1,6 @@
 'use client'
 import { Button } from "@/components/ui/button"
-import { decreaseCartItemQuantity } from "./actions"
+import { decreaseCartItemQuantity } from "@/features/cart/server/actions"
 
 function DecreaseQuantity({ cartItemId }) {
     return (

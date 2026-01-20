@@ -2,7 +2,7 @@
 
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { useActionState, useEffect, useRef } from "react"
-import { signOutServerAction } from "../actions"
+import { signOutServerAction } from "../server/actions"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 

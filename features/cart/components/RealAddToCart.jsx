@@ -1,6 +1,6 @@
 "use client"
 
-import { addToCart } from "@/app/actions"
+import { addToCart } from "@/features/cart/server/actions"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 

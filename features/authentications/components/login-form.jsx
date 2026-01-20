@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useActionState, useEffect } from "react"
-import { authenticate } from "@/app/actions"
+import { authenticate } from "@/features/authentications/server/actions"
 import { toast } from "sonner"
 import { useRouter, useSearchParams } from "next/navigation"
 

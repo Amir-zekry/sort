@@ -1,5 +1,5 @@
-import { auth } from "@/auth";
-import { LoginForm } from "@/components/login-form"
+import { auth } from "@/features/authentications/utils/auth";
+import { LoginForm } from "@/features/authentications/components/login-form"
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 

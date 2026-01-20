@@ -1,5 +1,5 @@
-import { SignupForm } from "@/components/signup-form"
-import { auth } from "@/auth";
+import { SignupForm } from "@/features/authentications/components/signup-form"
+import { auth } from "@/features/authentications/utils/auth";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 export default async function SignupPage() {

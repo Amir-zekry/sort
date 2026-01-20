@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import IncreaseQuantity from '@/app/IncreaseQuantity'
-import DecreaseQuantity from '@/app/DecreaseQuantity'
+import IncreaseQuantity from '@/features/cart/components/IncreaseQuantity'
+import DecreaseQuantity from '@/features/cart/components/DecreaseQuantity'
 import { Button } from '@/components/ui/button'
 
 function ProductData({ items, setItems, mode }) {

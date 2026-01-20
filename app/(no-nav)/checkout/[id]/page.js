@@ -1,6 +1,6 @@
 import React from 'react'
 import CheckoutForm from '../CheckoutForm'
-import { getProductById } from '@/app/data'
+import { getProductById } from '@/app/server/data'
 import { redirect } from 'next/navigation'
 
 async function page({ params }) {

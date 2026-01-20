@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import AddToCart from './AddToCart'
+import AddToCart from '@/features/cart/components/AddToCart'
 
 function Hero({ id, name, description, heroImage, heroImagePhone }) {
     return (

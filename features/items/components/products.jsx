@@ -1,6 +1,6 @@
 import React from 'react'
-import { getProducts } from '../data'
-import ProductCard from './productCard'
+import { getProducts } from '@/features/items/server/data'
+import ProductCard from '@/features/items/components/productCard'
 
 
 async function Products({ category, sort, search }) {

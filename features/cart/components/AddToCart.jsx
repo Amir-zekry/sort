@@ -1,4 +1,4 @@
-import { auth } from '@/auth'
+import { auth } from '@/features/authentications/utils/auth'
 import {
     AlertDialog,
     AlertDialogAction,
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import Link from 'next/link'
-import RealAddToCart from './RealAddToCart'
+import RealAddToCart from '@/features/cart/components/RealAddToCart'
 
 async function AddToCart({ id }) {
     const session = await auth()

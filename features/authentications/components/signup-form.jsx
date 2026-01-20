@@ -11,10 +11,9 @@ import {
   FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { signup } from "@/app/actions";
-import { use, useActionState, useEffect } from "react"
+import { signup } from "@/features/authentications/server/actions";
+import { useActionState, useEffect } from "react"
 import Link from "next/link"
-import { success } from "zod"
 import { toast } from "sonner"
 import { useRouter, useSearchParams } from "next/navigation"
 

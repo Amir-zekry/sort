@@ -1,6 +1,6 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
-import { getUserFromDb } from "./app/actions"
+import { getUserFromDb } from "@/features/authentications/server/data"
 import { compareSync } from "bcryptjs"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({

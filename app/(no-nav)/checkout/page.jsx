@@ -1,7 +1,7 @@
-import { auth } from '@/auth'
+import { auth } from '@/features/authentications/utils/auth'
 import React from 'react'
 import CheckoutForm from './CheckoutForm'
-import { getCartItems } from '@/app/data'
+import { getCartItems } from '@/app/server/data'
 import { redirect } from 'next/navigation'
 
 async function page() {
