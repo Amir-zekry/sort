@@ -1,11 +1,10 @@
 import React from 'react'
 import CheckoutForm from '@/features/checkout/components/CheckoutForm'
-import { getProductById } from '@/app/server/data'
-import { redirect } from 'next/navigation'
+import getItemById from '@/features/checkout/server/data'
 
 async function page({ params }) {
     const { id } = await params
-    const item = await getProductById(id)
+    const item = await getItemById(id)
     return (
         <CheckoutForm
             mode='single'

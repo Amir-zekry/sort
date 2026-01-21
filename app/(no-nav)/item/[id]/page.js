@@ -11,13 +11,16 @@ import HeroSkeleton from '@/features/singleItem/skeletons/HeroSkeleton'
 import FeaturesSkeleton from '@/features/singleItem/skeletons/FeaturesSkeleton'
 import ItemsGallerySkeleton from '@/features/singleItem/skeletons/ItemsGallerySkeleton'
 import CustomerReviewsSkeleton from '@/features/singleItem/skeletons/CustomerReviewsSkeleton'
+import { Skeleton } from '@/components/ui/skeleton'
 async function Item({ params }) {
     const { id } = await params
     return (
-        <div className='space-y-2'>
-            <div className='fixed top-4 left-4 text-black z-50 rounded-full p-4 w-14 h-14 flex items-center justify-center bg-linear-to-r from-purple-500 to-pink-500 shadow-lg'>
-                <Cart />
-            </div>
+        <div className='space-y-2 relative'>
+            <Suspense fallback={<Skeleton className='fixed top-4 left-4 z-50 rounded-full p-4 w-14 h-14 flex items-center justify-center'/>}>
+                <div className=' absolute top-4 left-4 text-black z-50 rounded-full p-4 w-14 h-14 flex items-center justify-center bg-linear-to-r from-purple-500 to-pink-500 shadow-lg'>
+                    <Cart />
+                </div>
+            </Suspense>
             <Suspense fallback={<HeroSkeleton />}>
                 <Hero itemId={id} />
             </Suspense>

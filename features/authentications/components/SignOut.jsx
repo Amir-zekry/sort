@@ -1,23 +1,42 @@
 'use client'
 
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
-import { useActionState, useEffect, useRef } from "react"
+import { useActionState, useEffect } from "react"
 import { signOutServerAction } from "../server/actions"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { Progress } from "@/components/ui/progress"
 
 function SignOut() {
     const router = useRouter()
+    const initialState = {}
+    const [state, action, pending] = useActionState(signOutServerAction, initialState)
 
-    const initialState = {
-        success: null,
-        pending: false,
-    }
+    useEffect(() => {
+        if (!pending) return
+        let value = 20
+        const toastId = toast.custom(
+            () => (
+                <Progress value={value} className="w-62" />
+            ),
+            { duration: Infinity }
+        )
+        const interval = setInterval(() => {
+            value = Math.min(value + 15, 90)
 
-    const [state, action, pending] = useActionState(
-        signOutServerAction,
-        initialState
-    )
+            toast.custom(
+                () => (
+                    <Progress value={value} className="w-62" />
+                ),
+                { id: toastId }
+            )
+        }, 500)
+
+        return () => {
+            clearInterval(interval)
+            toast.dismiss(toastId)
+        }
+    }, [pending])
 
     useEffect(() => {
         if (state.success === true) {

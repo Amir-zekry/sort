@@ -6,7 +6,7 @@ import { hash } from "bcryptjs";
 import z from "zod";
 import { signIn, signOut } from "@/features/authentications/utils/auth";
 import { AuthError } from "next-auth";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 const db = new PrismaClient()
 
@@ -45,28 +45,35 @@ export async function decreaseCartItemQuantity(cartItemId) {
         console.error(error)
     }
 }
-export async function removeFromCart(itemId, userID) {
+export async function removeFromCart(state, formData) {
+    const cart = await db.cart.findUnique({
+        where: { userId: formData.get('userId') },
+        select: { id: true }
+    })
     try {
-        const cart = await db.cart.findUnique({
-            where: { userId: userID },
-            select: { id: true }
-        })
         await db.cartItem.deleteMany({
             where: {
                 cartId: cart.id,
-                id: itemId
+                id: formData.get('itemId')
             }
         })
-        revalidatePath('/')
+        revalidateTag(`cart:${formData.get('userId')}`)
+        return {
+            success: true,
+            message: 'تم ازالة المنتج من العربه بنجاح'
+        }
     } catch (error) {
-        console.error(error)
+        return {
+            success: false,
+            message: 'حدث خطا اثناء ازالة المنتج'
+        }
     }
 }
-export async function addToCart(userId, itemId) {
+export async function addToCart(state, formData) {
     try {
         let cart = await db.cart.findUnique({
             where: {
-                userId: userId,
+                userId: formData.get('userId'),
             },
             include: {
                 cartItems: true,
@@ -76,7 +83,7 @@ export async function addToCart(userId, itemId) {
             cart = await db.cart.create({
                 data: {
                     user: {
-                        connect: { id: userId },
+                        connect: { id: formData.get('userId') },
                     },
                 },
                 include: {
@@ -84,7 +91,7 @@ export async function addToCart(userId, itemId) {
                 },
             });
         }
-        if (cart.cartItems.some(ci => ci.itemId === itemId)) {
+        if (cart.cartItems.some(ci => ci.itemId === formData.get('itemId'))) {
             return {
                 success: false,
                 message: "العنصر موجود بالفعل في العربه"
@@ -96,11 +103,11 @@ export async function addToCart(userId, itemId) {
                     connect: { id: cart.id },
                 },
                 item: {
-                    connect: { id: itemId },
+                    connect: { id: formData.get('itemId') },
                 },
             },
         });
-        revalidatePath('/')
+        revalidateTag(`cart:${formData.get('userId')}`)
         return {
             success: true,
             message: "تمت إضافة العنصر إلى العربه بنجاح"

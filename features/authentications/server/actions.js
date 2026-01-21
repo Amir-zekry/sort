@@ -1,30 +1,34 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
-import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { redirect } from "next/navigation";
 import { hash } from "bcryptjs";
 import z from "zod";
 import { signIn, signOut } from "@/features/authentications/utils/auth";
 import { AuthError } from "next-auth";
-import { revalidatePath } from "next/cache";
 
 const db = new PrismaClient()
 
 export async function signup(state, formData) {
     const signupSchema = z.object({
-        name: z.string().min(1, "الاسم مطلوب"),
+        name: z.string().min(3, "الاسم مطلوب"),
         phoneNumber: z
             .string()
-            .regex(
-                /^01[0125][0-9]{8}$/,
-                "رقم الهاتف غير صحيح"
-            ),
-        password: z.string().min(1, "كلمة السر مطلوبه"),
+            .regex(/^01[0125][0-9]{8}$/, "ادخل رقم هاتف مصري"),
+
+        password: z
+            .string()
+            .min(8, "كلمة السر يجب أن تكون 8 حروف على الأقل")
+            .regex(/[A-Za-z]/, "كلمة السر يجب أن تحتوي على حرف واحد على الأقل")
+            .regex(/[0-9]/, "كلمة السر يجب أن تحتوي على رقم واحد على الأقل")
+            .regex(/[^A-Za-z0-9]/, "كلمة السر يجب أن تحتوي على رمز واحد على الأقل")
+            .regex(/^\S*$/, "كلمة السر لا يجب أن تحتوي على مسافات"),
+
         confirmedPassword: z.string().min(1, "التاكيد مطلوب"),
-    }).refine((data) => data.password === data.confirmedPassword, {
-        message: "كلمتا السر غير متطابقتين",
-        path: [],
     })
+        .refine((data) => data.password === data.confirmedPassword, {
+            message: "كلمتا السر غير متطابقتين",
+            path: [],
+        })
+
 
     const parsedData = signupSchema.safeParse({
         name: formData.get('name'),
@@ -53,7 +57,7 @@ export async function signup(state, formData) {
     if (existingUser) {
         return {
             success: false,
-            fieldErrors: {
+            hasAnAccountError: {
                 phoneNumber: ["رقم الهاتف مسجل بالفعل"],
             },
             data: {
@@ -80,17 +84,6 @@ export async function signup(state, formData) {
             success: false,
             formErrors: ["حدث خطأ أثناء إنشاء الحساب. حاول مرة أخرى."],
         }
-    }
-}
-export async function getUserFromDb(phoneNumber) {
-    try {
-        return await db.user.findUnique({
-            where: {
-                phoneNumber: phoneNumber,
-            },
-        });
-    } catch (error) {
-        console.error("Error fetching user from DB:", error);
     }
 }
 export async function authenticate(state, formData) {

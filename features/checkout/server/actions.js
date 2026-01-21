@@ -12,7 +12,12 @@ export async function createOrder(state, formData) {
 
     const formSchema = z.object({
         FullName: z.string().min(1, "الاسم مطلوب"),
-        PhoneNumber: z.string().min(1, "رقم الهاتف مطلوب"),
+        PhoneNumber: z
+            .string()
+            .regex(
+                /^01[0125][0-9]{8}$/,
+                "ادخل رقم هاتف مصري"
+            ),
         Address: z.string().min(1, "العنوان مطلوب"),
         Governorate: z.string().min(1, "المحافظة مطلوبة"),
     })

@@ -16,19 +16,42 @@ import { useActionState, useEffect } from "react"
 import { authenticate } from "@/features/authentications/server/actions"
 import { toast } from "sonner"
 import { useRouter, useSearchParams } from "next/navigation"
+import { Progress } from "@/components/ui/progress"
 
 export function LoginForm({ className, ...props }) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get("callbackUrl") || "/"
-  const initialState = {
-    errors: {},
-    pending: false,
-    message: null,
-    success: null,
-    data: {}
-  }
+  const initialState = {}
   const [state, action, pending] = useActionState(authenticate, initialState)
+
+  useEffect(() => {
+    if (!pending) return
+    let value = 20
+
+    const toastId = toast.custom(
+      () => (
+        <Progress value={value} className="w-62" />
+      ),
+      { duration: Infinity }
+    )
+
+    const interval = setInterval(() => {
+      value = Math.min(value + 15, 90)
+
+      toast.custom(
+        () => (
+          <Progress value={value} className="w-62" />
+        ),
+        { id: toastId }
+      )
+    }, 500)
+
+    return () => {
+      clearInterval(interval)
+      toast.dismiss(toastId)
+    }
+  }, [pending])
 
   useEffect(() => {
     if (state.success === true) {

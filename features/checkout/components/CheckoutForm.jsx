@@ -177,7 +177,7 @@ export default function CheckoutForm({ mode, items, userId }) {
             </Form>
             <Separator
                 orientation="vertical"
-                className="hidden md:block min-h-[600px]"
+                className="hidden md:block min-h-150"
             />
             <Separator orientation="horizontal" className="block md:hidden" />
             <ProductData
