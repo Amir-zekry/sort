@@ -20,17 +20,16 @@ import { signup } from "@/features/authentications/server/actions";
 import { useActionState, useEffect } from "react"
 import Link from "next/link"
 import { toast } from "sonner"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { CircleQuestionMark } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
-
+import Image from "next/image"
 
 export function SignupForm({ className, ...props }) {
   const initialState = {}
   const [state, action, pending] = useActionState(signup, initialState)
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get("callbackUrl") || "/login"
+
   useEffect(() => {
     if (!pending) return
 
@@ -62,13 +61,16 @@ export function SignupForm({ className, ...props }) {
 
 
 
-
   useEffect(() => {
-    if (state.success) {
-      router.push(`/login?callbackUrl=${callbackUrl}`)
-      toast.success("تم انشاء الحساب بنجاح، يمكنك تسجيل الدخول الآن")
+    if (state.success === true) {
+      router.push(`/login`)
+      toast.success(state.message)
+    } else if (state.success === false) {
+      toast.error(state.message)
     }
-  }, [state.success])
+  },
+    [state.success]
+  )
 
 
 
@@ -96,9 +98,9 @@ export function SignupForm({ className, ...props }) {
                 <div className="w-full flex items-center justify-between">
                   <FieldLabel htmlFor="phoneNumber">رقم الهاتف</FieldLabel>
                   <FieldError>{state.fieldErrors?.phoneNumber}</FieldError>
-                  {state.hasAnAccountError?.phoneNumber && (
+                  {state.hasAnAccountError && (
                     <div className="flex gap-x-2">
-                      <FieldError>{state.hasAnAccountError?.phoneNumber}</FieldError>
+                      <FieldError>{state.hasAnAccountError}</FieldError>
                       <Link href={'/login'} className="underline text-purple-500 text-sm">تسجيل الدخول ؟</Link>
                     </div>
                   )}
@@ -141,10 +143,10 @@ export function SignupForm({ className, ...props }) {
                   </Field>
                 </Field>
               </Field>
+              <Field className={'min-h-5'}>
+                <FieldError>{state.passwordDsntMatchError}</FieldError>
+              </Field>
               <Field>
-                <div className="min-h-6 h-6 max-h-6">
-                  <FieldError>{state.formErrors?.[0]}</FieldError>
-                </div>
                 <Button
                   type="submit"
                   disabled={pending}
@@ -154,22 +156,20 @@ export function SignupForm({ className, ...props }) {
               </Field>
               <FieldSeparator />
               <FieldDescription className="text-center">
-                عندك حساب؟ <Link href={`/login?callbackUrl=${callbackUrl}`}>تسجيل الدخول</Link>
+                عندك حساب؟ <Link href={`/login`}>تسجيل الدخول</Link>
               </FieldDescription>
             </FieldGroup>
           </form>
           <div className="bg-muted relative hidden md:block">
-            <img
+            <Image
               src="/logo.png"
-              alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.5] dark:grayscale" />
+              alt="EG MEN logo"
+              fill
+              className="object-cover dark:brightness-[0.5] dark:grayscale"
+            />
           </div>
         </CardContent>
       </Card>
-      {/* <FieldDescription className="px-6 text-center">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </FieldDescription> */}
     </div>
   );
 }

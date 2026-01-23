@@ -4,10 +4,15 @@ import { hash } from "bcryptjs";
 import z from "zod";
 import { signIn, signOut } from "@/features/authentications/utils/auth";
 import { AuthError } from "next-auth";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 const db = new PrismaClient()
 
 export async function signup(state, formData) {
+
+    // VALIDATION  
     const signupSchema = z.object({
         name: z.string().min(3, "الاسم مطلوب"),
         phoneNumber: z
@@ -40,16 +45,17 @@ export async function signup(state, formData) {
         const flattened = parsedData.error.flatten();
         return {
             fieldErrors: flattened.fieldErrors,
-            formErrors: flattened.formErrors,
+            passwordDsntMatchError: flattened.formErrors[0],
             data: {
                 name: formData.get('name'),
                 phoneNumber: formData.get('phoneNumber'),
             }
         };
     }
+    const { phoneNumber, password, name } = parsedData.data;
 
     // CHECK IF PHONE NUMBER EXISTS
-    const { phoneNumber, password, name } = parsedData.data;
+
     const existingUser = await db.user.findUnique({
         where: { phoneNumber },
     })
@@ -57,9 +63,7 @@ export async function signup(state, formData) {
     if (existingUser) {
         return {
             success: false,
-            hasAnAccountError: {
-                phoneNumber: ["رقم الهاتف مسجل بالفعل"],
-            },
+            hasAnAccountError: ["رقم الهاتف مسجل بالفعل"],
             data: {
                 name: formData.get('name'),
                 phoneNumber: formData.get('phoneNumber'),
@@ -78,11 +82,12 @@ export async function signup(state, formData) {
         })
         return {
             success: true,
+            message: "تم انشاء الحساب بنجاح، يمكنك تسجيل الدخول الآن"
         }
     } catch (error) {
         return {
             success: false,
-            formErrors: ["حدث خطأ أثناء إنشاء الحساب. حاول مرة أخرى."],
+            message: "حدث خطأ أثناء إنشاء الحساب. حاول مرة أخرى.",
         }
     }
 }
@@ -113,46 +118,52 @@ export async function authenticate(state, formData) {
         await signIn("credentials", {
             phoneNumber: phoneNumber,
             password: password,
-            redirect: false,
+            redirectTo: '/',
         })
         return {
             success: true,
+            message: 'تم تسجيل الدخول بنجاح'
         }
     } catch (error) {
         if (error instanceof AuthError) {
-            switch (error.type) {
-                case 'CallbackRouteError':
-                    return {
-                        message: "بيانات الدخول غير صحيحة. حاول مرة أخرى.",
-                        data: {
-                            phoneNumber: phoneNumber,
-                        }
+            if (error.type === 'CallbackRouteError') {
+                return {
+                    InvalidCredentials: error.cause.err.message,
+                    data: {
+                        phoneNumber: phoneNumber,
                     }
-                default:
-                    return {
-                        message: "حدث خطأ أثناء تسجيل الدخول. حاول مرة أخرى.",
-                        data: {
-                            phoneNumber: phoneNumber,
-                        }
+                }
+            } else {
+                return {
+                    error: "تعذر تسجيل الدخول حالياً. حاول مرة أخرى لاحقاً.",
+                    data: {
+                        phoneNumber: phoneNumber,
                     }
+                }
             }
-        }
-        return {
-            message: "حدث خطأ غير متوقع. حاول مرة أخرى"
+        } else if (isRedirectError) {
+            throw error
+        } else {
+            return {
+                success: false,
+                message: "حدث خطأ غير متوقع. حاول مرة أخرى"
+            }
         }
     }
 }
-export async function signOutServerAction(state, formData) {
+export async function signOutServerAction() {
     try {
         await signOut({
-            redirect: false,
+            redirect: false
         })
         return {
-            success: true
+            success: true,
+            message: 'تم تسجيل الخروج بنجاح'
         }
     } catch (error) {
         return {
-            success: false
+            success: false,
+            message: 'حدث خطا اثناء تسجيل الدخول'
         }
     }
 }

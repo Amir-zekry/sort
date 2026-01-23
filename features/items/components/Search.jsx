@@ -38,6 +38,7 @@ function SearchBar() {
         handelSearch(value)
         setOpen(false) // ✅ close sheet
     }
+    if (pathname != '/') return
 
     return (
         <>
@@ -56,7 +57,7 @@ function SearchBar() {
             <div className="md:hidden">
                 <Sheet open={open} onOpenChange={setOpen}>
                     <SheetTrigger asChild>
-                            <Search size={24} />
+                        <Search size={24} />
                     </SheetTrigger>
 
                     <SheetContent side="right" className="pt-10">

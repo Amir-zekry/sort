@@ -24,7 +24,6 @@ function Categories() {
         } else {
             params.set('category', category)
         }
-
         router.push(`${pathname}?${params.toString()}`)
     }
 

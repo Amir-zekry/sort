@@ -1,24 +1,11 @@
 import { auth } from "@/features/authentications/utils/auth";
 import { LoginForm } from "@/features/authentications/components/login-form"
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function LoginPage() {
-
   const session = await auth()
   if (session) {
-    return (
-      <div className="flex justify-center items-center h-screen flex-col gap-6">
-        <p className="text-center text-lg">
-          صباح الفل يسطا انت مسجل الدخول اصلا
-        </p>
-        <Link href={'/'} >
-          <Button>
-            ارجع للصفحة الرئيسية
-          </Button>
-        </Link>
-      </div>
-    )
+    redirect('/')
   }
   return (
     <div

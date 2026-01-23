@@ -4,8 +4,6 @@ import { unstable_cacheTag } from "next/cache";
 const db = new PrismaClient()
 
 export async function getCartItems(userId) {
-    'use cache'
-    unstable_cacheTag(`cart:${userId}`)
     if (!userId) return null
     const cart = await db.cart.findUnique({
         where: {

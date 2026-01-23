@@ -18,7 +18,7 @@ async function Nav() {
     const session = await auth()
     return (
         <nav
-            className="px-1 w-full py-1 bg-cover bg-center text-white"
+            className="px-1 w-full py-1"
         >
             <div className="mx-auto flex items-center justify-between p-1">
                 <Link href="/" className="flex items-center">

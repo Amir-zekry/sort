@@ -16,12 +16,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         user = await getUserFromDb(credentials.phoneNumber)
 
         if (!user) {
-          throw new Error("Invalid credentials.")
+          throw new Error("بيانات الدخول غير صحيحه")
         }
 
         const valid = compareSync(credentials.password, user?.password)
         if (!valid) {
-          throw new Error("Invalid credentials")
+          throw new Error("بيانات الدخول غير صحيحه")
         }
 
         return {

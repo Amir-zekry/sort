@@ -15,13 +15,10 @@ import Link from "next/link"
 import { useActionState, useEffect } from "react"
 import { authenticate } from "@/features/authentications/server/actions"
 import { toast } from "sonner"
-import { useRouter, useSearchParams } from "next/navigation"
 import { Progress } from "@/components/ui/progress"
+import Image from "next/image"
 
 export function LoginForm({ className, ...props }) {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get("callbackUrl") || "/"
   const initialState = {}
   const [state, action, pending] = useActionState(authenticate, initialState)
 
@@ -55,10 +52,11 @@ export function LoginForm({ className, ...props }) {
 
   useEffect(() => {
     if (state.success === true) {
-      router.push(callbackUrl)
-      toast.success('تم تسجيل الدخول بنجاح')
+      toast.success(state.message)
+    } else if (state.success === false) {
+      toast.error(state.message)
     }
-  }, [state.success, state.message])
+  }, [state.success])
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
@@ -85,7 +83,6 @@ export function LoginForm({ className, ...props }) {
                   dir='rtl'
                   name='phoneNumber'
                   defaultValue={state.data?.phoneNumber}
-                  className={state.errors?.phoneNumber ? 'border-red-400' : ''}
                   placeholder="ادخل رقم مصري"
                 />
               </Field>
@@ -101,11 +98,12 @@ export function LoginForm({ className, ...props }) {
                   id="password"
                   type="password"
                   name='password'
-                  className={state.errors?.password ? 'border-red-400' : ''}
                   placeholder="********"
                 />
               </Field>
-              <FieldError>{state.message}</FieldError>
+              <Field className="min-h-5">
+                <FieldError>{state.InvalidCredentials}</FieldError>
+              </Field>
               <Field>
                 <Button
                   type="submit"
@@ -116,22 +114,20 @@ export function LoginForm({ className, ...props }) {
               </Field>
               <FieldSeparator />
               <FieldDescription className="text-center">
-                معندكش حساب؟ <Link href={`/signup?callbackUrl=${callbackUrl}`}>انشاء حساب</Link>
+                معندكش حساب؟ <Link href={`/signup`}>انشاء حساب</Link>
               </FieldDescription>
             </FieldGroup>
           </form>
           <div className="bg-muted relative hidden md:block">
-            <img
+            <Image
               src="/logo.png"
-              alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.5] dark:grayscale" />
+              alt="EG MEN logo"
+              fill
+              className="object-cover dark:brightness-[0.5] dark:grayscale"
+            />
           </div>
         </CardContent>
       </Card>
-      {/* <FieldDescription className="px-6 text-center">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </FieldDescription> */}
     </div>
   );
 }

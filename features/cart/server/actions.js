@@ -1,12 +1,6 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
-import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { redirect } from "next/navigation";
-import { hash } from "bcryptjs";
-import z from "zod";
-import { signIn, signOut } from "@/features/authentications/utils/auth";
-import { AuthError } from "next-auth";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 
 const db = new PrismaClient()
 
@@ -57,7 +51,6 @@ export async function removeFromCart(state, formData) {
                 id: formData.get('itemId')
             }
         })
-        revalidateTag(`cart:${formData.get('userId')}`)
         return {
             success: true,
             message: 'تم ازالة المنتج من العربه بنجاح'
@@ -107,7 +100,6 @@ export async function addToCart(state, formData) {
                 },
             },
         });
-        revalidateTag(`cart:${formData.get('userId')}`)
         return {
             success: true,
             message: "تمت إضافة العنصر إلى العربه بنجاح"
