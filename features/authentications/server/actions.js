@@ -1,7 +1,7 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
 import { hash } from "bcryptjs";
-import z from "zod";
+import z, { date } from "zod";
 import { signIn, signOut } from "@/features/authentications/utils/auth";
 import { AuthError } from "next-auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
@@ -82,7 +82,10 @@ export async function signup(state, formData) {
         })
         return {
             success: true,
-            message: "تم انشاء الحساب بنجاح، يمكنك تسجيل الدخول الآن"
+            message: "تم انشاء الحساب بنجاح، يمكنك تسجيل الدخول الآن",
+            data: {
+                phoneNumber: phoneNumber
+            }
         }
     } catch (error) {
         return {
@@ -118,7 +121,7 @@ export async function authenticate(state, formData) {
         await signIn("credentials", {
             phoneNumber: phoneNumber,
             password: password,
-            redirectTo: '/',
+            redirectTo: formData.get('callbackUrl'),
         })
         return {
             success: true,
@@ -163,7 +166,7 @@ export async function signOutServerAction() {
     } catch (error) {
         return {
             success: false,
-            message: 'حدث خطا اثناء تسجيل الدخول'
+            message: 'حدث خطا اثناء تسجيل الخروج'
         }
     }
 }

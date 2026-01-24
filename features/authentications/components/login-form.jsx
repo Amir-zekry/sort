@@ -17,10 +17,20 @@ import { authenticate } from "@/features/authentications/server/actions"
 import { toast } from "sonner"
 import { Progress } from "@/components/ui/progress"
 import Image from "next/image"
+import { useSearchParams } from "next/navigation"
 
 export function LoginForm({ className, ...props }) {
-  const initialState = {}
+  const searchParams = useSearchParams()
+  const phoneFromUrl = searchParams.get('phone') ||''
+  const initialState = {
+    data: {
+      phoneNumber: phoneFromUrl,
+    },
+  }
+  const callbackUrl = searchParams.get('callbackUrl')
+  const url = callbackUrl || '/'
   const [state, action, pending] = useActionState(authenticate, initialState)
+
 
   useEffect(() => {
     if (!pending) return
@@ -104,6 +114,7 @@ export function LoginForm({ className, ...props }) {
               <Field className="min-h-5">
                 <FieldError>{state.InvalidCredentials}</FieldError>
               </Field>
+              <input value={url} name="callbackUrl" type="hidden" />
               <Field>
                 <Button
                   type="submit"
@@ -114,7 +125,7 @@ export function LoginForm({ className, ...props }) {
               </Field>
               <FieldSeparator />
               <FieldDescription className="text-center">
-                معندكش حساب؟ <Link href={`/signup`}>انشاء حساب</Link>
+                معندكش حساب؟ <Link href={`/signup?callbackUrl=${url}`}>انشاء حساب</Link>
               </FieldDescription>
             </FieldGroup>
           </form>

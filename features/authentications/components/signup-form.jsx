@@ -20,7 +20,7 @@ import { signup } from "@/features/authentications/server/actions";
 import { useActionState, useEffect } from "react"
 import Link from "next/link"
 import { toast } from "sonner"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { CircleQuestionMark } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
 import Image from "next/image"
@@ -29,7 +29,8 @@ export function SignupForm({ className, ...props }) {
   const initialState = {}
   const [state, action, pending] = useActionState(signup, initialState)
   const router = useRouter()
-
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get('callbackUrl')
   useEffect(() => {
     if (!pending) return
 
@@ -63,7 +64,7 @@ export function SignupForm({ className, ...props }) {
 
   useEffect(() => {
     if (state.success === true) {
-      router.push(`/login`)
+      router.push(`/login?callbackUrl=${callbackUrl}&phone=${state.data?.phoneNumber}`)
       toast.success(state.message)
     } else if (state.success === false) {
       toast.error(state.message)
@@ -156,7 +157,7 @@ export function SignupForm({ className, ...props }) {
               </Field>
               <FieldSeparator />
               <FieldDescription className="text-center">
-                عندك حساب؟ <Link href={`/login`}>تسجيل الدخول</Link>
+                عندك حساب؟ <Link href={`/login?callbackUrl=${callbackUrl}`}>تسجيل الدخول</Link>
               </FieldDescription>
             </FieldGroup>
           </form>
