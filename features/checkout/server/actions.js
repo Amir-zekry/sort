@@ -1,5 +1,6 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
+import { revalidateTag } from "next/cache";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { redirect } from "next/navigation";
 import z from "zod";
@@ -84,6 +85,7 @@ export async function createOrder(state, formData) {
                 cartId: cart.id
             }
         })
+        revalidateTag(`cart:${userId}`)
         redirect(`/confirmation?orderId=${order.id}`)
     } catch (error) {
         if (!isRedirectError(error)) {

@@ -30,7 +30,11 @@ export default function RootLayout({ children }) {
         <TikTokPixel />
         <Analytics />
         <SpeedInsights />
-        <Toaster />
+        <Toaster
+          toastOptions={{
+            className: 'z-[100]',
+          }}
+        />
       </body>
     </html>
   );

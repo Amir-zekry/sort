@@ -1,12 +1,10 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
 import { hash } from "bcryptjs";
-import z, { date } from "zod";
+import z from "zod";
 import { signIn, signOut } from "@/features/authentications/utils/auth";
 import { AuthError } from "next-auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
 
 const db = new PrismaClient()
 

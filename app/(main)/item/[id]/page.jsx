@@ -6,12 +6,10 @@ import WhyUs from '@/features/singleItem/components/WhyUs'
 import ItemGallery from '@/features/singleItem/components/ItemGallery'
 import CustomerReviews from '@/features/singleItem/components/CustomerReviews'
 import BuyNow from '@/features/singleItem/components/BuyNow'
-import Cart from '@/features/cart/components/Cart'
 import HeroSkeleton from '@/features/singleItem/skeletons/HeroSkeleton'
 import FeaturesSkeleton from '@/features/singleItem/skeletons/FeaturesSkeleton'
 import ItemsGallerySkeleton from '@/features/singleItem/skeletons/ItemsGallerySkeleton'
 import CustomerReviewsSkeleton from '@/features/singleItem/skeletons/CustomerReviewsSkeleton'
-import { Skeleton } from '@/components/ui/skeleton'
 async function Item({ params }) {
     const { id } = await params
     return (

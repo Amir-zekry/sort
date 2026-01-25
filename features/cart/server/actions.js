@@ -1,11 +1,11 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 const db = new PrismaClient()
 
 
-export async function increaseCartItemQuantity(cartItemId) {
+export async function increaseCartItemQuantity(cartItemId, userId) {
     try {
         await db.cartItem.update({
             where: {
@@ -17,16 +17,19 @@ export async function increaseCartItemQuantity(cartItemId) {
                 },
             }
         })
-        revalidatePath('/')
+        revalidateTag(`cart:${userId}`)
     } catch (error) {
-        console.error(error)
+        throw error
     }
 }
-export async function decreaseCartItemQuantity(cartItemId) {
+export async function decreaseCartItemQuantity(cartItemId, userId) {
     try {
         await db.cartItem.update({
             where: {
                 id: cartItemId,
+                quantity: {
+                    gt: 1
+                }
             },
             data: {
                 quantity: {
@@ -34,9 +37,9 @@ export async function decreaseCartItemQuantity(cartItemId) {
                 },
             }
         })
-        revalidatePath('/')
+        revalidateTag(`cart:${userId}`)
     } catch (error) {
-        console.error(error)
+        throw error
     }
 }
 export async function removeFromCart(state, formData) {
@@ -51,6 +54,7 @@ export async function removeFromCart(state, formData) {
                 id: formData.get('itemId')
             }
         })
+        revalidateTag(`cart:${formData.get('userId')}`)
         return {
             success: true,
             message: 'تم ازالة المنتج من العربه بنجاح'
@@ -68,9 +72,10 @@ export async function addToCart(state, formData) {
             where: {
                 userId: formData.get('userId'),
             },
-            include: {
+            select: {
                 cartItems: true,
-            },
+                id: true,
+            }
         });
         if (!cart) {
             cart = await db.cart.create({
@@ -79,9 +84,10 @@ export async function addToCart(state, formData) {
                         connect: { id: formData.get('userId') },
                     },
                 },
-                include: {
+                select: {
                     cartItems: true,
-                },
+                    id: true,
+                }
             });
         }
         if (cart.cartItems.some(ci => ci.itemId === formData.get('itemId'))) {
@@ -100,6 +106,7 @@ export async function addToCart(state, formData) {
                 },
             },
         });
+        revalidateTag(`cart:${formData.get('userId')}`)
         return {
             success: true,
             message: "تمت إضافة العنصر إلى العربه بنجاح"

@@ -9,13 +9,11 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import Cart from "../../../features/cart/components/Cart"
-import SearchBar from "../../../features/items/components/Search"
+import Cart from "@/features/cart/components/Cart"
+import SearchBar from "@/features/items/components/Search"
 import { Suspense } from "react"
-import UserData from "../../../features/authentications/components/User"
-import { auth } from "@/features/authentications/utils/auth"
+import UserData from "@/features/authentications/components/User"
 async function Nav() {
-    const session = await auth()
     return (
         <nav
             className="px-1 w-full py-1"
@@ -35,9 +33,7 @@ async function Nav() {
                             <SearchBar />
                         </div>
                     </Suspense>
-                    {session && (
                         <Cart />
-                    )}
                     <UserData />
                     <div className="md:hidden flex items-center gap-2">
                         <Sheet>
