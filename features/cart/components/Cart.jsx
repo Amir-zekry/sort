@@ -16,8 +16,8 @@ async function Cart() {
     const user = session?.user
     const userId = user?.id
     const cartItems = await getCartItems(userId)
-    const count = cartItems.length
-    const total = cartItems.reduce((sum, cartItem) => {
+    const count = cartItems?.length
+    const total = cartItems?.reduce((sum, cartItem) => {
         return sum + cartItem.quantity * cartItem.item.price
     }, 45)
     if (!session) return null

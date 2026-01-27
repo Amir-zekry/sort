@@ -5,6 +5,7 @@ const db = new PrismaClient()
 
 export async function getCartItems(userId) {
     'use cache'
+    if (!userId) return null
     cacheTag(`cart:${userId}`)
     const cart = await db.cart.findUnique({
         where: { userId },
