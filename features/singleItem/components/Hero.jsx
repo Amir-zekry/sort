@@ -39,17 +39,19 @@ async function Hero({ itemId }) {
                     {heroData.discription}
                 </p>
 
-                <div className="flex gap-4 pt-4 md:justify-normal justify-center">
-                    <Link href="#features">
-                        <Button className="px-6 py-2 cursor-pointer rounded-lg font-semibold tracking-wide shadow-md shadow-red-500 hover:scale-95">
-                            اعرف اكتر
-                        </Button>
-                    </Link>
-                    <Link href={`/checkout/${heroData.id}`} className="block w-fit">
-                        <Button className="cursor-pointer px-6 py-2 rounded-lg font-semibold tracking-wide shadow-md shadow-red-500 hover:scale-95">
-                            اشتري دلوقتي
-                        </Button>
-                    </Link>
+                <div className="flex md:flex-row flex-col gap-4 pt-4 md:justify-normal justify-center">
+                    <div className='flex items-center gap-4'>
+                        <Link href="#features">
+                            <Button className="px-6 py-2 cursor-pointer rounded-lg font-semibold tracking-wide shadow-md shadow-red-500 hover:scale-95">
+                                اعرف اكتر
+                            </Button>
+                        </Link>
+                        <Link href={`/checkout/${heroData.id}`} className="block w-fit">
+                            <Button className="cursor-pointer px-6 py-2 rounded-lg font-semibold tracking-wide shadow-md shadow-red-500 hover:scale-95">
+                                اشتري دلوقتي
+                            </Button>
+                        </Link>
+                    </div>
                     <AddToCart id={heroData.id} />
                 </div>
             </div>
