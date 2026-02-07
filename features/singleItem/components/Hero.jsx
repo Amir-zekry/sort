@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import AddToCart from '@/features/cart/components/AddToCart'
 import { getHeroSetionData } from '@/features/singleItem/server/data'
+import BuyNow from './BuyNow'
 
 
 async function Hero({ itemId }) {
@@ -46,11 +47,7 @@ async function Hero({ itemId }) {
                                 اعرف اكتر
                             </Button>
                         </Link>
-                        <Link href={`/checkout/${heroData.id}`} className="block w-fit">
-                            <Button className="cursor-pointer px-6 py-2 rounded-lg font-semibold tracking-wide shadow-md shadow-red-500 hover:scale-95">
-                                اشتري دلوقتي
-                            </Button>
-                        </Link>
+                        <BuyNow id={itemId} />
                     </div>
                     <AddToCart id={heroData.id} />
                 </div>

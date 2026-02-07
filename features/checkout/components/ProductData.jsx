@@ -1,78 +1,42 @@
 import Image from 'next/image'
 import IncreaseQuantity from '@/features/cart/components/IncreaseQuantity'
 import DecreaseQuantity from '@/features/cart/components/DecreaseQuantity'
-import { Button } from '@/components/ui/button'
 
-function ProductData({ items, setItems, mode }) {
+function ProductData({ cartItems, userId }) {
     const deliveryFee = 45
-    const subtotal = items.reduce(
-        (sum, item) => sum + item.price * item.quantity,
+    const subtotal = cartItems.reduce(
+        (sum, ci) => sum + ci.item.price * ci.quantity,
         0
     )
     const total = subtotal + deliveryFee
     return (
         <div className='items-start md:max-w-[40vw] md:min-w-[40vw] space-y-5'>
-            {items.map(item => (
+            {cartItems.map(ci => (
                 <div
-                    key={item.id}
+                    key={ci.id}
                     className='flex items-start justify-between md:w-[30vw] w-[80vw] border-b pb-4'
                 >
                     <div className='flex items-start gap-x-2'>
                         <div className='w-14 h-14 relative rounded-lg'>
                             <Image
-                                src={item.image}
-                                alt={item.name}
+                                src={ci.item.image}
+                                alt={ci.item.name}
                                 fill='true'
                                 className='object-contain'
                             />
                         </div>
                     </div>
-                    <p>{item.name}</p>
+                    <h3 className="font-medium text-sm max-w-36 truncate">{ci.item.name}</h3>
                     <div>
                         <div className='flex items-center gap-x-2'>
-                            <p className='mr-auto'>{item.price * item.quantity}</p>
+                            <p className='mr-auto'>{ci.item.price * ci.quantity}</p>
                             <p>ج.م</p>
                         </div>
-                        {mode === 'cart' ? (
-                            <div >
-                                <DecreaseQuantity cartItemId={item.cartItemId} />
-                                <span className='mx-2'>{item.quantity}</span>
-                                <IncreaseQuantity cartItemId={item.cartItemId} />
-                            </div>
-                        ) : (
-                            <div>
-                                <Button
-                                    onClick={() =>
-                                        setItems(prev =>
-                                            prev.map(i =>
-                                                i.id === item.id
-                                                    ? { ...i, quantity: Math.max(1, i.quantity - 1) }
-                                                    : i
-                                            )
-                                        )
-                                    }
-                                >
-                                    -
-                                </Button>
-
-                                <span className='mx-2'>{item.quantity}</span>
-
-                                <Button
-                                    onClick={() =>
-                                        setItems(prev =>
-                                            prev.map(i =>
-                                                i.id === item.id
-                                                    ? { ...i, quantity: i.quantity + 1 }
-                                                    : i
-                                            )
-                                        )
-                                    }
-                                >
-                                    +
-                                </Button>
-                            </div>
-                        )}
-
+                        <div >
+                            <DecreaseQuantity cartItemId={ci.id} userId={userId} quantity={ci.quantity} />
+                            <span className='mx-2'>{ci.quantity}</span>
+                            <IncreaseQuantity cartItemId={ci.id} userId={userId} />
+                        </div>
                     </div>
                 </div>
             ))}

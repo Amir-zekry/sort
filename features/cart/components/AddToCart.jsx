@@ -30,18 +30,13 @@ async function AddToCart({ id }) {
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                             <AlertDialogHeader >
-                                <AlertDialogTitle className='text-right'>خلي ثقتك في ربنا كبيره</AlertDialogTitle>
+                                <AlertDialogTitle />
                                 <AlertDialogDescription className='text-right'>
-                                    العربه هي خاصيه مميزه للمستخدمين المسجلين. من فضلك قم بتسجيل الدخول او انشاء حساب جديد للتمتع بهذه الخاصيه, او لو حابب ممكن تشتري المنتج مباشرة.
+                                    العربه هي خاصيه مميزه للمستخدمين المسجلين. من فضلك قم بتسجيل الدخول او انشاء حساب جديد للتمتع بهذه الخاصيه
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                                 <AlertDialogCancel>الغاء</AlertDialogCancel>
-                                <AlertDialogAction asChild>
-                                    <Link href={`/checkout/${id}`} className="block w-fit">
-                                        اشتري دلوقتي
-                                    </Link>
-                                </AlertDialogAction>
                                 <AlertDialogAction>
                                     <Link
                                         href={`/login?callbackUrl=/item/${id}`}

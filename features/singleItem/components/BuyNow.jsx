@@ -1,15 +1,55 @@
-import React from 'react'
+import { auth } from '@/features/authentications/utils/auth'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import RealBuyNow from './RealBuyNow'
 
 async function BuyNow({ id }) {
+    const session = await auth()
     return (
-        <Link
-            href={`/checkout/${id}`}
-            className='flex justify-center my-10'
-        >
-            <Button> اشتري الآن 🚀 </Button>
-        </Link>
+        <>
+            {session ? (
+                <RealBuyNow session={session} itemId={id} />
+            ) :
+                (
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button className="cursor-pointer px-6 py-2 rounded-lg font-semibold tracking-wide shadow-md shadow-red-500 hover:scale-95">
+                                اشتري دلوقتي
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader >
+                                <AlertDialogTitle />
+                                <AlertDialogDescription className='text-right'>
+                                    يجب عليك تسجيل الدخول اولا
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>الغاء</AlertDialogCancel>
+                                <AlertDialogAction>
+                                    <Link
+                                        href={`/login?callbackUrl=/item/${id}`}
+                                        className="block w-fit"
+                                    >
+                                        تسجيل الدخول
+                                    </Link>
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+                )}
+        </>
     )
 }
 

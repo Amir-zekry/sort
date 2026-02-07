@@ -23,8 +23,7 @@ import { createOrder } from "@/features/checkout/server/actions"
 import { useActionState, useState } from "react"
 import ProductData from "@/features/checkout/components/ProductData"
 import { Separator } from '@/components/ui/separator'
-export default function CheckoutForm({ mode, items, userId }) {
-    const [localItems, setLocalItems] = useState(items)
+export default function CheckoutForm({ cartItems, userId }) {
     const form = useForm({
         defaultValues: {
             FullName: '',
@@ -156,15 +155,9 @@ export default function CheckoutForm({ mode, items, userId }) {
                         />
                         <input
                             type="hidden"
-                            name="items"
-                            value={JSON.stringify(
-                                localItems.map(i => ({
-                                    itemId: i.id,
-                                    quantity: i.quantity,
-                                }))
-                            )}
+                            name="cartItems"
+                            value={JSON.stringify(cartItems)}
                         />
-                        <input type="hidden" name="mode" value={mode} />
                         <input type="hidden" name="userId" value={userId} />
                         <div className="flex justify-start">
                             <Button
@@ -181,9 +174,8 @@ export default function CheckoutForm({ mode, items, userId }) {
             />
             <Separator orientation="horizontal" className="block md:hidden" />
             <ProductData
-                items={localItems}
-                setItems={setLocalItems}
-                mode={mode}
+                cartItems={cartItems}
+                userId={userId}
             />
         </div>
     )

@@ -1,6 +1,6 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
-import { revalidateTag } from "next/cache";
+import { revalidateTag, updateTag } from "next/cache";
 
 const db = new PrismaClient()
 
@@ -17,7 +17,7 @@ export async function increaseCartItemQuantity(cartItemId, userId) {
                 },
             }
         })
-        revalidateTag(`cart:${userId}`)
+        updateTag(`cart:${userId}`)
     } catch (error) {
         throw error
     }
@@ -37,7 +37,7 @@ export async function decreaseCartItemQuantity(cartItemId, userId) {
                 },
             }
         })
-        revalidateTag(`cart:${userId}`)
+        updateTag(`cart:${userId}`)
     } catch (error) {
         throw error
     }

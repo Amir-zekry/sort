@@ -1,6 +1,6 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
-import { revalidateTag } from "next/cache";
+import { revalidateTag, updateTag } from "next/cache";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { redirect } from "next/navigation";
 import z from "zod";
@@ -10,7 +10,6 @@ const db = new PrismaClient()
 
 
 export async function createOrder(state, formData) {
-
     const formSchema = z.object({
         FullName: z.string().min(1, "الاسم مطلوب"),
         PhoneNumber: z
@@ -22,7 +21,6 @@ export async function createOrder(state, formData) {
         Address: z.string().min(1, "العنوان مطلوب"),
         Governorate: z.string().min(1, "المحافظة مطلوبة"),
     })
-
     const parsedData = formSchema.safeParse({
         FullName: formData.get('FullName'),
         PhoneNumber: formData.get('PhoneNumber'),
@@ -35,31 +33,23 @@ export async function createOrder(state, formData) {
         };
     }
     const { FullName, PhoneNumber, Address, Governorate } = parsedData.data;
-    const items = JSON.parse(formData.get('items')) // 🔥 important
 
-    // 1️⃣ Fetch items from DB (security)
-    const dbItems = await db.item.findMany({
-        where: { id: { in: items.map(i => i.itemId) } }
-    })
-    let total = 45 // shipping
-    const orderItemsData = items.map(i => {
-        const item = dbItems.find(d => d.id === i.itemId)
-        total += item.price * i.quantity
+    const cartItems = JSON.parse(formData.get('cartItems'))
 
-        return {
-            itemId: item.id,
-            quantity: i.quantity,
+    const orderItems = cartItems.map(ci => ({
+        itemId: ci.item.id,
+        quantity: ci.quantity,
+    }))
+
+    const total = JSON.parse(formData.get('cartItems')).reduce(
+        (sum, ci) => sum + ci.item.price * ci.quantity,
+        0
+    ) + 45
+    const cart = await db.cart.findUnique({
+        where: {
+            userId: formData.get('userId')
         }
     })
-    const mode = formData.get('mode')
-    const userId = formData.get('userId')
-    let cart
-    if (mode === 'cart' && userId) {
-        cart = await db.cart.findUnique({
-            where: { userId: userId },
-            select: { id: true }
-        })
-    }
     try {
         const order = await db.order.create({
             data: {
@@ -75,7 +65,7 @@ export async function createOrder(state, formData) {
                 },
                 items: {
                     createMany: {
-                        data: orderItemsData
+                        data: orderItems
                     }
                 }
             },
@@ -85,12 +75,12 @@ export async function createOrder(state, formData) {
                 cartId: cart.id
             }
         })
-        revalidateTag(`cart:${userId}`)
+        updateTag(`cart:${formData.get('userId')}`)
         redirect(`/confirmation?orderId=${order.id}`)
     } catch (error) {
         if (!isRedirectError(error)) {
             console.error("Order creation failed:", error)
         }
-        throw error // still let redirect work
+        throw error
     }
 }

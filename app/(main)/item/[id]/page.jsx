@@ -10,6 +10,7 @@ import HeroSkeleton from '@/features/singleItem/skeletons/HeroSkeleton'
 import FeaturesSkeleton from '@/features/singleItem/skeletons/FeaturesSkeleton'
 import ItemsGallerySkeleton from '@/features/singleItem/skeletons/ItemsGallerySkeleton'
 import CustomerReviewsSkeleton from '@/features/singleItem/skeletons/CustomerReviewsSkeleton'
+import CTA from '@/features/singleItem/components/CTA'
 async function Item({ params }) {
     const { id } = await params
     return (
@@ -28,7 +29,7 @@ async function Item({ params }) {
             </Suspense>
             <WhyUs />
             <Faq />
-            <BuyNow id={id} />
+            <CTA id={id} />
         </div>
     )
 }
