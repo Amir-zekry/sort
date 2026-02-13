@@ -1,6 +1,6 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
-import { revalidateTag, updateTag } from "next/cache";
+import { updateTag } from "next/cache";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { redirect } from "next/navigation";
 import z from "zod";
@@ -79,8 +79,11 @@ export async function createOrder(state, formData) {
         redirect(`/confirmation?orderId=${order.id}`)
     } catch (error) {
         if (!isRedirectError(error)) {
-            console.error("Order creation failed:", error)
+            throw error
         }
-        throw error
+        return {
+            message: "حدث خطأ أثناء إنشاء الطلب. الرجاء المحاولة مرة أخرى.",
+            success: false
+        }
     }
 }

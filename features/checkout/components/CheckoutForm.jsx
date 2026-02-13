@@ -20,9 +20,10 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { createOrder } from "@/features/checkout/server/actions"
-import { useActionState, useState } from "react"
+import { useActionState, useEffect, useState } from "react"
 import ProductData from "@/features/checkout/components/ProductData"
 import { Separator } from '@/components/ui/separator'
+import { toast } from "sonner"
 export default function CheckoutForm({ cartItems, userId }) {
     const form = useForm({
         defaultValues: {
@@ -35,6 +36,11 @@ export default function CheckoutForm({ cartItems, userId }) {
     })
     const initialState = { loading: false, errors: {} }
     const [state, formAction, loading] = useActionState(createOrder, initialState)
+    useEffect(() => {
+        if (state.success === false) {
+            toast.error(state.message)
+        }
+    }, [state.success])
     return (
         <div className="flex md:flex-row flex-col-reverse min-h-screen justify-center md:items-start items-center gap-y-5 px-5 md:gap-x-10 py-10">
 
