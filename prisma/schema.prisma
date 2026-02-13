@@ -60,6 +60,8 @@ model order {
   createdAt  DateTime    @default(now())
   customerId String?
   customer   customer?   @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  userId     String?
+  user       user?       @relation(fields: [userId], references: [id], onDelete: SetNull)
   items      orderItem[]
 }
 
@@ -95,5 +97,6 @@ model user {
   phoneNumber String   @unique
   password    String
   createdAt   DateTime @default(now())
+  orders      order[]
   cart        cart?
 }

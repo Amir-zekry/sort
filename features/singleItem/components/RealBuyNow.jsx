@@ -15,7 +15,7 @@ export default function RealBuyNow({ session, itemId }) {
     if (state.success === true) {
       router.push('/checkout')
     } else if (state.success === false) {
-      toast.error(state.message)
+      router.push('/checkout')
     }
   }, [state])
   return (

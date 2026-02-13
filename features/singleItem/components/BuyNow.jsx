@@ -37,14 +37,13 @@ async function BuyNow({ id }) {
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                                 <AlertDialogCancel>الغاء</AlertDialogCancel>
-                                <AlertDialogAction>
-                                    <Link
-                                        href={`/login?callbackUrl=/item/${id}`}
-                                        className="block w-fit"
-                                    >
+                                <Link
+                                    href={`/login?callbackUrl=/item/${id}`}
+                                >
+                                    <AlertDialogAction>
                                         تسجيل الدخول
-                                    </Link>
-                                </AlertDialogAction>
+                                    </AlertDialogAction>
+                                </Link>
                             </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialog>
