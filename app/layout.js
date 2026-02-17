@@ -1,19 +1,17 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cairo } from "next/font/google";
 import "@/app/globals.css";
 import TikTokPixel from "./TiktokPixel";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const arabicFont = Cairo({
+  subsets: ["arabic", "latin"],
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+  preload: true,
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata = {
   title: "EG MEN",
@@ -22,9 +20,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="dark" dir="rtl">
+    <html lang="ar" className="dark" dir="rtl">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${arabicFont.variable} antialiased`}
       >
         {children}
         <TikTokPixel />

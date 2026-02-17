@@ -4,10 +4,14 @@ import Link from 'next/link'
 import AddToCart from '@/features/cart/components/AddToCart'
 import { getHeroSetionData } from '@/features/singleItem/server/data'
 import BuyNow from './BuyNow'
+import { notFound } from 'next/navigation'
 
 
 async function Hero({ itemId }) {
     const heroData = await getHeroSetionData(itemId)
+    if (!heroData) {
+        notFound()
+    }
     return (
         <div
             className="relative w-full h-screen flex md:items-center items-start px-8 md:px-24 py-24">
@@ -40,15 +44,13 @@ async function Hero({ itemId }) {
                     {heroData.discription}
                 </p>
 
-                <div className="flex md:flex-row flex-col gap-4 pt-4 md:justify-normal justify-center">
-                    <div className='flex items-center gap-4'>
-                        <Link href="#features">
-                            <Button className="px-6 py-2 cursor-pointer rounded-lg font-semibold tracking-wide shadow-md shadow-red-500 hover:scale-95">
-                                اعرف اكتر
-                            </Button>
-                        </Link>
-                        <BuyNow id={itemId} />
-                    </div>
+                <div className="grid md:grid-cols-3 grid-cols-2 gap-2">
+                    <Link href="#features">
+                        <Button className="cursor-pointer rounded-lg font-semibold tracking-wide shadow-md shadow-red-500 hover:scale-95 w-full">
+                            اعرف اكتر
+                        </Button>
+                    </Link>
+                    <BuyNow id={itemId} />
                     <AddToCart id={heroData.id} />
                 </div>
             </div>

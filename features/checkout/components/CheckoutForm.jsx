@@ -53,11 +53,15 @@ export default function CheckoutForm({ cartItems, userId }) {
                             name="FullName"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>الاسم بالكامل</FormLabel>
+                                    <div className="flex items-center justify-between">
+                                        <FormLabel>الاسم بالكامل</FormLabel>
+                                        <FormMessage>
+                                            {state.errors?.FullName || <span className="invisible">placeholder</span>}
+                                        </FormMessage>
+                                    </div>
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormMessage >{state.errors?.FullName}</FormMessage>
                                 </FormItem>
                             )}
                         />
@@ -66,13 +70,15 @@ export default function CheckoutForm({ cartItems, userId }) {
                             name="PhoneNumber"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>
-                                        رقم الهاتف <span className="text-purple-500">حروف انجليزية</span>
-                                    </FormLabel>
+                                    <div className="flex items-center justify-between">
+                                        <FormLabel>رقم الهاتف</FormLabel>
+                                        <FormMessage>
+                                            {state.errors?.PhoneNumber || <span className="invisible">placeholder</span>}
+                                        </FormMessage>
+                                    </div>
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormMessage >{state.errors?.PhoneNumber}</FormMessage>
                                 </FormItem>
                             )}
                         />
@@ -81,7 +87,12 @@ export default function CheckoutForm({ cartItems, userId }) {
                             name="Governorate"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>المحافظة</FormLabel>
+                                    <div className="flex items-center justify-between">
+                                        <FormLabel>المحافظه</FormLabel>
+                                        <FormMessage>
+                                            {state.errors?.Governorate || <span className="invisible">placeholder</span>}
+                                        </FormMessage>
+                                    </div>
                                     <FormControl>
                                         <Select
                                             value={field.value}  // ← Missing
@@ -124,7 +135,6 @@ export default function CheckoutForm({ cartItems, userId }) {
                                         name="Governorate"
                                         value={field.value || ""}
                                     />
-                                    <FormMessage >{state.errors?.Governorate}</FormMessage>
                                 </FormItem>
                             )}
                         />
@@ -133,11 +143,15 @@ export default function CheckoutForm({ cartItems, userId }) {
                             name="Address"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>العنوان</FormLabel>
+                                    <div className="flex items-center justify-between">
+                                        <FormLabel>العنوان</FormLabel>
+                                        <FormMessage>
+                                            {state.errors?.Address || <span className="invisible">placeholder</span>}
+                                        </FormMessage>
+                                    </div>
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormMessage >{state.errors?.Address}</FormMessage>
                                 </FormItem>
                             )}
                         />

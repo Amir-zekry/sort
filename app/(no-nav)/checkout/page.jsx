@@ -2,7 +2,6 @@ import { auth } from '@/features/authentications/utils/auth'
 import React from 'react'
 import CheckoutForm from '@/features/checkout/components/CheckoutForm'
 import { getCartItems } from '@/features/cart/server/data'
-import { redirect } from 'next/navigation'
 
 async function page() {
     const session = await auth()

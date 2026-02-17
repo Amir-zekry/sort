@@ -1,8 +1,11 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
+import { cacheTag } from "next/cache";
 const db = new PrismaClient()
 
 export async function getProducts(category, sort, search) {
+    'use cache'
+    cacheTag('items')
     try {
         return await db.item.findMany({
             select: {
@@ -23,6 +26,6 @@ export async function getProducts(category, sort, search) {
                     { createdAt: 'desc' }
         })
     } catch (error) {
-        console.log(error)
+        throw new Error(`Failed to fetch items | cause: ${error.message}`)
     }
 }

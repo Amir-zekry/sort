@@ -1,15 +1,13 @@
-"use client"
-
 import React from "react"
 import { Separator } from "@/components/ui/separator"
 import { Phone } from "lucide-react";
-import { FaWhatsapp, FaTiktok, FaInstagram } from "react-icons/fa";
+import { FaWhatsapp, FaTiktok } from "react-icons/fa";
 import Link from "next/link"
 
-export default function Footer() {
+export default async function Footer() {
     return (
         <footer className="max-w-screen px-4">
-            <Separator/>
+            <Separator />
             <div className="py-10">
                 <div className="grid md:grid-cols-3 gap-8 px-4 max-w-full">
                     {/* القسم الأول */}
@@ -34,7 +32,7 @@ export default function Footer() {
                         <ul className="space-y-4 text-sm text-muted-foreground">
                             <li className="flex items-center gap-2">
                                 <a href="tel:01552333223" className="hover:text-primary flex items-center gap-2">
-                                  <Phone size={16} />  01552333223 
+                                    <Phone size={16} />  01552333223
                                 </a>
                             </li>
                             <div className="flex items-center gap-x-4">

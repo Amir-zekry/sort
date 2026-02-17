@@ -23,15 +23,13 @@ async function Cart() {
     if (!session) return null
     return (
         <Sheet>
-            <SheetTrigger>
-                <div className="relative inline-flex items-center">
-                    <ShoppingCart size={24} />
-                    {count >= 1 &&
-                        <span className="absolute -top-1 -right-1 rounded-full bg-red-600 text-white text-xs w-3 h-3 flex items-center justify-center">
-                            {count}
-                        </span>
-                    }
-                </div>
+            <SheetTrigger className="relative">
+                <ShoppingCart size={24} />
+                {count >= 1 &&
+                    <span className="absolute -top-1 -right-1 rounded-full bg-red-600 text-white text-xs w-3 h-3 flex items-center justify-center">
+                        {count}
+                    </span>
+                }
             </SheetTrigger>
             {cartItems.length === 0 ? (
                 <SheetContent>

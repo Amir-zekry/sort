@@ -16,10 +16,11 @@ export async function getHeroSetionData(itemId) {
             }
         })
     } catch (error) {
-        throw error
+        throw new Error(`Failed to fetch hero section data | cause: ${error.message}`)
     }
 
 }
+
 export async function getFeatures(itemId) {
     try {
         return await db.feature.findMany({
@@ -33,9 +34,10 @@ export async function getFeatures(itemId) {
             }
         })
     } catch (error) {
-        throw error
+        throw new Error(`Failed to fetch item features data | cause: ${error.message}`)
     }
 }
+
 export async function getImages(itemId) {
     try {
         return await db.imageGallery.findMany({
@@ -47,9 +49,10 @@ export async function getImages(itemId) {
             }
         })
     } catch (error) {
-        throw new Error('Failed to fetch images for this item')
+        throw new Error(`Failed to fetch images | cause: ${error.message}`)
     }
 }
+
 export async function getReviews(productId) {
     try {
         const res = await fetch(
@@ -89,6 +92,6 @@ export async function getReviews(productId) {
 
         return top4;
     } catch (error) {
-        console.log(error)
+        throw new Error(`Failed to fetch reviews | cause: ${error.message}`)
     }
 }

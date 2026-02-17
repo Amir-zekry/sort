@@ -1,6 +1,6 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
-import { revalidateTag, updateTag } from "next/cache";
+import { updateTag } from "next/cache";
 
 const db = new PrismaClient()
 
@@ -54,7 +54,7 @@ export async function removeFromCart(state, formData) {
                 id: formData.get('itemId')
             }
         })
-        revalidateTag(`cart:${formData.get('userId')}`)
+        updateTag(`cart:${formData.get('userId')}`)
         return {
             success: true,
             message: 'تم ازالة المنتج من العربه بنجاح'
@@ -106,7 +106,7 @@ export async function addToCart(state, formData) {
                 },
             },
         });
-        revalidateTag(`cart:${formData.get('userId')}`)
+        updateTag(`cart:${formData.get('userId')}`)
         return {
             success: true,
             message: "تمت إضافة العنصر إلى العربه بنجاح"

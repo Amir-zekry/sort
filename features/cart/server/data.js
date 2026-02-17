@@ -35,6 +35,6 @@ export async function getCartItems(userId) {
             }
         })
     } catch (error) {
-        throw error
+        throw new Error(`Error fetching cart items | cause: ${error.message}`)
     }
 }
