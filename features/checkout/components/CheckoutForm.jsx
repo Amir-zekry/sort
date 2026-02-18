@@ -182,7 +182,7 @@ export default function CheckoutForm({ cartItems, userId }) {
                         <div className="flex justify-start">
                             <Button
                                 disabled={loading}
-                                className='cursor-pointer w-full'
+                                className={`cursor-pointer w-full ${loading ? 'cursor-progress disabled:pointer-events-auto' : ''}`}
                                 type="submit">تاكيد</Button>
                         </div>
                     </form>

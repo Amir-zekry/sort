@@ -1,7 +1,7 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
 import { hash } from "bcryptjs";
-import z from "zod";
+import z, { promise } from "zod";
 import { signIn, signOut } from "@/features/authentications/utils/auth";
 import { AuthError } from "next-auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
@@ -93,6 +93,8 @@ export async function signup(state, formData) {
     }
 }
 export async function authenticate(state, formData) {
+    // simulate slow promise
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     const signinSchema = z.object({
         phoneNumber: z
             .string()

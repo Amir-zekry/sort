@@ -26,7 +26,7 @@ export default function RealAddToCart({ session, itemId }) {
       <Button
         disabled={pending}
         type='submit'
-        className="cursor-pointer rounded-lg font-semibold tracking-wide shadow-md shadow-red-500 hover:scale-95 w-full"
+        className={`cursor-pointer rounded-lg font-semibold tracking-wide shadow-md shadow-red-500 hover:scale-95 w-full ${pending ? 'cursor-progress disabled:pointer-events-auto' : ''}`}
       >
         {pending ? <Loader size={16} className="animate-spin" /> : 'اضافه الي العربه'}
       </Button>

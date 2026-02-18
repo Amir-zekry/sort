@@ -7,23 +7,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model customer {
+model shippingInformation {
   id          String   @id @default(uuid())
   name        String
-  number      String
+  number      String   
   address     String
   createdAt   DateTime @default(now())
   governorate String
   orders      order[]
+  userId      String?
+  user        user?    @relation(fields: [userId], references: [id], onDelete: SetNull)
 }
 
 model feature {
-  id        String   @id @default(uuid())
+  id        String  @id @default(uuid())
   h1        String
   p         String
   itemId    String?
   image_url String
-  item      item?    @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  item      item?   @relation(fields: [itemId], references: [id], onDelete: Cascade)
 }
 
 model imageGallery {
@@ -53,25 +55,25 @@ model item {
 }
 
 model order {
-  id         String      @id @default(uuid())
-  status     String      @default("pending")
+  id         String               @id @default(uuid())
+  status     String               @default("pending")
   total      Float
   notes      String?
-  createdAt  DateTime    @default(now())
-  customerId String?
-  customer   customer?   @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  createdAt  DateTime             @default(now())
+  shippingInfoId String?
+  shippingInformation   shippingInformation? @relation(fields: [shippingInfoId], references: [id], onDelete: SetNull)
   userId     String?
-  user       user?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user       user?                @relation(fields: [userId], references: [id], onDelete: SetNull)
   items      orderItem[]
 }
 
 model orderItem {
-  id        String   @id @default(uuid())
-  orderId   String
-  itemId    String
-  quantity  Int
-  order order @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  item  item  @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  id       String @id @default(uuid())
+  orderId  String
+  itemId   String
+  quantity Int
+  order    order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  item     item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
 }
 
 model cartItem {
@@ -85,18 +87,19 @@ model cartItem {
 
 model cart {
   id        String     @id @default(uuid())
-  userId    String     @unique
   createdAt DateTime   @default(now())
-  cartItems cartItem[]
+  userId    String     @unique
   user      user       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cartItems cartItem[]
 }
 
 model user {
-  id          String   @id @default(uuid())
-  name        String
-  phoneNumber String   @unique
-  password    String
-  createdAt   DateTime @default(now())
-  orders      order[]
-  cart        cart?
+  id                   String                @id @default(uuid())
+  name                 String
+  phoneNumber          String                @unique
+  password             String
+  createdAt            DateTime              @default(now())
+  orders               order[]
+  cart                 cart?
+  shippingInformations shippingInformation[]
 }

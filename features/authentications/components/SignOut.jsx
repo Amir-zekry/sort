@@ -1,42 +1,15 @@
 'use client'
 
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
-import { useTransition, useEffect } from "react"
-import { Progress } from "@/components/ui/progress"
+import { useTransition } from "react"
 import { signOutServerAction } from "../server/actions"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { Loader } from "lucide-react"
 
 function SignOut() {
     const router = useRouter()
     const [pending, startTransition] = useTransition()
-    useEffect(() => {
-        if (!pending) return
-        let value = 20
-
-        const toastId = toast.custom(
-            () => (
-                <Progress value={value} className="w-62" />
-            ),
-            { duration: Infinity }
-        )
-
-        const interval = setInterval(() => {
-            value = Math.min(value + 15, 90)
-
-            toast.custom(
-                () => (
-                    <Progress value={value} className="w-62" />
-                ),
-                { id: toastId }
-            )
-        }, 500)
-
-        return () => {
-            clearInterval(interval)
-            toast.dismiss(toastId)
-        }
-    }, [pending])
     return (
         < DropdownMenuItem
             className={'justify-center'}
@@ -54,7 +27,7 @@ function SignOut() {
             }
             }
         >
-            تسجيل خروج
+            {pending ? <Loader className="animate-spin" /> : 'تسجيل الخروج'}
         </DropdownMenuItem >
     )
 }

@@ -48,7 +48,7 @@ export async function removeFromCart(state, formData) {
         select: { id: true }
     })
     try {
-        await db.cartItem.deleteMany({
+        await db.cartItem.delete({
             where: {
                 cartId: cart.id,
                 id: formData.get('itemId')

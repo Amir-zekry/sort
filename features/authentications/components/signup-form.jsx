@@ -24,6 +24,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { CircleQuestionMark } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
 import Image from "next/image"
+import { Loader } from "lucide-react"
 
 export function SignupForm({ className, ...props }) {
   const initialState = {}
@@ -31,33 +32,33 @@ export function SignupForm({ className, ...props }) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl')
-  useEffect(() => {
-    if (!pending) return
+  // useEffect(() => {
+  //   if (!pending) return
 
-    let value = 20
+  //   let value = 20
 
-    const toastId = toast.custom(
-      () => (
-        <Progress value={value} className="w-62" />
-      ),
-      { duration: Infinity }
-    )
+  //   const toastId = toast.custom(
+  //     () => (
+  //       <Progress value={value} className="w-62" />
+  //     ),
+  //     { duration: Infinity }
+  //   )
 
-    const interval = setInterval(() => {
-      value = Math.min(value + 15, 90)
-      toast.custom(
-        () => (
-          <Progress value={value} className="w-62" />
-        ),
-        { id: toastId }
-      )
-    }, 500)
+  //   const interval = setInterval(() => {
+  //     value = Math.min(value + 15, 90)
+  //     toast.custom(
+  //       () => (
+  //         <Progress value={value} className="w-62" />
+  //       ),
+  //       { id: toastId }
+  //     )
+  //   }, 500)
 
-    return () => {
-      clearInterval(interval)
-      toast.dismiss(toastId)
-    }
-  }, [pending])
+  //   return () => {
+  //     clearInterval(interval)
+  //     toast.dismiss(toastId)
+  //   }
+  // }, [pending])
 
 
 
@@ -70,7 +71,7 @@ export function SignupForm({ className, ...props }) {
       toast.error(state.message)
     }
   },
-    [state.success]
+    [state]
   )
 
 
@@ -149,10 +150,11 @@ export function SignupForm({ className, ...props }) {
               </Field>
               <Field>
                 <Button
+                  className={`w-full ${pending ? 'cursor-progress disabled:pointer-events-auto' : ''}`}
                   type="submit"
                   disabled={pending}
                 >
-                  انشاء حساب
+                  {pending ? <Loader className="animate-spin" /> : 'انشاء حساب'}
                 </Button>
               </Field>
               <FieldSeparator />

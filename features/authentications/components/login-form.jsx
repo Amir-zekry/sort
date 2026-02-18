@@ -18,10 +18,11 @@ import { toast } from "sonner"
 import { Progress } from "@/components/ui/progress"
 import Image from "next/image"
 import { useSearchParams } from "next/navigation"
+import { Loader } from "lucide-react"
 
 export function LoginForm({ className, ...props }) {
   const searchParams = useSearchParams()
-  const phoneFromUrl = searchParams.get('phone') ||''
+  const phoneFromUrl = searchParams.get('phone') || ''
   const initialState = {
     data: {
       phoneNumber: phoneFromUrl,
@@ -31,42 +32,13 @@ export function LoginForm({ className, ...props }) {
   const url = callbackUrl || '/'
   const [state, action, pending] = useActionState(authenticate, initialState)
 
-
-  useEffect(() => {
-    if (!pending) return
-    let value = 20
-
-    const toastId = toast.custom(
-      () => (
-        <Progress value={value} className="w-62" />
-      ),
-      { duration: Infinity }
-    )
-
-    const interval = setInterval(() => {
-      value = Math.min(value + 15, 90)
-
-      toast.custom(
-        () => (
-          <Progress value={value} className="w-62" />
-        ),
-        { id: toastId }
-      )
-    }, 500)
-
-    return () => {
-      clearInterval(interval)
-      toast.dismiss(toastId)
-    }
-  }, [pending])
-
   useEffect(() => {
     if (state.success === true) {
       toast.success(state.message)
     } else if (state.success === false) {
       toast.error(state.message)
     }
-  }, [state.success])
+  }, [state])
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
@@ -100,9 +72,6 @@ export function LoginForm({ className, ...props }) {
                 <div className="flex items-center justify-between">
                   <FieldLabel htmlFor="password">كلمة السر</FieldLabel>
                   <FieldError>{state.errors?.password}</FieldError>
-                  {/* <a href="#" className="ml-auto text-sm underline-offset-2 hover:underline">
-                    Forgot your password?
-                  </a> */}
                 </div>
                 <Input
                   id="password"
@@ -117,10 +86,11 @@ export function LoginForm({ className, ...props }) {
               <input value={url} name="callbackUrl" type="hidden" />
               <Field>
                 <Button
-                  type="submit"
+                  className={`w-full ${pending ? 'cursor-progress disabled:pointer-events-auto' : ''}`}
                   disabled={pending}
+                  type="submit"
                 >
-                  تسجيل الدخول
+                  {pending ? <Loader className="animate-spin" /> : 'تسجيل الدخول'}
                 </Button>
               </Field>
               <FieldSeparator />

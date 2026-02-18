@@ -6,13 +6,16 @@ import { Loader, Minus } from "lucide-react"
 function DecreaseQuantity({ cartItemId, userId, quantity }) {
     const [pending, startTransition] = useTransition()
     return (
-        <Button disabled={pending || quantity == 1} onClick={() => startTransition(() => {
-            decreaseCartItemQuantity(cartItemId, userId)
-        })
-        }
+        <Button
+            className={`${quantity === 1 ? 'cursor-not-allowed disabled:pointer-events-auto' : ''} ${pending ? 'cursor-progress disabled:pointer-events-auto' : ''}`}
+            disabled={pending || quantity === 1}
+            onClick={() => startTransition(() => {
+                decreaseCartItemQuantity(cartItemId, userId)
+            })}
         >
             {pending ? <Loader size={16} className="animate-spin" /> : <Minus size={16} />}
-        </Button>)
+        </Button>
+    )
 }
 
 export default DecreaseQuantity

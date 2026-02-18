@@ -7,83 +7,155 @@ import z from "zod";
 
 const db = new PrismaClient()
 
-
-
 export async function createOrder(state, formData) {
     const formSchema = z.object({
         FullName: z.string().min(1, "الاسم مطلوب"),
         PhoneNumber: z
             .string()
-            .regex(
-                /^01[0125][0-9]{8}$/,
-                "ادخل رقم هاتف مصري"
-            ),
+            .regex(/^01[0125][0-9]{8}$/, "ادخل رقم هاتف مصري"),
         Address: z.string().min(1, "العنوان مطلوب"),
         Governorate: z.string().min(1, "المحافظة مطلوبة"),
+        userId: z.string().uuid(),
     })
+
     const parsedData = formSchema.safeParse({
-        FullName: formData.get('FullName'),
-        PhoneNumber: formData.get('PhoneNumber'),
-        Address: formData.get('Address'),
-        Governorate: formData.get('Governorate'),
-    });
+        FullName: formData.get("FullName"),
+        PhoneNumber: formData.get("PhoneNumber"),
+        Address: formData.get("Address"),
+        Governorate: formData.get("Governorate"),
+        userId: formData.get("userId"),
+    })
+
     if (!parsedData.success) {
         return {
             errors: parsedData.error.flatten().fieldErrors,
-        };
-    }
-    const { FullName, PhoneNumber, Address, Governorate } = parsedData.data;
-
-    const cartItems = JSON.parse(formData.get('cartItems'))
-
-    const orderItems = cartItems.map(ci => ({
-        itemId: ci.item.id,
-        quantity: ci.quantity,
-    }))
-
-    const total = JSON.parse(formData.get('cartItems')).reduce(
-        (sum, ci) => sum + ci.item.price * ci.quantity,
-        0
-    ) + 45
-    const cart = await db.cart.findUnique({
-        where: {
-            userId: formData.get('userId')
         }
-    })
+    }
+
+    const { FullName, PhoneNumber, Address, Governorate, userId } =
+        parsedData.data
+
     try {
-        const order = await db.order.create({
-            data: {
-                total: total,
-                notes: formData.get('Notes'),
-                customer: {
-                    create: {
+        // 1️⃣ Fetch cart securely from database
+        const cart = await db.cart.findUnique({
+            where: { userId },
+            include: {
+                cartItems: {
+                    include: {
+                        item: true,
+                    },
+                },
+            },
+        })
+
+        if (!cart || cart.cartItems.length === 0) {
+            return {
+                message: "السلة فارغة",
+                success: false,
+            }
+        }
+
+        // 2️⃣ Compute total securely from DB
+        const shippingFee = 45
+
+        const total =
+            cart.cartItems.reduce(
+                (sum, ci) => sum + ci.item.price * ci.quantity,
+                0
+            ) + shippingFee
+
+        const orderItems = cart.cartItems.map((ci) => ({
+            itemId: ci.itemId,
+            quantity: ci.quantity,
+        }))
+
+        // 3️⃣ Atomic transaction
+        const orderTransaction = await db.$transaction(async (tx) => {
+
+            let shippingInfo = await tx.shippingInformation.findFirst({
+                where: {
+                    userId: userId,
+                },
+            })
+
+            if (!shippingInfo) {
+                shippingInfo = await tx.shippingInformation.create({
+                    data: {
                         name: FullName,
                         number: PhoneNumber,
                         address: Address,
                         governorate: Governorate,
-                    }
-                },
-                items: {
-                    createMany: {
-                        data: orderItems
-                    }
-                }
-            },
-        });
-        await db.cartItem.deleteMany({
-            where: {
-                cartId: cart.id
+                    },
+                })
+            } else {
+                shippingInfo = await tx.shippingInformation.update({
+                    where: { id: shippingInfo.id },
+                    data: {
+                        name: FullName,
+                        number: PhoneNumber,
+                        address: Address,
+                        governorate: Governorate,
+                    },
+                })
             }
+
+            const createdOrder = await tx.order.create({
+                data: {
+                    total,
+                    notes: formData.get("Notes") || null,
+
+                    // Attach order to user
+                    user: {
+                        connect: { id: userId },
+                    },
+
+                    // connect shipping info to order
+                    shippingInformation: {
+                        connect: { id: shippingInfo.id },
+                    },
+
+                    // Create order items
+                    items: {
+                        createMany: {
+                            data: orderItems,
+                        },
+                    },
+                },
+            })
+
+            await tx.user.update({
+                where: { id: userId },
+                data: {
+                    shippingInformations: {
+                        connect: { id: shippingInfo.id },
+                    },
+                }
+            })
+
+            // Clear cart
+            await tx.cartItem.deleteMany({
+                where: { cartId: cart.id },
+            })
+
+
+
+            return createdOrder
         })
-        updateTag(`cart:${formData.get('userId')}`)
-        redirect(`/confirmation?orderId=${order.id}`)
+
+        // 4️⃣ Revalidate cart cache
+        updateTag(`cart:${userId}`)
+        // 5️⃣ Redirect to confirmation
+        redirect(`/confirmation?orderId=${orderTransaction.id}`)
     } catch (error) {
-        if (!isRedirectError(error)) {
+        if (isRedirectError(error)) {
             throw error
         }
+
+        console.error("Order creation error:", error)
+
         return {
             message: "حدث خطأ أثناء إنشاء الطلب. الرجاء المحاولة مرة أخرى.",
-            success: false
+            success: false,
         }
     }
 }
