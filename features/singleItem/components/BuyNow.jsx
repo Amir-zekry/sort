@@ -16,10 +16,11 @@ import RealBuyNow from './RealBuyNow'
 
 async function BuyNow({ id }) {
     const session = await auth()
+    const userId = session.user?.id
     return (
         <>
             {session ? (
-                <RealBuyNow session={session} itemId={id} />
+                <RealBuyNow userId={userId} itemId={id} />
             ) :
                 (
                     <AlertDialog>

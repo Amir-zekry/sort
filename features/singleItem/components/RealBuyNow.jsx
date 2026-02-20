@@ -6,7 +6,7 @@ import { toast } from "sonner"
 import { useActionState, useEffect } from "react"
 import { Loader } from "lucide-react"
 import { useRouter } from "next/navigation"
-export default function RealBuyNow({ session, itemId }) {
+export default function RealBuyNow({ userId, itemId }) {
   const initialState = {}
   const [state, action, pending] = useActionState(addToCart, initialState)
   const router = useRouter()
@@ -21,7 +21,7 @@ export default function RealBuyNow({ session, itemId }) {
   return (
     <form action={action}>
       <input type="hidden" value={itemId} name="itemId" />
-      <input type="hidden" value={session.user?.id} name="userId" />
+      <input type="hidden" value={userId} name="userId" />
       <Button
         disabled={pending}
         type='submit'
