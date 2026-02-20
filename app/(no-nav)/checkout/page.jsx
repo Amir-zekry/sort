@@ -10,7 +10,7 @@ import CheckoutFormForNoShippingInfo from '@/features/checkout/components/checko
 
 async function page() {
     const session = await auth()
-    const userId = session.user?.id
+    const userId = session?.user?.id
     const cartItems = await getCartItems(userId)
     const shippingInfo = await getShippingInfo(userId)
 

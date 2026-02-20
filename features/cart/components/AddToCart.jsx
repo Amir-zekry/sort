@@ -16,7 +16,7 @@ import RealAddToCart from '@/features/cart/components/RealAddToCart'
 
 async function AddToCart({ id }) {
     const session = await auth()
-    const userId = session.user?.id
+    const userId = session?.user?.id
     return (
         <>
             {session ? (

@@ -16,7 +16,7 @@ import RealBuyNow from './RealBuyNow'
 
 async function BuyNow({ id }) {
     const session = await auth()
-    const userId = session.user?.id
+    const userId = session?.user?.id
     return (
         <>
             {session ? (
