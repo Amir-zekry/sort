@@ -2,29 +2,14 @@
 
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
+import { Form } from "@/components/ui/form"
 import { createOrder } from "@/features/checkout/server/actions"
-import { useActionState, useEffect, useState } from "react"
-import ProductData from "@/features/checkout/components/ProductData"
-import { Separator } from '@/components/ui/separator'
-import { toast } from "sonner"
-export default function CheckoutForm({ cartItems, userId }) {
+import { useActionState } from "react"
+import ShippingInfo from "./shippingInfo"
+import PaymentMethod from "./PaymentMethod"
+
+export default function CheckoutForm({ userId, shippingInfo }) {
+
     const form = useForm({
         defaultValues: {
             FullName: '',
@@ -36,167 +21,20 @@ export default function CheckoutForm({ cartItems, userId }) {
     })
     const initialState = { loading: false, errors: {} }
     const [state, formAction, loading] = useActionState(createOrder, initialState)
-    useEffect(() => {
-        if (state.success === false) {
-            toast.error(state.message)
-        }
-    }, [state.success])
-    return (
-        <div className="flex md:flex-row flex-col-reverse min-h-screen justify-center md:items-start items-center gap-y-5 px-5 md:gap-x-10 py-10">
 
-            <Form {...form} >
-                <div className='flex flex-col gap-y-8 md:min-w-[40vw] md:max-w-[40vw] w-full md:items-end'>
-                    <h1 className="flex md:w-[30vw] w-full text-left text-3xl">بيانات الشحن</h1>
-                    <form action={formAction} className="space-y-4 md:min-w-[30vw] md:max-w-[30vw] ">
-                        <FormField
-                            control={form.control}
-                            name="FullName"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <div className="flex items-center justify-between">
-                                        <FormLabel>الاسم بالكامل</FormLabel>
-                                        <FormMessage>
-                                            {state.errors?.FullName || <span className="invisible">placeholder</span>}
-                                        </FormMessage>
-                                    </div>
-                                    <FormControl>
-                                        <Input placeholder="" {...field} />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="PhoneNumber"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <div className="flex items-center justify-between">
-                                        <FormLabel>رقم الهاتف</FormLabel>
-                                        <FormMessage>
-                                            {state.errors?.PhoneNumber || <span className="invisible">placeholder</span>}
-                                        </FormMessage>
-                                    </div>
-                                    <FormControl>
-                                        <Input placeholder="" {...field} />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="Governorate"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <div className="flex items-center justify-between">
-                                        <FormLabel>المحافظه</FormLabel>
-                                        <FormMessage>
-                                            {state.errors?.Governorate || <span className="invisible">placeholder</span>}
-                                        </FormMessage>
-                                    </div>
-                                    <FormControl>
-                                        <Select
-                                            value={field.value}  // ← Missing
-                                            onValueChange={field.onChange}  // ← Missing
-                                            dir='rtl'
-                                        >
-                                            <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="اختر المحافظة" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="Cairo">القاهرة</SelectItem>
-                                                <SelectItem value="Giza">الجيزة</SelectItem>
-                                                <SelectItem value="Alexandria">الإسكندرية</SelectItem>
-                                                <SelectItem value="Aswan">أسوان</SelectItem>
-                                                <SelectItem value="Asyut">أسيوط</SelectItem>
-                                                <SelectItem value="Beheira">البحيرة</SelectItem>
-                                                <SelectItem value="Beni Suef">بني سويف</SelectItem>
-                                                <SelectItem value="Dakahlia">الدقهلية</SelectItem>
-                                                <SelectItem value="Damietta">دمياط</SelectItem>
-                                                <SelectItem value="Faiyum">الفيوم</SelectItem>
-                                                <SelectItem value="Gharbia">الغربية</SelectItem>
-                                                <SelectItem value="Ismailia">الإسماعيلية</SelectItem>
-                                                <SelectItem value="Kafr El Sheikh">كفر الشيخ</SelectItem>
-                                                <SelectItem value="Luxor">الأقصر</SelectItem>
-                                                <SelectItem value="Matruh">مطروح</SelectItem>
-                                                <SelectItem value="Minya">المنيا</SelectItem>
-                                                <SelectItem value="Monufia">المنوفية</SelectItem>
-                                                <SelectItem value="Port Said">بورسعيد</SelectItem>
-                                                <SelectItem value="Qalyubia">القليوبية</SelectItem>
-                                                <SelectItem value="Qena">قنا</SelectItem>
-                                                <SelectItem value="Red Sea">البحر الأحمر</SelectItem>
-                                                <SelectItem value="Sharqia">الشرقية</SelectItem>
-                                                <SelectItem value="Sohag">سوهاج</SelectItem>
-                                                <SelectItem value="Suez">السويس</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    </FormControl>
-                                    <input
-                                        type="hidden"
-                                        name="Governorate"
-                                        value={field.value || ""}
-                                    />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="Address"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <div className="flex items-center justify-between">
-                                        <FormLabel>العنوان</FormLabel>
-                                        <FormMessage>
-                                            {state.errors?.Address || <span className="invisible">placeholder</span>}
-                                        </FormMessage>
-                                    </div>
-                                    <FormControl>
-                                        <Input placeholder="" {...field} />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                        <FormLabel>طريقة الدفع</FormLabel>
-                        <div className="flex gap-x-2 w-1/2 items-center p-4 border-2 border-purple-400 rounded-md">
-                            <label className="text-nowrap">الدفع عند الاستلام</label>
-                            <Input className='size-3/4' type='radio' value="cod" defaultChecked />
-                        </div>
-                        <FormField
-                            control={form.control}
-                            name="Notes"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>ملاحظات اضافية</FormLabel>
-                                    <FormControl>
-                                        <Textarea placeholder="" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <input
-                            type="hidden"
-                            name="cartItems"
-                            value={JSON.stringify(cartItems)}
-                        />
-                        <input type="hidden" name="userId" value={userId} />
-                        <div className="flex justify-start">
-                            <Button
-                                disabled={loading}
-                                className={`cursor-pointer w-full ${loading ? 'cursor-progress disabled:pointer-events-auto' : ''}`}
-                                type="submit">تاكيد</Button>
-                        </div>
-                    </form>
+    return (
+        <Form {...form} >
+            <form action={formAction} className="space-y-4 md:min-w-[30vw] md:max-w-[30vw] ">
+                <ShippingInfo shippingInfo={shippingInfo} />
+                <PaymentMethod />
+                <input type="hidden" name="userId" value={userId} />
+                <div className="flex justify-start">
+                    <Button
+                        disabled={loading}
+                        className={`cursor-pointer w-full ${loading ? 'cursor-progress disabled:pointer-events-auto' : ''}`}
+                        type="submit">تاكيد</Button>
                 </div>
-            </Form>
-            <Separator
-                orientation="vertical"
-                className="hidden md:block min-h-150"
-            />
-            <Separator orientation="horizontal" className="block md:hidden" />
-            <ProductData
-                cartItems={cartItems}
-                userId={userId}
-            />
-        </div>
+            </form>
+        </Form>
     )
 }
