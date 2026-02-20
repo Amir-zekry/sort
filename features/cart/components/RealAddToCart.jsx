@@ -6,7 +6,7 @@ import { toast } from "sonner"
 import { useActionState, useEffect } from "react"
 import { Loader } from "lucide-react"
 
-export default function RealAddToCart({ session, itemId }) {
+export default function RealAddToCart({ userId, itemId }) {
   const initialState = {}
   const [state, action, pending] = useActionState(addToCart, initialState)
 
@@ -22,7 +22,7 @@ export default function RealAddToCart({ session, itemId }) {
   return (
     <form action={action} className="w-full">
       <input type="hidden" value={itemId} name="itemId" />
-      <input type="hidden" value={session.user?.id} name="userId" />
+      <input type="hidden" value={userId} name="userId" />
       <Button
         disabled={pending}
         type='submit'

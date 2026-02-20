@@ -2,9 +2,7 @@ import { auth } from "@/features/authentications/utils/auth";
 import { LoginForm } from "@/features/authentications/components/login-form"
 import { redirect } from "next/navigation";
 
-export default async function LoginPage({ searchParams }) {
-  const { callbackUrl } = await searchParams
-  const url = callbackUrl || '/'
+export default async function LoginPage() {
   const session = await auth()
   if (session) {
     redirect('/')

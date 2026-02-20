@@ -16,10 +16,11 @@ import RealAddToCart from '@/features/cart/components/RealAddToCart'
 
 async function AddToCart({ id }) {
     const session = await auth()
+    const userId = session.user?.id
     return (
         <>
             {session ? (
-                <RealAddToCart session={session} itemId={id} />
+                <RealAddToCart userId={userId} itemId={id} />
             ) :
                 (
                     <AlertDialog>
