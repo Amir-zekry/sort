@@ -10,6 +10,6 @@ export async function getShippingInfo(userId) {
         })
         return shippingInfo
     } catch (error) {
-        throw error
+        throw new Error('an error occured while fetching shipping data')
     }
 }

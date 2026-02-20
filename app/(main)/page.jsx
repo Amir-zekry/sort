@@ -6,7 +6,6 @@ import Sort from "@/features/items/components/Sort";
 
 export default async function Home({ searchParams }) {
   const { category, sort, search } = await searchParams
-
   return (
     <div className="max-w-screen min-h-screen flex md:flex-row flex-col md:justify-center justify-start items-start mt-5 px-4 md:gap-x-5 gap-y-5">
       <Categories />
