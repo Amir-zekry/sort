@@ -2,12 +2,11 @@
 import { removeFromCart } from '@/features/cart/server/actions'
 import { Loader, X } from 'lucide-react'
 import { useActionState } from 'react'
-function RemoveAnItemButton({ itemId, userId }) {
+function RemoveAnItemButton({ itemId }) {
     const initialState = {}
     const [state, action, pending] = useActionState(removeFromCart, initialState)
     return (
         <form action={action}>
-            <input type='hidden' name='userId' value={userId} />
             <input type='hidden' name='itemId' value={itemId} />
             <button
                 disabled={pending}

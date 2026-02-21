@@ -8,7 +8,7 @@ import { useActionState } from "react"
 import ShippingInfo from "./shippingInfo"
 import PaymentMethod from "./PaymentMethod"
 
-export default function CheckoutForm({ userId, shippingInfo }) {
+export default function CheckoutForm({  shippingInfo }) {
 
     const form = useForm({
         defaultValues: {
@@ -27,7 +27,6 @@ export default function CheckoutForm({ userId, shippingInfo }) {
             <form action={formAction} className="space-y-4 md:min-w-[30vw] md:max-w-[30vw] ">
                 <ShippingInfo shippingInfo={shippingInfo} />
                 <PaymentMethod />
-                <input type="hidden" name="userId" value={userId} />
                 <div className="flex justify-start">
                     <Button
                         disabled={loading}

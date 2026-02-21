@@ -1,4 +1,5 @@
 'use server'
+import { auth } from "@/features/authentications/utils/auth";
 import { PrismaClient } from "@prisma/client";
 import { revalidatePath, updateTag } from "next/cache";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
@@ -8,10 +9,13 @@ import z from "zod";
 const db = new PrismaClient()
 
 export async function createOrder(state, formData) {
+    const session = await auth()
+    const userId = session?.user.id
+    if (!userId) return null
     try {
         // 1️⃣ Fetch cart securely from database
         const cart = await db.cart.findUnique({
-            where: { userId: formData.get('userId') },
+            where: { userId: userId },
             include: {
                 cartItems: {
                     include: {
@@ -72,7 +76,7 @@ export async function createOrder(state, formData) {
             })
 
             await tx.user.update({
-                where: { id: formData.get('userId') },
+                where: { id: userId },
                 data: {
                     shippingInformations: {
                         connect: { id: shippingInfoId },
@@ -87,21 +91,19 @@ export async function createOrder(state, formData) {
 
             return createdOrder
         })
-
-        // 4️⃣ Revalidate cart cache
-        updateTag(`cart:${formData.get('userId')}`)
-        // 5️⃣ Redirect to confirmation
         redirect(`/confirmation?orderId=${orderTransaction.id}`)
     } catch (error) {
         if (isRedirectError(error)) {
             throw error
         }
-        console.error(error)
         throw new Error('حدث خطأ اثناء انشاء طلبك')
     }
 }
 
 export async function CreateShippingInfo(state, formData) {
+    const session = await auth()
+    const userId = session?.user.id
+    if (!userId) return null
     const formSchema = z.object({
         FullName: z.string().min(1, "الاسم مطلوب"),
         PhoneNumber: z
@@ -109,7 +111,6 @@ export async function CreateShippingInfo(state, formData) {
             .regex(/^01[0125][0-9]{8}$/, "ادخل رقم هاتف مصري"),
         Address: z.string().min(1, "العنوان مطلوب"),
         Governorate: z.string().min(1, "المحافظة مطلوبة"),
-        userId: z.uuid(),
     })
 
     const parsedData = formSchema.safeParse({
@@ -117,7 +118,6 @@ export async function CreateShippingInfo(state, formData) {
         PhoneNumber: formData.get("PhoneNumber"),
         Address: formData.get("Address"),
         Governorate: formData.get("Governorate"),
-        userId: formData.get("userId"),
     })
 
     if (!parsedData.success) {
@@ -126,7 +126,7 @@ export async function CreateShippingInfo(state, formData) {
         }
     }
 
-    const { FullName, PhoneNumber, Address, Governorate, userId } = parsedData.data
+    const { FullName, PhoneNumber, Address, Governorate } = parsedData.data
     try {
         await db.shippingInformation.create({
             data: {
@@ -150,6 +150,9 @@ export async function CreateShippingInfo(state, formData) {
 }
 
 export async function createOrderWhenNoShippingInfo(state, formData) {
+    const session = await auth()
+    const userId = session?.user.id
+    if (!userId) return null
     const formSchema = z.object({
         FullName: z.string().min(1, "الاسم مطلوب"),
         PhoneNumber: z
@@ -157,7 +160,6 @@ export async function createOrderWhenNoShippingInfo(state, formData) {
             .regex(/^01[0125][0-9]{8}$/, "ادخل رقم هاتف مصري"),
         Address: z.string().min(1, "العنوان مطلوب"),
         Governorate: z.string().min(1, "المحافظة مطلوبة"),
-        userId: z.uuid(),
     })
 
     const parsedData = formSchema.safeParse({
@@ -165,7 +167,6 @@ export async function createOrderWhenNoShippingInfo(state, formData) {
         PhoneNumber: formData.get("PhoneNumber"),
         Address: formData.get("Address"),
         Governorate: formData.get("Governorate"),
-        userId: formData.get("userId"),
     })
 
     if (!parsedData.success) {
@@ -174,11 +175,11 @@ export async function createOrderWhenNoShippingInfo(state, formData) {
         }
     }
 
-    const { FullName, PhoneNumber, Address, Governorate, userId } = parsedData.data
+    const { FullName, PhoneNumber, Address, Governorate } = parsedData.data
     try {
         // 1️⃣ Fetch cart securely from database
         const cart = await db.cart.findUnique({
-            where: { userId: formData.get('userId') },
+            where: { userId: userId },
             include: {
                 cartItems: {
                     include: {
@@ -228,7 +229,7 @@ export async function createOrderWhenNoShippingInfo(state, formData) {
 
                     // Attach order to user
                     user: {
-                        connect: { id: formData.get('userId') },
+                        connect: { id: userId },
                     },
 
                     // create shipping info to order
@@ -269,10 +270,9 @@ export async function createOrderWhenNoShippingInfo(state, formData) {
             return createdOrder
         })
 
-        // 4️⃣ Revalidate cart cache
         revalidatePath('/')
-        // 5️⃣ Redirect to confirmation
         redirect(`/confirmation?orderId=${orderTransaction.id}`)
+        
     } catch (error) {
         if (isRedirectError(error)) {
             throw error

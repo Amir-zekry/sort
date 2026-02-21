@@ -7,7 +7,7 @@ import {
     CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import { ChevronDown } from 'lucide-react'
-function ProductData({ cartItems, userId }) {
+function ProductData({ cartItems }) {
     const deliveryFee = 45
     const subtotal = cartItems.reduce(
         (sum, ci) => sum + ci.item.price * ci.quantity,
@@ -43,9 +43,9 @@ function ProductData({ cartItems, userId }) {
                                     <p>ج.م</p>
                                 </div>
                                 <div >
-                                    <DecreaseQuantity cartItemId={ci.id} userId={userId} quantity={ci.quantity} />
+                                    <DecreaseQuantity cartItemId={ci.id} quantity={ci.quantity} />
                                     <span className='mx-2'>{ci.quantity}</span>
-                                    <IncreaseQuantity cartItemId={ci.id} userId={userId} />
+                                    <IncreaseQuantity cartItemId={ci.id} />
                                 </div>
                             </div>
                         </div>

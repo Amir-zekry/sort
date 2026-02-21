@@ -1,9 +1,13 @@
 'use server'
+import { auth } from "@/features/authentications/utils/auth";
 import { PrismaClient } from "@prisma/client";
 
 const db = new PrismaClient()
 
-export async function getShippingInfo(userId) {
+export async function getShippingInfo() {
+    const session = await auth()
+    const userId = session?.user.id
+    if (!userId) return null
     try {
         const shippingInfo = await db.shippingInformation.findMany({
             where: { userId: userId }

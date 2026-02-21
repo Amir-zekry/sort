@@ -1,4 +1,3 @@
-import { auth } from '@/features/authentications/utils/auth'
 import React from 'react'
 import CheckoutForm from '@/features/checkout/components/CheckoutForm'
 import { getCartItems } from '@/features/cart/server/data'
@@ -9,10 +8,8 @@ import { getShippingInfo } from '@/features/checkout/server/data'
 import CheckoutFormForNoShippingInfo from '@/features/checkout/components/checkoutFormForNoShippingInfo'
 
 async function page() {
-    const session = await auth()
-    const userId = session?.user?.id
-    const cartItems = await getCartItems(userId)
-    const shippingInfo = await getShippingInfo(userId)
+    const cartItems = await getCartItems()
+    const shippingInfo = await getShippingInfo()
 
     if (cartItems.length === 0) {
         return (
@@ -30,9 +27,9 @@ async function page() {
         <div className="flex md:flex-row flex-col-reverse min-h-screen justify-center md:items-start items-center gap-y-5 px-5 md:gap-x-10 py-10">
             <div className='flex flex-col gap-y-8 md:min-w-[40vw] md:max-w-[40vw] w-full md:items-end'>
                 {shippingInfo.length > 0 ? (
-                    <CheckoutForm userId={userId} shippingInfo={shippingInfo} />
+                    <CheckoutForm shippingInfo={shippingInfo} />
                 ) : (
-                    <CheckoutFormForNoShippingInfo userId={userId} />
+                    <CheckoutFormForNoShippingInfo />
                 )}
             </div>
             <Separator
@@ -40,7 +37,7 @@ async function page() {
                 className="hidden md:block min-h-150"
             />
             <Separator orientation="horizontal" className="block md:hidden" />
-            <ProductData cartItems={cartItems} userId={userId} />
+            <ProductData cartItems={cartItems} />
         </div>
     )
 }

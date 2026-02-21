@@ -3,14 +3,14 @@ import { Button } from "@/components/ui/button"
 import { decreaseCartItemQuantity } from "@/features/cart/server/actions"
 import { useTransition } from "react"
 import { Loader, Minus } from "lucide-react"
-function DecreaseQuantity({ cartItemId, userId, quantity }) {
+function DecreaseQuantity({ cartItemId, quantity }) {
     const [pending, startTransition] = useTransition()
     return (
         <Button
             className={`${quantity === 1 ? 'cursor-not-allowed disabled:pointer-events-auto' : ''} ${pending ? 'cursor-progress disabled:pointer-events-auto' : ''}`}
             disabled={pending || quantity === 1}
             onClick={() => startTransition(() => {
-                decreaseCartItemQuantity(cartItemId, userId)
+                decreaseCartItemQuantity(cartItemId)
             })}
         >
             {pending ? <Loader size={16} className="animate-spin" /> : <Minus size={16} />}

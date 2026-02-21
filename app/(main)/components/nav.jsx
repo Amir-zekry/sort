@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Menu } from 'lucide-react'
+import { Menu, ShoppingCart } from 'lucide-react'
 import Image from "next/image"
 import {
     Sheet,
@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/sheet"
 import Cart from "@/features/cart/components/Cart"
 import SearchBar from "@/features/items/components/Search"
-import { Suspense } from "react"
 import UserData from "@/features/authentications/components/User"
-async function Nav() {
+import { Suspense } from "react"
+function Nav() {
     return (
         <nav
             className="px-1 w-full py-1"
@@ -22,18 +22,20 @@ async function Nav() {
                 <Link href="/" className="flex items-center">
                     <Image src="/logo.png" width={48} height={48} alt="logo" />
                 </Link>
-                <Suspense fallback={null}>
-                    <div className="md:block hidden">
+                {/* <Suspense fallback={null}> */}
+                <div className="md:block hidden">
+                    <SearchBar />
+                </div>
+                {/* </Suspense> */}
+                <div className="flex items-center gap-x-4">
+                    {/* <Suspense fallback={null}> */}
+                    <div className="md:hidden">
                         <SearchBar />
                     </div>
-                </Suspense>
-                <div className="flex items-center gap-x-4">
-                    <Suspense fallback={null}>
-                        <div className="md:hidden">
-                            <SearchBar />
-                        </div>
-                    </Suspense>
+                    {/* </Suspense> */}
+                    <Suspense fallback={<ShoppingCart className="animate-pulse" size={24} />}>
                         <Cart />
+                    </Suspense>
                     <UserData />
                     <div className="md:hidden flex items-center gap-2">
                         <Sheet>

@@ -23,7 +23,7 @@ import { CreateShippingInfo } from "@/features/checkout/server/actions"
 import { useActionState, useEffect } from "react"
 import { toast } from "sonner"
 import { redirect } from "next/navigation"
-export default function ShippingInfoForm({ userId }) {
+export default function ShippingInfoForm() {
     const form = useForm({
         defaultValues: {
             FullName: '',
@@ -164,7 +164,6 @@ export default function ShippingInfoForm({ userId }) {
                         </FormItem>
                     )}
                 />
-                <input type="hidden" name="userId" value={userId} />
                 <div className="flex justify-start">
                     <Button
                         disabled={loading}

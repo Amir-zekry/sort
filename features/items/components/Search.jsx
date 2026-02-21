@@ -2,7 +2,7 @@
 
 import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { useDebouncedCallback } from 'use-debounce'
 import {
@@ -11,7 +11,6 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet'
-import { Button } from '@/components/ui/button'
 
 function SearchBar() {
     const pathname = usePathname()

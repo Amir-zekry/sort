@@ -1,11 +1,15 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
-import { updateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
+import { auth } from "@/features/authentications/utils/auth";
 
 const db = new PrismaClient()
 
 
-export async function increaseCartItemQuantity(cartItemId, userId) {
+export async function increaseCartItemQuantity(cartItemId) {
+    const session = await auth()
+    const userId = session?.user.id
+    if (!userId) return null
     try {
         await db.cartItem.update({
             where: {
@@ -17,12 +21,15 @@ export async function increaseCartItemQuantity(cartItemId, userId) {
                 },
             }
         })
-        updateTag(`cart:${userId}`)
+        revalidatePath('/')
     } catch (error) {
-        throw error
+        throw new Error('فشل')
     }
 }
-export async function decreaseCartItemQuantity(cartItemId, userId) {
+export async function decreaseCartItemQuantity(cartItemId) {
+    const session = await auth()
+    const userId = session?.user.id
+    if (!userId) return null
     try {
         await db.cartItem.update({
             where: {
@@ -37,14 +44,16 @@ export async function decreaseCartItemQuantity(cartItemId, userId) {
                 },
             }
         })
-        updateTag(`cart:${userId}`)
     } catch (error) {
         throw error
     }
 }
 export async function removeFromCart(state, formData) {
+    const session = await auth()
+    const userId = session?.user.id
+    if (!userId) return null
     const cart = await db.cart.findUnique({
-        where: { userId: formData.get('userId') },
+        where: { userId: userId },
         select: { id: true }
     })
     try {
@@ -54,23 +63,18 @@ export async function removeFromCart(state, formData) {
                 id: formData.get('itemId')
             }
         })
-        updateTag(`cart:${formData.get('userId')}`)
-        return {
-            success: true,
-            message: 'تم ازالة المنتج من العربه بنجاح'
-        }
     } catch (error) {
-        return {
-            success: false,
-            message: 'حدث خطا اثناء ازالة المنتج'
-        }
+        throw new Error('حدث خطأ اثناء الازاله من العربه')
     }
 }
 export async function addToCart(state, formData) {
+    const session = await auth()
+    const userId = session?.user.id
+    if (!userId) return null
     try {
         let cart = await db.cart.findUnique({
             where: {
-                userId: formData.get('userId'),
+                userId: userId,
             },
             select: {
                 cartItems: true,
@@ -81,7 +85,7 @@ export async function addToCart(state, formData) {
             cart = await db.cart.create({
                 data: {
                     user: {
-                        connect: { id: formData.get('userId') },
+                        connect: { id: userId },
                     },
                 },
                 select: {
@@ -106,7 +110,6 @@ export async function addToCart(state, formData) {
                 },
             },
         });
-        updateTag(`cart:${formData.get('userId')}`)
         return {
             success: true,
             message: "تمت إضافة العنصر إلى العربه بنجاح"

@@ -1,12 +1,14 @@
 'use server'
+import { auth } from "@/features/authentications/utils/auth";
 import { PrismaClient } from "@prisma/client";
-import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 const db = new PrismaClient()
 
-export async function getCartItems(userId) {
-    'use cache'
+export async function getCartItems() {
+
+    const session = await auth()
+    const userId = session?.user.id
     if (!userId) return null
-    cacheTag(`cart:${userId}`)
+
     const cart = await db.cart.findUnique({
         where: { userId },
         select: {

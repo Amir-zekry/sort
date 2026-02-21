@@ -1,5 +1,4 @@
 'use client'
-import React from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 function Categories() {
@@ -65,10 +64,9 @@ function Categories() {
                             className={`
                                 cursor-pointer
                                 transition-colors
-                                ${
-                                    isActive
-                                        ? 'text-purple-800 font-semibold'
-                                        : 'text-foreground hover:underline'
+                                ${isActive
+                                    ? 'text-purple-800 font-semibold'
+                                    : 'text-foreground hover:underline'
                                 }
                             `}
                         >

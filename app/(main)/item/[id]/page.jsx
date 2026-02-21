@@ -14,9 +14,9 @@ async function Item({ params }) {
     const { id } = await params
     return (
         <div className='space-y-2 relative'>
-            <Suspense fallback={<HeroSkeleton />}>
+            {/* <Suspense fallback={<HeroSkeleton />}>
                 <Hero itemId={id} />
-            </Suspense>
+            </Suspense> */}
             <Suspense fallback={<FeaturesSkeleton />}>
                 <Features itemId={id} />
             </Suspense>
@@ -28,7 +28,7 @@ async function Item({ params }) {
             </Suspense>
             <WhyUs />
             <Faq />
-            <CTA id={id} />
+            {/* <CTA id={id} /> */}
         </div>
     )
 }

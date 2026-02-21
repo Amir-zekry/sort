@@ -24,7 +24,7 @@ import { useActionState, useEffect } from "react"
 import { toast } from "sonner"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import PaymentMethod from "./PaymentMethod"
-function CheckoutFormForNoShippingInfo({ userId }) {
+function CheckoutFormForNoShippingInfo() {
     const form = useForm({
         defaultValues: {
             FullName: '',
@@ -169,8 +169,6 @@ function CheckoutFormForNoShippingInfo({ userId }) {
                                 </FormItem>
                             )}
                         />
-                        <input type="hidden" name="userId" value={userId} />
-
                     </CardContent >
                 </Card >
                 <PaymentMethod />

@@ -1,4 +1,3 @@
-import { auth } from '@/features/authentications/utils/auth'
 import { Empty } from '@/components/ui/empty'
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { ShoppingCart } from 'lucide-react'
@@ -12,15 +11,11 @@ import DecreaseQuantity from '@/features/cart/components/DecreaseQuantity'
 import RemoveAnItemButton from '@/features/cart/components/RemoveAnItemButton'
 
 async function Cart() {
-    const session = await auth()
-    const user = session?.user
-    const userId = user?.id
-    const cartItems = await getCartItems(userId)
+    const cartItems = await getCartItems()
     const count = cartItems?.length
     const total = cartItems?.reduce((sum, cartItem) => {
         return sum + cartItem.quantity * cartItem.item.price
     }, 45)
-    if (!session) return null
     return (
         <Sheet>
             <SheetTrigger className="relative">
@@ -49,7 +44,7 @@ async function Cart() {
                         {cartItems.map((cartItem) => (
                             <div key={cartItem.id} className="flex items-start justify-between p-2 border-b">
                                 <div className="w-16 h-16 border rounded-lg relative p-2">
-                                    <RemoveAnItemButton itemId={cartItem.id} userId={userId} />
+                                    <RemoveAnItemButton itemId={cartItem.id} />
                                     <div className="w-full h-full relative">
                                         <Image
                                             fill
@@ -63,9 +58,9 @@ async function Cart() {
                                 <div className='space-y-2'>
                                     <p className="font-medium justify-self-end">{cartItem.item.price * cartItem.quantity} ج.م</p>
                                     <div className="flex items-center">
-                                        <DecreaseQuantity cartItemId={cartItem.id} userId={userId} quantity={cartItem.quantity} />
+                                        <DecreaseQuantity cartItemId={cartItem.id} quantity={cartItem.quantity} />
                                         <span className='mx-2'>{cartItem.quantity}</span>
-                                        <IncreaseQuantity cartItemId={cartItem.id} userId={userId} />
+                                        <IncreaseQuantity cartItemId={cartItem.id} />
                                     </div>
                                 </div>
                             </div>

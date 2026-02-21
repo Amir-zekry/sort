@@ -26,6 +26,6 @@ export async function getProducts(category, sort, search) {
                     { createdAt: 'desc' }
         })
     } catch (error) {
-        throw new Error(`Failed to fetch items | cause: ${error.message}`)
+        throw new Error(`حدث خطأ اثناء عرض المنتجات`)
     }
 }

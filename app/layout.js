@@ -4,6 +4,7 @@ import TikTokPixel from "./TiktokPixel";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "@/components/ui/sonner";
+import Providers from "./Providers";
 
 const arabicFont = Cairo({
   subsets: ["arabic", "latin"],
@@ -24,7 +25,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${arabicFont.variable} antialiased`}
       >
-        {children}
+        <Providers>
+          {children}
+        </Providers>
         <TikTokPixel />
         <Analytics />
         <SpeedInsights />
