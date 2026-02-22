@@ -1,14 +1,13 @@
 'use server'
 import { auth } from "@/features/authentications/utils/auth";
 import { PrismaClient } from "@prisma/client";
+
 const db = new PrismaClient()
 
 export async function getCartItems() {
-
     const session = await auth()
-    const userId = session?.user.id
+    const userId = session?.user?.id
     if (!userId) return null
-
     const cart = await db.cart.findUnique({
         where: { userId },
         select: {

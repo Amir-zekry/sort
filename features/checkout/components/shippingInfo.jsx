@@ -1,8 +1,8 @@
 
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/app/components/ui/card'
 import { ShippingInfoSelector } from './shippingInfoSelector'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/app/components/ui/button'
 
 function ShippingInfo({ shippingInfo }) {
     return (

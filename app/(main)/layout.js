@@ -1,13 +1,14 @@
 import Nav from "@/app/(main)/components/nav";
 import Footer from "@/app/(main)/components/Footer";
 
-export default async function MainLayout({ children, searchParams }) {
+export default function MainLayout({ children }) {
   return (
-      <main className="max-w-screen">
-        <Nav />
+    <div className="min-h-screen flex flex-col">
+      <Nav />
+      <main className="flex-1 flex flex-col">
         {children}
-        <Footer />
       </main>
-
+      <Footer />
+    </div>
   );
 }

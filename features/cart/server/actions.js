@@ -1,6 +1,6 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
-import { revalidatePath } from "next/cache";
+import { refresh, revalidatePath } from "next/cache";
 import { auth } from "@/features/authentications/utils/auth";
 
 const db = new PrismaClient()
@@ -21,7 +21,7 @@ export async function increaseCartItemQuantity(cartItemId) {
                 },
             }
         })
-        revalidatePath('/')
+        refresh()
     } catch (error) {
         throw new Error('فشل')
     }
@@ -44,6 +44,7 @@ export async function decreaseCartItemQuantity(cartItemId) {
                 },
             }
         })
+        refresh()
     } catch (error) {
         throw error
     }
@@ -63,6 +64,7 @@ export async function removeFromCart(state, formData) {
                 id: formData.get('itemId')
             }
         })
+        refresh()
     } catch (error) {
         throw new Error('حدث خطأ اثناء الازاله من العربه')
     }
@@ -110,6 +112,7 @@ export async function addToCart(state, formData) {
                 },
             },
         });
+        refresh()
         return {
             success: true,
             message: "تمت إضافة العنصر إلى العربه بنجاح"

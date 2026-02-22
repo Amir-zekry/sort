@@ -22,17 +22,17 @@ function Nav() {
                 <Link href="/" className="flex items-center">
                     <Image src="/logo.png" width={48} height={48} alt="logo" />
                 </Link>
-                {/* <Suspense fallback={null}> */}
+                <Suspense fallback={null}>
                 <div className="md:block hidden">
                     <SearchBar />
                 </div>
-                {/* </Suspense> */}
+                </Suspense>
                 <div className="flex items-center gap-x-4">
-                    {/* <Suspense fallback={null}> */}
+                    <Suspense fallback={null}>
                     <div className="md:hidden">
                         <SearchBar />
                     </div>
-                    {/* </Suspense> */}
+                    </Suspense>
                     <Suspense fallback={<ShoppingCart className="animate-pulse" size={24} />}>
                         <Cart />
                     </Suspense>

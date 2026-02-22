@@ -2,7 +2,6 @@
 
 import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
-import { useState } from 'react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { useDebouncedCallback } from 'use-debounce'
 import {
@@ -14,11 +13,9 @@ import {
 
 function SearchBar() {
     const pathname = usePathname()
+    if (pathname != '/') return
     const searchParams = useSearchParams()
     const router = useRouter()
-
-    const [open, setOpen] = useState(false)
-    const [value, setValue] = useState('')
 
     const handelSearch = useDebouncedCallback((search) => {
         const params = new URLSearchParams(searchParams.toString())
@@ -31,13 +28,6 @@ function SearchBar() {
 
         router.push(`${pathname}?${params.toString()}`, { scroll: false })
     }, 300)
-
-    // Called when user presses Enter / Go
-    const submitSearch = () => {
-        handelSearch(value)
-        setOpen(false) // ✅ close sheet
-    }
-    if (pathname != '/') return
 
     return (
         <>
@@ -54,7 +44,7 @@ function SearchBar() {
 
             {/* Mobile */}
             <div className="md:hidden">
-                <Sheet open={open} onOpenChange={setOpen}>
+                <Sheet>
                     <SheetTrigger asChild>
                         <Search size={24} />
                     </SheetTrigger>
@@ -69,13 +59,7 @@ function SearchBar() {
                                 autoFocus
                                 type="search"
                                 placeholder="ابحث عن منتج"
-                                value={value}
-                                onChange={(e) => setValue(e.target.value)}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter') {
-                                        submitSearch()
-                                    }
-                                }}
+                                onChange={(e) => handelSearch(e.target.value)}
                                 className="pl-10 h-11"
                             />
                         </div>

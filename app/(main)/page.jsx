@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import ProductsSkeleton from "@/features/items/components/ProductsSkeleton";
 import Categories from "@/features/items/components/Categories";
 import Sort from "@/features/items/components/Sort";
+import SearchBar from "@/features/items/components/Search";
 
 export default async function Home({ searchParams }) {
   const { category, sort, search } = await searchParams

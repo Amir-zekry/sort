@@ -1,7 +1,7 @@
 "use client"
 
 import { useForm } from "react-hook-form"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/app/components/ui/button"
 import {
     Form,
     FormControl,
@@ -9,20 +9,20 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/app/components/ui/form"
+import { Input } from "@/app/components/ui/input"
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
+} from "@/app/components/ui/select"
+import { Textarea } from "@/app/components/ui/textarea"
 import { createOrderWhenNoShippingInfo } from "@/features/checkout/server/actions"
 import { useActionState, useEffect } from "react"
 import { toast } from "sonner"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card"
 import PaymentMethod from "./PaymentMethod"
 function CheckoutFormForNoShippingInfo() {
     const form = useForm({

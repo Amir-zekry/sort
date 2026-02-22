@@ -11,7 +11,7 @@ function Sort() {
     const router = useRouter()
     const searchParams = useSearchParams()
 
-    const activeSortOption = searchParams.get('sort') || 'recent'
+    const activeSortOption = searchParams.get('sort')
 
     function handleSortChange(sort) {
         const params = new URLSearchParams(searchParams.toString())
@@ -28,7 +28,6 @@ function Sort() {
             
             {/* Mobile Select */}
             <select
-                value={activeSortOption}
                 onChange={(e) => handleSortChange(e.target.value)}
                 className="
                     md:hidden
