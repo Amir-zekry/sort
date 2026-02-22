@@ -4,9 +4,9 @@ import {
     FieldDescription,
     FieldLabel,
     FieldTitle,
-} from "@/app/components/ui/field"
-import { RadioGroup, RadioGroupItem } from "@/app/components/ui/radio-group"
-import { ScrollArea } from "@/app/components/ui/scroll-area"
+} from "@/components/ui/field"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { ScrollArea } from "@/components/ui/scroll-area"
 export function ShippingInfoSelector({ shippingInfo }) {
     return (
         <ScrollArea className="h-96 w-full">

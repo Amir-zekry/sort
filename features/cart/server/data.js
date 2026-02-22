@@ -7,7 +7,7 @@ const db = new PrismaClient()
 export async function getCartItems() {
     const session = await auth()
     const userId = session?.user?.id
-    if (!userId) return null
+    if (!userId) return []
     const cart = await db.cart.findUnique({
         where: { userId },
         select: {

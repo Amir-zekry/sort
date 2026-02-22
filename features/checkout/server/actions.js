@@ -58,7 +58,7 @@ export async function createOrder(state, formData) {
 
                     // Attach order to user
                     user: {
-                        connect: { id: formData.get('userId') },
+                        connect: { id: userId },
                     },
 
                     // connect shipping info to order
