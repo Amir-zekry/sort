@@ -6,10 +6,15 @@ import ProductData from '@/features/checkout/components/ProductData'
 import { Separator } from '@/components/ui/separator'
 import { getShippingInfo } from '@/features/checkout/server/data'
 import CheckoutFormForNoShippingInfo from '@/features/checkout/components/checkoutFormForNoShippingInfo'
+import { auth } from '@/features/authentications/utils/auth'
+import { redirect } from 'next/navigation'
 
 async function page() {
+    const session = await auth()
     const cartItems = await getCartItems()
     const shippingInfo = await getShippingInfo()
+
+    if (!session) redirect('/')
 
     if (cartItems.length === 0) {
         return (
@@ -24,20 +29,14 @@ async function page() {
     }
 
     return (
-        <div className="flex md:flex-row flex-col-reverse min-h-screen justify-center md:items-start items-center gap-y-5 px-5 md:gap-x-10 py-10">
-            <div className='flex flex-col gap-y-8 md:min-w-[40vw] md:max-w-[40vw] w-full md:items-end'>
-                {shippingInfo.length > 0 ? (
-                    <CheckoutForm shippingInfo={shippingInfo} />
-                ) : (
-                    <CheckoutFormForNoShippingInfo />
-                )}
-            </div>
-            <Separator
-                orientation="vertical"
-                className="hidden md:block min-h-150"
-            />
-            <Separator orientation="horizontal" className="block md:hidden" />
+        <div className='flex flex-col md:flex-row-reverse min-h-screen h-auto md:justify-center md:items-start gap-y-4 md:p-0 p-5 relative'>
             <ProductData cartItems={cartItems} />
+            {shippingInfo.length > 0 ? (
+                <CheckoutForm shippingInfo={shippingInfo} />
+            ) : (
+                <CheckoutFormForNoShippingInfo />
+            )}
+
         </div>
     )
 }

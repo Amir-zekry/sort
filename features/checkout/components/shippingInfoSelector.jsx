@@ -9,8 +9,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { ScrollArea } from "@/components/ui/scroll-area"
 export function ShippingInfoSelector({ shippingInfo }) {
     return (
-        <ScrollArea className="h-96 w-full">
-            <RadioGroup name="shippingInfoId" className="max-w-sm" dir='rtl'>
+        <ScrollArea className={'h-80'}>
+            <RadioGroup name="shippingInfoId" className="grid grid-rows-2" dir='rtl'>
                 {shippingInfo.map((info) => (
                     <FieldLabel htmlFor={info.id} key={info.id}>
                         <Field orientation="horizontal">

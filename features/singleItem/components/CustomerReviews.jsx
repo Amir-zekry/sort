@@ -13,6 +13,7 @@ import {
 import { getReviews } from "@/features/singleItem/server/data"
 import Link from "next/link"
 import CustomerReviewsH1 from "./CustomerReviewsH1"
+import * as motion from "motion/react-client"
 
 
 
@@ -38,34 +39,48 @@ export default async function CustomerReviews({ id }) {
         </section>
     )
     return (
-        <section className="md:w-3/4 w-full mx-auto px-4 py-10 space-y-2">
+        <section className="md:w-3/4 mx-auto px-4 py-10 space-y-2">
             <CustomerReviewsH1 />
             <div className="space-y-2">
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-4 grid-cols-1">
                     {reviews.map((review) => (
-                        <Card key={review.name} className="hover:shadow-lg transition-shadow duration-300">
-                            <CardHeader className="flex flex-row items-center gap-3">
-                                <Avatar>
-                                    <AvatarImage src={review.image} alt={review.name} />
-                                    <AvatarFallback>{review.name[0]}</AvatarFallback>
-                                </Avatar>
-                                <div>
-                                    <CardTitle className="text-lg">{review.name}</CardTitle>
-                                    <div className="flex items-center gap-1 mt-1">
-                                        {Array.from({ length: 5 }).map((_, i) => (
-                                            <Star
-                                                key={i}
-                                                size={16}
-                                                className={i < review.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}
-                                            />
-                                        ))}
+                        <motion.div
+                            initial={{ y: 40, scale: 0.9, opacity: 0 }}
+                            whileInView={{ y: 0, scale: 1, opacity: 1 }}
+                            whileHover={{
+                                scale: 1.05,
+                            }}
+                            transition={{
+                                duration: 1,
+                                type: 'spring',
+                                stiffness: 100
+                            }}
+                            key={review.name}
+                        >
+                            <Card >
+                                <CardHeader className="flex flex-row items-center gap-3">
+                                    <Avatar>
+                                        <AvatarImage src={review.image} alt={review.name} />
+                                        <AvatarFallback>{review.name[0]}</AvatarFallback>
+                                    </Avatar>
+                                    <div>
+                                        <CardTitle className="text-lg">{review.name}</CardTitle>
+                                        <div className="flex items-center gap-1 mt-1">
+                                            {Array.from({ length: 5 }).map((_, i) => (
+                                                <Star
+                                                    key={i}
+                                                    size={16}
+                                                    className={i < review.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}
+                                                />
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-sm text-muted-foreground">{review.opinion}</p>
-                            </CardContent>
-                        </Card>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-sm text-muted-foreground">{review.opinion}</p>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
                     ))}
                 </div>
                 <Link
@@ -75,6 +90,6 @@ export default async function CustomerReviews({ id }) {
                     قيم المنتج <ArrowUpLeft />
                 </Link>
             </div>
-        </section>
+        </section >
     )
 }
