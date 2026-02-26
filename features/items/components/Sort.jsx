@@ -1,5 +1,13 @@
 'use client'
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import {
+    Field,
+    FieldContent,
+    FieldDescription,
+    FieldLabel,
+    FieldTitle,
+} from "@/components/ui/field"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 function Sort() {
     const sortOptions = [
@@ -11,7 +19,7 @@ function Sort() {
     const router = useRouter()
     const searchParams = useSearchParams()
 
-    const activeSortOption = searchParams.get('sort')
+    const activeSortOption = searchParams.get('sort') || 'recent'
 
     function handleSortChange(sort) {
         const params = new URLSearchParams(searchParams.toString())
@@ -23,10 +31,26 @@ function Sort() {
         router.push(`${pathname}?${params.toString()}`)
     }
     return (
+
         <div className="w-full md:w-32">
-            <h2 className='text-muted-foreground hidden md:block'>ترتيب حسب</h2>
-            
-            {/* Mobile Select */}
+            <RadioGroup
+                value={activeSortOption}
+                onValueChange={(value) => handleSortChange(value)}
+                className="max-w-sm hidden md:block space-y-1"
+            >
+                {sortOptions.map((option) => (
+                    <FieldLabel htmlFor={option.label} key={option.label}>
+                        <Field orientation="horizontal">
+                            <FieldContent>
+                                <FieldTitle>{option.label}</FieldTitle>
+                            </FieldContent>
+                            <RadioGroupItem value={option.value} id={option.label} key={option.value} />
+                        </Field>
+                    </FieldLabel>
+                ))}
+
+            </RadioGroup>
+
             <select
                 onChange={(e) => handleSortChange(e.target.value)}
                 className="
@@ -46,30 +70,6 @@ function Sort() {
                     </option>
                 ))}
             </select>
-            {/* Desktop List */}
-            <ul className="hidden md:flex flex-col gap-3 mt-4 text-sm">
-                {sortOptions.map((option) => {
-                    const isActive = activeSortOption === option.value
-
-                    return (
-                        <li
-                            key={option.value}
-                            onClick={() => handleSortChange(option.value)}
-                            className={`
-                                cursor-pointer
-                                transition-colors
-                                ${isActive
-                                    ? 'text-purple-800 font-semibold'
-                                    : 'text-foreground hover:underline'
-                                }
-                            `}
-                        >
-                            {option.label}
-                        </li>
-                    )
-                })}
-            </ul>
-
         </div>
     )
 }

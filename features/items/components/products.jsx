@@ -10,7 +10,7 @@ async function Products({ category, sort, search }) {
     return (
         <div className='grid grid-cols-1 md:grid-cols-3 gap-4 w-full'>
             {products.map((product) => (
-                <Link key={product.id} href={`/item/${product.id}`}>
+                <Link key={product.id} href={`item/${product.id}`}>
                     <Card className='hover:border-purple-500 cursor-pointer'>
                         <CardContent className='flex justify-center items-center'>
                             <div className="relative w-72 h-72">

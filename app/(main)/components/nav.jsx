@@ -9,9 +9,9 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import Cart from "@/features/cart/components/Cart"
 import SearchBar from "@/features/items/components/Search"
 import UserData from "@/features/authentications/components/User"
+import Cart from "@/features/cart/components/Cart"
 import { Suspense } from "react"
 function Nav() {
     return (
@@ -23,17 +23,17 @@ function Nav() {
                     <Image src="/logo.png" width={48} height={48} alt="logo" />
                 </Link>
                 <Suspense fallback={null}>
-                <div className="md:block hidden">
-                    <SearchBar />
-                </div>
+                    <div className="md:block hidden">
+                        <SearchBar />
+                    </div>
                 </Suspense>
                 <div className="flex items-center gap-x-4">
                     <Suspense fallback={null}>
-                    <div className="md:hidden">
-                        <SearchBar />
-                    </div>
+                        <div className="md:hidden">
+                            <SearchBar />
+                        </div>
                     </Suspense>
-                    <Suspense fallback={<ShoppingCart className="animate-pulse" size={24} />}>
+                    <Suspense fallback={<ShoppingCart size={24} className="animate-pulse" />}>
                         <Cart />
                     </Suspense>
                     <UserData />
