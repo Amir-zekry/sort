@@ -1,18 +1,11 @@
 'use client'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import {
-    Field,
-    FieldContent,
-    FieldDescription,
-    FieldLabel,
-    FieldTitle,
-} from "@/components/ui/field"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { ChevronDown } from 'lucide-react'
 import { Label } from '@/components/ui/label'
 
-function Categories() {
+function CategoriesMobile() {
     const categories = [
         { label: 'الكل', value: 'all' },
         { label: 'عربيتك', value: 'car' },
@@ -22,6 +15,9 @@ function Categories() {
     ]
 
     const pathname = usePathname()
+    if (pathname != '/') {
+        return null
+    }
     const router = useRouter()
     const searchParams = useSearchParams()
 
@@ -39,24 +35,26 @@ function Categories() {
     }
 
     return (
-        <RadioGroup
-            value={activeCategory}
-            onValueChange={(value) => handleCategoryChange(value)}
-            className="w-full md:w-32 sticky top-5 max-w-sm hidden md:block space-y-1"
-        >
-            {categories.map((category) => (
-                <FieldLabel htmlFor={category.label} key={category.label}>
-                    <Field orientation="horizontal">
-                        <FieldContent>
-                            <FieldTitle>{category.label}</FieldTitle>
-                        </FieldContent>
-                        <RadioGroupItem value={category.value} id={category.label} key={category.value} />
-                    </Field>
-                </FieldLabel>
-            ))}
-
-        </RadioGroup>
+        <Collapsible>
+            <CollapsibleTrigger className='flex items-center justify-between w-full mb-2'>
+                الفئات <ChevronDown />
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+                <RadioGroup
+                    dir='rtl'
+                    value={activeCategory}
+                    onValueChange={(value) => handleCategoryChange(value)}
+                >
+                    {categories.map((category) => (
+                        <div key={category.label} className="flex items-center gap-3">
+                            <RadioGroupItem value={category.value} id={category.label} key={category.value} />
+                            <Label htmlFor={category.label}>{category.label}</Label>
+                        </div>
+                    ))}
+                </RadioGroup>
+            </CollapsibleContent>
+        </Collapsible>
     )
 }
 
-export default Categories
+export default CategoriesMobile

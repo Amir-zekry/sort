@@ -30,43 +30,15 @@ function SearchBar() {
     }, 300)
 
     return (
-        <>
-            {/* Desktop */}
-            <div className="relative hidden md:block md:w-96">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-                <Input
-                    type="text"
-                    placeholder="ابحث عن منتج"
-                    onChange={(e) => handelSearch(e.target.value)}
-                    className="pl-10 h-11"
-                />
-            </div>
-
-            {/* Mobile */}
-            <div className="md:hidden">
-                <Sheet>
-                    <SheetTrigger asChild>
-                        <Search size={24} />
-                    </SheetTrigger>
-
-                    <SheetContent side="right" className="pt-10">
-                        <SheetTitle />
-
-                        <div className="relative mx-4">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-
-                            <Input
-                                autoFocus
-                                type="search"
-                                placeholder="ابحث عن منتج"
-                                onChange={(e) => handelSearch(e.target.value)}
-                                className="pl-10 h-11"
-                            />
-                        </div>
-                    </SheetContent>
-                </Sheet>
-            </div>
-        </>
+        <div className="relative md:w-96">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+            <Input
+                type="text"
+                placeholder="ابحث عن منتج"
+                onChange={(e) => handelSearch(e.target.value)}
+                className="pl-10 h-11"
+            />
+        </div>
     )
 }
 

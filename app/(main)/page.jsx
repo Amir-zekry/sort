@@ -3,25 +3,19 @@ import { Suspense } from "react";
 import ProductsSkeleton from "@/features/items/components/ProductsSkeleton";
 import Categories from "@/features/items/components/Categories";
 import Sort from "@/features/items/components/Sort";
-import SearchBar from "@/features/items/components/Search";
 
 export default async function Home({ searchParams }) {
   const { category, sort, search } = await searchParams
   return (
-    <div className="max-w-screen min-h-screen flex md:flex-row flex-col md:justify-center justify-start items-start mt-5 px-4 md:gap-x-5 gap-y-5">
+    <div className="max-w-screen min-h-screen flex md:flex-row flex-col md:justify-center justify-start items-start my-5 px-4 md:gap-x-5 gap-y-5 relative">
       <Categories />
-      <div className="md:hidden w-full">
-        <Sort />
-      </div>
       <Suspense
         key={[category, sort, search]}
         fallback={<ProductsSkeleton />}
       >
         <Products category={category} sort={sort} search={search} />
       </Suspense>
-      <div className="hidden md:block">
-        <Sort />
-      </div>
+      <Sort />
     </div>
   );
 }

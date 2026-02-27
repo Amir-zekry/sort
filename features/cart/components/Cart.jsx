@@ -9,6 +9,7 @@ import Link from 'next/link'
 import IncreaseQuantity from '@/features/cart/components/IncreaseQuantity'
 import DecreaseQuantity from '@/features/cart/components/DecreaseQuantity'
 import RemoveAnItemButton from '@/features/cart/components/RemoveAnItemButton'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 async function Cart() {
     const cartItems = await getCartItems()
@@ -40,7 +41,7 @@ async function Cart() {
                             عربة التسوق
                         </SheetTitle>
                     </SheetHeader>
-                    <div>
+                    <ScrollArea className={'h-120'} dir='rtl'>
                         {cartItems.map((cartItem) => (
                             <div key={cartItem.id} className="flex items-start justify-between p-2 border-b">
                                 <div className="w-16 h-16 border rounded-lg relative p-2">
@@ -65,7 +66,7 @@ async function Cart() {
                                 </div>
                             </div>
                         ))}
-                    </div>
+                    </ScrollArea>
                     <SheetFooter>
                         <div className='flex justify-between items-center'>
                             <p>التوصيل</p>

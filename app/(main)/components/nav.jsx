@@ -4,7 +4,6 @@ import Image from "next/image"
 import {
     Sheet,
     SheetContent,
-    SheetDescription,
     SheetHeader,
     SheetTitle,
     SheetTrigger,
@@ -13,6 +12,8 @@ import SearchBar from "@/features/items/components/Search"
 import UserData from "@/features/authentications/components/User"
 import Cart from "@/features/cart/components/Cart"
 import { Suspense } from "react"
+import CategoriesMobile from "@/features/items/components/categoriesMobile"
+import SortMobile from "@/features/items/components/sortMobile"
 function Nav() {
     return (
         <nav
@@ -28,28 +29,26 @@ function Nav() {
                     </div>
                 </Suspense>
                 <div className="flex items-center gap-x-4">
-                    <Suspense fallback={null}>
-                        <div className="md:hidden">
-                            <SearchBar />
-                        </div>
-                    </Suspense>
+
                     <Suspense fallback={<ShoppingCart size={24} className="animate-pulse" />}>
                         <Cart />
                     </Suspense>
                     <UserData />
-                    <div className="md:hidden flex items-center gap-2">
-                        <Sheet>
-                            <SheetTrigger asChild>
-                                <Menu size={24} />
-                            </SheetTrigger>
-                            <SheetContent side="right" className="w-64">
-                                <SheetHeader>
-                                    <SheetTitle>القائمة</SheetTitle>
-                                    <SheetDescription>تصفح الموقع</SheetDescription>
-                                </SheetHeader>
-                            </SheetContent>
-                        </Sheet>
-                    </div>
+                    <Sheet>
+                        <SheetTrigger className='md:hidden' asChild>
+                            <Menu size={24} />
+                        </SheetTrigger>
+                        <SheetContent side="right" className="w-64">
+                            <SheetHeader>
+                                <SheetTitle />
+                            </SheetHeader>
+                            <Suspense fallback={null}>
+                                <SearchBar />
+                            </Suspense>
+                            <CategoriesMobile />
+                            <SortMobile />
+                        </SheetContent>
+                    </Sheet>
                 </div>
             </div>
         </nav>
