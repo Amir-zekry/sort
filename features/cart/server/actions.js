@@ -2,6 +2,8 @@
 import { PrismaClient } from "@prisma/client";
 import { refresh, revalidatePath, updateTag } from "next/cache";
 import { auth } from "@/features/authentications/utils/auth";
+import { redirect } from "next/navigation";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 const db = new PrismaClient()
 
@@ -122,5 +124,54 @@ export async function addToCart(state, formData) {
             success: false,
             message: "حدث خطأ أثناء إضافة العنصر إلى العربه"
         }
+    }
+}
+export async function buyNow(id) {
+    const session = await auth()
+    const userId = session?.user.id
+    if (!userId) return null
+    try {
+        let cart = await db.cart.findUnique({
+            where: {
+                userId: userId,
+            },
+            select: {
+                cartItems: true,
+                id: true,
+            }
+        });
+        if (!cart) {
+            cart = await db.cart.create({
+                data: {
+                    user: {
+                        connect: { id: userId },
+                    },
+                },
+                select: {
+                    cartItems: true,
+                    id: true,
+                }
+            });
+        }
+        if (cart.cartItems.some(ci => ci.itemId === id)) {
+            redirect('/checkout')
+        }
+        await db.cartItem.create({
+            data: {
+                cart: {
+                    connect: { id: cart.id },
+                },
+                item: {
+                    connect: { id: id },
+                },
+            },
+        });
+        updateTag(`cart:${userId}`)
+        redirect('/checkout')
+    } catch (error) {
+        if (isRedirectError(error)) {
+            throw error
+        }
+        throw new Error("حدث خطأ اثناء عملية الشراء")
     }
 }

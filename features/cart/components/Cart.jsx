@@ -87,7 +87,7 @@ async function Cart() {
                                     />
                                 </div>
                             </div>
-                            <h3 className="font-medium text-sm max-w-36 truncate">{cartItem.item.name}</h3>
+                            <h3 className="font-medium text-sm max-w-24 truncate">{cartItem.item.name}</h3>
                             <div className='space-y-2'>
                                 <p className="font-medium justify-self-end">{cartItem.item.price * cartItem.quantity} ج.م</p>
                                 <div className="flex items-center">

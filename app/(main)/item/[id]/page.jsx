@@ -26,8 +26,6 @@ import AddToCart from '@/features/cart/components/AddToCart'
 import BuyNowSkeleton from '@/features/singleItem/skeletons/BuyNowSkeleton'
 import { Skeleton } from '@/components/ui/skeleton'
 
-
-
 export async function generateStaticParams() {
     const items = await getAllItems()
     return items.map((item) => ({ id: item.id }))
@@ -66,11 +64,9 @@ async function Page({ params }) {
                     <h1 className="text-3xl md:text-5xl font-bold md:text-right text-center">
                         {item.name}
                     </h1>
-
                     <p className="text-sm md:text-lg opacity-90 md:text-right text-center">
                         {item.discription}
                     </p>
-
                     <div className="grid grid-cols-3 gap-2">
                         <Link href="#features">
                             <Button className={'w-full'}>
