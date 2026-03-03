@@ -1,23 +1,24 @@
 'use server'
-import { auth } from "@/features/authentications/utils/auth";
 import { PrismaClient } from "@prisma/client";
+import { cacheTag } from "next/cache";
 
 const db = new PrismaClient()
 
-export async function getCartItems() {
-    const session = await auth()
-    const userId = session?.user?.id
-    if (!userId) return []
-    const cart = await db.cart.findUnique({
-        where: { userId },
-        select: {
-            id: true
-        }
-    })
+export async function getCartItems(userId) {
+    'use cache'
+    cacheTag(`cart:${userId}`)
+    if (!userId) return 'no user'
     try {
-        return await db.cartItem.findMany({
+        const cart = await db.cart.findUnique({
+            where: { userId },
+            select: {
+                id: true
+            }
+        })
+        if (!cart) return []
+        const cartItems = await db.cartItem.findMany({
             where: {
-                cartId: cart?.id  // here i'm adding the "?" for a very niche use which is if the user didn't add any items yet to the cart the cart won't actylly be there (check addToCart logic)
+                cartId: cart.id
             },
             select: {
                 item: {
@@ -35,7 +36,8 @@ export async function getCartItems() {
                 itemId: 'asc'
             }
         })
+        return cartItems
     } catch (error) {
-        throw new Error(`Error fetching cart items | cause: ${error.message}`)
+        throw new Error(`حدث خطا اثناء جلب بيانات عربة التسوق`)
     }
 }

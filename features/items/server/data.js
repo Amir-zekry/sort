@@ -1,11 +1,11 @@
 'use server'
 import { PrismaClient } from "@prisma/client";
-import { cacheTag } from "next/cache";
+import { cacheLife } from "next/cache";
 const db = new PrismaClient()
 
-export async function getProducts(category, sort, search) {
+export async function getProductsByCategory(slug) {
     'use cache'
-    cacheTag('items')
+    cacheLife('days')
     try {
         return await db.item.findMany({
             select: {
@@ -15,15 +15,8 @@ export async function getProducts(category, sort, search) {
                 image: true
             },
             where: {
-                catergory: category,
-                name: {
-                    contains: search,
-                    mode: 'insensitive'
-                }
-            },
-            orderBy: sort === 'low price' ? { price: 'asc' } :
-                sort === 'high price' ? { price: 'desc' } :
-                    { createdAt: 'desc' }
+                catergory: slug
+            }
         })
     } catch (error) {
         throw new Error(`حدث خطأ اثناء عرض المنتجات`)

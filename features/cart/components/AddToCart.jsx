@@ -16,16 +16,15 @@ import RealAddToCart from '@/features/cart/components/RealAddToCart'
 
 async function AddToCart({ id }) {
     const session = await auth()
-    const userId = session?.user?.id
     return (
         <>
             {session ? (
-                <RealAddToCart userId={userId} itemId={id} />
+                <RealAddToCart itemId={id} />
             ) :
                 (
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
-                            <Button className="cursor-pointer py-2 rounded-lg font-semibold tracking-wide shadow-md shadow-red-500 hover:scale-95">
+                            <Button>
                                 اضافه الي العربه
                             </Button>
                         </AlertDialogTrigger>

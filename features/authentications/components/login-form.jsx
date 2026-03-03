@@ -15,12 +15,16 @@ import Link from "next/link"
 import { useActionState, useEffect } from "react"
 import { authenticate } from "@/features/authentications/server/actions"
 import { toast } from "sonner"
-import { Progress } from "@/components/ui/progress"
 import Image from "next/image"
-import { useSearchParams } from "next/navigation"
+import { redirect, useSearchParams } from "next/navigation"
 import { Loader } from "lucide-react"
+import { useSession } from 'next-auth/react'
 
 export function LoginForm({ className, ...props }) {
+  // const session = useSession()
+  // if (!session) {
+  //   redirect('/')
+  // }
   const searchParams = useSearchParams()
   const phoneFromUrl = searchParams.get('phone') || ''
   const initialState = {

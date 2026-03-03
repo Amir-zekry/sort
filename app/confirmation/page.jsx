@@ -1,15 +1,17 @@
 import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
-import React from "react"
+import React, { Suspense } from "react"
 import { FaTiktok, FaWhatsapp } from "react-icons/fa"
 import OrderId from "./OrderId"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default async function ConfirmationPage({ searchParams }) {
-    const { orderId } = await searchParams
     return (
         <div className="flex flex-col justify-center items-center h-screen text-center gap-y-4">
             <h1 className="text-2xl font-bold text-green-600">شكراً لطلبك!</h1>
-            <OrderId orderId={orderId} />
+            <Suspense fallback={<Skeleton className="h-8 w-48" />}>
+                <OrderId searchParams={searchParams} />
+            </Suspense>
             <p className="text-gray-600">
                 خلال 24 ساعه هيتم التواصل معاك لتأكيد الطلب، وبعدها الشحن بيتم في خلال من 2 لـ 5 أيام عمل حسب محافظتك .
             </p>

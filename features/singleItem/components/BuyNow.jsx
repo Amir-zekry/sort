@@ -16,16 +16,15 @@ import RealBuyNow from './RealBuyNow'
 
 async function BuyNow({ id }) {
     const session = await auth()
-    const userId = session?.user?.id
     return (
         <>
             {session ? (
-                <RealBuyNow userId={userId} itemId={id} />
+                <RealBuyNow itemId={id} />
             ) :
                 (
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
-                            <Button className="cursor-pointer rounded-lg font-semibold tracking-wide shadow-md shadow-red-500 hover:scale-95">
+                            <Button >
                                 اشتري دلوقتي
                             </Button>
                         </AlertDialogTrigger>

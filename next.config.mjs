@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    experimental: {
-        useCache: true
-    },
     images: {
         remotePatterns: [
             {
@@ -10,8 +7,13 @@ const nextConfig = {
                 hostname: 'res.cloudinary.com',
                 pathname: '/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'cdn.dummyjson.com',
+            },
         ]
     },
+    cacheComponents: true
 };
 
 export default nextConfig;

@@ -10,9 +10,49 @@ import IncreaseQuantity from '@/features/cart/components/IncreaseQuantity'
 import DecreaseQuantity from '@/features/cart/components/DecreaseQuantity'
 import RemoveAnItemButton from '@/features/cart/components/RemoveAnItemButton'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import { auth } from '@/features/authentications/utils/auth'
 
 async function Cart() {
-    const cartItems = await getCartItems()
+    const session = await auth()
+    const userId = session?.user?.id
+    const cartItems = await getCartItems(userId)
+    if (cartItems === 'no user') {
+        return (
+            <AlertDialog>
+                <AlertDialogTrigger>
+                    <ShoppingCart size={24} />
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader dir='rtl'>
+                        <AlertDialogTitle> من فضلك قم بتسجيل الدخول لاستخدام هذه الميزه</AlertDialogTitle>
+                        <Link href={'/login'}>
+                            <Button>تسجيل الدخول</Button>
+                        </Link>
+                    </AlertDialogHeader>
+                </AlertDialogContent>
+            </AlertDialog>
+        )
+    }
+    if (cartItems.length === 0) {
+        return (
+            <Sheet>
+                <SheetTrigger className="relative">
+                    <ShoppingCart size={24} />
+                </SheetTrigger>
+                <SheetContent>
+                    <SheetHeader>
+                        <SheetTitle className='justify-center flex'>
+                            عربة التسوق
+                        </SheetTitle>
+                    </SheetHeader>
+                    <Empty>
+                        <p>عربة التسوق فارغة</p>
+                    </Empty>
+                </SheetContent>
+            </Sheet>
+        )
+    }
     const count = cartItems?.length
     const total = cartItems?.reduce((sum, cartItem) => {
         return sum + cartItem.quantity * cartItem.item.price
@@ -27,65 +67,56 @@ async function Cart() {
                     </span>
                 }
             </SheetTrigger>
-            {cartItems.length === 0 ? (
-                <SheetContent>
-                    <SheetTitle />
-                    <Empty>
-                        العربه فارغه
-                    </Empty>
-                </SheetContent>
-            ) : (
-                <SheetContent>
-                    <SheetHeader>
-                        <SheetTitle className='justify-center flex'>
-                            عربة التسوق
-                        </SheetTitle>
-                    </SheetHeader>
-                    <ScrollArea className={'h-120'} dir='rtl'>
-                        {cartItems.map((cartItem) => (
-                            <div key={cartItem.id} className="flex items-start justify-between p-2 border-b">
-                                <div className="w-16 h-16 border rounded-lg relative p-2">
-                                    <RemoveAnItemButton itemId={cartItem.id} />
-                                    <div className="w-full h-full relative">
-                                        <Image
-                                            fill
-                                            src={cartItem.item.image}
-                                            alt={cartItem.item.name}
-                                            className="object-contain"
-                                        />
-                                    </div>
-                                </div>
-                                <h3 className="font-medium text-sm max-w-36 truncate">{cartItem.item.name}</h3>
-                                <div className='space-y-2'>
-                                    <p className="font-medium justify-self-end">{cartItem.item.price * cartItem.quantity} ج.م</p>
-                                    <div className="flex items-center">
-                                        <DecreaseQuantity cartItemId={cartItem.id} quantity={cartItem.quantity} />
-                                        <span className='mx-2'>{cartItem.quantity}</span>
-                                        <IncreaseQuantity cartItemId={cartItem.id} />
-                                    </div>
+            <SheetContent>
+                <SheetHeader>
+                    <SheetTitle className='justify-center flex'>
+                        عربة التسوق
+                    </SheetTitle>
+                </SheetHeader>
+                <ScrollArea className={'h-120'} dir='rtl'>
+                    {cartItems.map((cartItem) => (
+                        <div key={cartItem.id} className="flex items-start justify-between p-2 border-b">
+                            <div className="w-16 h-16 border rounded-lg relative p-2">
+                                <RemoveAnItemButton itemId={cartItem.id} />
+                                <div className="w-full h-full relative">
+                                    <Image
+                                        fill
+                                        src={cartItem.item.image}
+                                        alt={cartItem.item.name}
+                                        className="object-contain"
+                                    />
                                 </div>
                             </div>
-                        ))}
-                    </ScrollArea>
-                    <SheetFooter>
-                        <div className='flex justify-between items-center'>
-                            <p>التوصيل</p>
-                            <p>45 ج.م</p>
+                            <h3 className="font-medium text-sm max-w-36 truncate">{cartItem.item.name}</h3>
+                            <div className='space-y-2'>
+                                <p className="font-medium justify-self-end">{cartItem.item.price * cartItem.quantity} ج.م</p>
+                                <div className="flex items-center">
+                                    <DecreaseQuantity cartItemId={cartItem.id} quantity={cartItem.quantity} />
+                                    <span className='mx-2'>{cartItem.quantity}</span>
+                                    <IncreaseQuantity cartItemId={cartItem.id} />
+                                </div>
+                            </div>
                         </div>
-                        <Separator />
-                        <div className='flex justify-between items-center'>
-                            <p>المجموع</p>
-                            <p>{total} ج.م</p>
-                        </div>
-                        <Separator />
-                        <div className='w-full flex items-center justify-center'>
-                            <Link href={'/checkout'}>
-                                <Button>استكمال الاوردر</Button>
-                            </Link>
-                        </div>
-                    </SheetFooter>
-                </SheetContent>
-            )}
+                    ))}
+                </ScrollArea>
+                <SheetFooter>
+                    <div className='flex justify-between items-center'>
+                        <p>التوصيل</p>
+                        <p>45 ج.م</p>
+                    </div>
+                    <Separator />
+                    <div className='flex justify-between items-center'>
+                        <p>المجموع</p>
+                        <p>{total} ج.م</p>
+                    </div>
+                    <Separator />
+                    <div className='w-full flex items-center justify-center'>
+                        <Link href={'/checkout'}>
+                            <Button>استكمال الاوردر</Button>
+                        </Link>
+                    </div>
+                </SheetFooter>
+            </SheetContent>
         </Sheet>
     )
 }

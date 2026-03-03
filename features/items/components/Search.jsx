@@ -4,12 +4,6 @@ import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { useDebouncedCallback } from 'use-debounce'
-import {
-    Sheet,
-    SheetContent,
-    SheetTitle,
-    SheetTrigger,
-} from '@/components/ui/sheet'
 
 function SearchBar() {
     const pathname = usePathname()

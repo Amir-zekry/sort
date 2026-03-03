@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/empty"
 import { getReviews } from "@/features/singleItem/server/data"
 import Link from "next/link"
-import CustomerReviewsH1 from "./CustomerReviewsH1"
 import * as motion from "motion/react-client"
 
 
@@ -21,7 +20,6 @@ export default async function CustomerReviews({ id }) {
     const reviews = await getReviews(id)
     if (reviews.length == 0) return (
         <section className="md:w-3/4 w-full mx-auto px-4 py-10 space-y-2">
-            <CustomerReviewsH1 />
             <Empty>
                 <EmptyHeader>
                     <EmptyDescription>لا توجد مراجعات لهذا المنتج حاليا !</EmptyDescription>
@@ -40,7 +38,6 @@ export default async function CustomerReviews({ id }) {
     )
     return (
         <section className="md:w-3/4 mx-auto px-4 py-10 space-y-2">
-            <CustomerReviewsH1 />
             <div className="space-y-2">
                 <div className="grid gap-4 grid-cols-1">
                     {reviews.map((review) => (

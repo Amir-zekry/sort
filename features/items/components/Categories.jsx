@@ -8,9 +8,6 @@ import {
     FieldTitle,
 } from "@/components/ui/field"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
-import { ChevronDown } from 'lucide-react'
-import { Label } from '@/components/ui/label'
 
 function Categories() {
     const categories = [

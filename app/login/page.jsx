@@ -1,17 +1,17 @@
-import { auth } from "@/features/authentications/utils/auth";
 import { LoginForm } from "@/features/authentications/components/login-form"
-import { redirect } from "next/navigation";
+import Redirect from "@/features/authentications/components/redirect";
+import { Suspense } from "react";
 
 export default async function LoginPage() {
-  const session = await auth()
-  if (session) {
-    redirect('/')
-  }
   return (
-    <div
-      className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
+    <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
+      <Suspense>
+        <Redirect />
+      </Suspense>
       <div className="w-full max-w-sm md:max-w-4xl">
-        <LoginForm />
+        <Suspense>
+          <LoginForm />
+        </Suspense>
       </div>
     </div>
   );

@@ -24,7 +24,7 @@ export default function CheckoutForm({ shippingInfo }) {
 
     return (
         <Form {...form} >
-            <form action={formAction} className='md:w-1/3 w-full flex flex-col gap-y-4 h-auto border-l md:p-10'>
+            <form action={formAction} className='md:w-1/3 w-full flex flex-col gap-y-4 h-auto md:border-l md:p-10'>
                 <ShippingInfo shippingInfo={shippingInfo} />
                 <PaymentMethod />
                 <div className="flex justify-start">
