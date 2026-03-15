@@ -21,6 +21,7 @@ export default async function FeaturedProducts() {
                             src={product.image}
                             alt={product.name}
                             fill
+                            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                             className='object-contain transition-transform duration-500 group-hover:scale-105'
                         />
                     </div>

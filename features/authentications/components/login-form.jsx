@@ -16,15 +16,10 @@ import { useActionState, useEffect } from "react"
 import { authenticate } from "@/features/authentications/server/actions"
 import { toast } from "sonner"
 import Image from "next/image"
-import { redirect, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { Loader } from "lucide-react"
-import { useSession } from 'next-auth/react'
 
 export function LoginForm({ className, ...props }) {
-  // const session = useSession()
-  // if (!session) {
-  //   redirect('/')
-  // }
   const searchParams = useSearchParams()
   const phoneFromUrl = searchParams.get('phone') || ''
   const initialState = {
@@ -70,6 +65,7 @@ export function LoginForm({ className, ...props }) {
                   name='phoneNumber'
                   defaultValue={state.data?.phoneNumber}
                   placeholder="ادخل رقم مصري"
+                  autoComplete="tel"
                 />
               </Field>
               <Field>
@@ -82,6 +78,7 @@ export function LoginForm({ className, ...props }) {
                   type="password"
                   name='password'
                   placeholder="********"
+                  autoComplete="current-password"
                 />
               </Field>
               <Field className="min-h-5">
@@ -108,6 +105,7 @@ export function LoginForm({ className, ...props }) {
               src="/logo.png"
               alt="EG MEN logo"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover dark:brightness-[0.5] dark:grayscale"
             />
           </div>

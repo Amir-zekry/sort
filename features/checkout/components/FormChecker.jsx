@@ -8,7 +8,7 @@ async function FormChecker() {
     return (
         <>
             {
-                shippingInfo.length > 0 ? (
+                shippingInfo && shippingInfo.length > 0 ? (
                     <CheckoutForm shippingInfo={shippingInfo} />
                 ) : (
                     <CheckoutFormForNoShippingInfo />

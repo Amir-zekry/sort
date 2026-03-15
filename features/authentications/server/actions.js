@@ -19,11 +19,17 @@ export async function signup(state, formData) {
 
         password: z
             .string()
-            .min(8, "كلمة السر يجب أن تكون 8 حروف على الأقل")
-            .regex(/[A-Za-z]/, "كلمة السر يجب أن تحتوي على حرف واحد على الأقل")
-            .regex(/[0-9]/, "كلمة السر يجب أن تحتوي على رقم واحد على الأقل")
-            .regex(/[^A-Za-z0-9]/, "كلمة السر يجب أن تحتوي على رمز واحد على الأقل")
-            .regex(/^\S*$/, "كلمة السر لا يجب أن تحتوي على مسافات"),
+            .refine((val) => {
+                const hasLetter = /[A-Za-z]/.test(val)
+                const hasNumber = /[0-9]/.test(val)
+                const hasSymbol = /[^A-Za-z0-9]/.test(val)
+                const noSpaces = /^\S*$/.test(val)
+                const minLength = val.length >= 8
+
+                return hasLetter && hasNumber && hasSymbol && noSpaces && minLength
+            }, {
+                message: "ادخل كلمة مرور مكونة من 8 أحرف على الأقل وتحتوي على حروف وأرقام ورموز مثل ! و & بدون مسافات"
+            }),
 
         confirmedPassword: z.string().min(1, "التاكيد مطلوب"),
     })
@@ -93,8 +99,6 @@ export async function signup(state, formData) {
     }
 }
 export async function authenticate(state, formData) {
-    // simulate slow promise
-    // await new Promise((resolve) => setTimeout(resolve, 3000));
     const signinSchema = z.object({
         phoneNumber: z
             .string()
@@ -104,10 +108,12 @@ export async function authenticate(state, formData) {
             ),
         password: z.string().min(1, "كلمة السر مطلوبة"),
     })
+
     const parsedData = signinSchema.safeParse({
         phoneNumber: formData.get('phoneNumber'),
         password: formData.get('password'),
     });
+
     if (!parsedData.success) {
         return {
             errors: parsedData.error.flatten().fieldErrors,

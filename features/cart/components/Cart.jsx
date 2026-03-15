@@ -16,8 +16,7 @@ import { auth } from '@/features/authentications/utils/auth'
 async function Cart() {
     const session = await auth()
     const userId = session?.user?.id
-    const cartItems = await getCartItems(userId)
-    if (cartItems === 'no user') {
+    if (!userId) {
         return (
             <AlertDialog>
                 <AlertDialogTrigger>
@@ -34,6 +33,7 @@ async function Cart() {
             </AlertDialog>
         )
     }
+    const cartItems = await getCartItems(userId)
     if (cartItems.length === 0) {
         return (
             <Sheet>

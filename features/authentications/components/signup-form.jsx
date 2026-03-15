@@ -22,7 +22,6 @@ import Link from "next/link"
 import { toast } from "sonner"
 import { useRouter, useSearchParams } from "next/navigation"
 import { CircleQuestionMark } from "lucide-react"
-import { Progress } from "@/components/ui/progress"
 import Image from "next/image"
 import { Loader } from "lucide-react"
 
@@ -32,36 +31,6 @@ export function SignupForm({ className, ...props }) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl')
-  // useEffect(() => {
-  //   if (!pending) return
-
-  //   let value = 20
-
-  //   const toastId = toast.custom(
-  //     () => (
-  //       <Progress value={value} className="w-62" />
-  //     ),
-  //     { duration: Infinity }
-  //   )
-
-  //   const interval = setInterval(() => {
-  //     value = Math.min(value + 15, 90)
-  //     toast.custom(
-  //       () => (
-  //         <Progress value={value} className="w-62" />
-  //       ),
-  //       { id: toastId }
-  //     )
-  //   }, 500)
-
-  //   return () => {
-  //     clearInterval(interval)
-  //     toast.dismiss(toastId)
-  //   }
-  // }, [pending])
-
-
-
 
   useEffect(() => {
     if (state.success === true) {
@@ -73,9 +42,6 @@ export function SignupForm({ className, ...props }) {
   },
     [state]
   )
-
-
-
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -94,7 +60,7 @@ export function SignupForm({ className, ...props }) {
                   <FieldLabel htmlFor="name">الاسم</FieldLabel>
                   <FieldError>{state.fieldErrors?.name}</FieldError>
                 </div>
-                <Input id="name" type="text" name='name' defaultValue={state.data?.name} placeholder="اكتب اسمك الجميل" />
+                <Input id="name" type="text" name='name' defaultValue={state.data?.name} placeholder="اكتب اسمك الجميل" autoComplete="name" />
               </Field>
               <Field>
                 <div className="w-full flex items-center justify-between">
@@ -107,41 +73,36 @@ export function SignupForm({ className, ...props }) {
                     </div>
                   )}
                 </div>
-                <Input id="phoneNumber" type="tel" dir='rtl' name='phoneNumber' defaultValue={state.data?.phoneNumber} placeholder="ادخل رقم مصري" />
+                <Input id="phoneNumber" type="tel" dir='rtl' name='phoneNumber' defaultValue={state.data?.phoneNumber} placeholder="ادخل رقم مصري" autoComplete="tel" />
               </Field>
               <Field>
                 <Field className="grid grid-cols-2 gap-4">
                   <Field>
                     <div className="w-full flex items-center justify-between">
                       <FieldLabel htmlFor="password">كلمة السر</FieldLabel>
-                      {
-                        state.fieldErrors?.password &&
-                        <HoverCard>
-                          <HoverCardTrigger asChild>
-                            <FieldError>
-                              <CircleQuestionMark size={16} className=" animate-caret-blink" />
-                            </FieldError>
-                          </HoverCardTrigger>
-                          <HoverCardContent>
-                            <div className='space-y-2'>
-                              {state.fieldErrors.password.map((error, index) => (
-                                <FieldError key={index} className='text-red-500'>
-                                  {error}
-                                </FieldError>
-                              ))}
-                            </div>
-                          </HoverCardContent>
-                        </HoverCard>
-                      }
                     </div>
-                    <Input id="password" type="password" name='password' placeholder='********' />
+                    <Input id="password" type="password" name='password' placeholder='********' autoComplete="new-password" />
                   </Field>
                   <Field>
                     <div className="w-full flex items-center justify-between">
                       <FieldLabel htmlFor="confirm-password">تاكيد كلمة السر</FieldLabel>
                       <FieldError>{state.fieldErrors?.confirmedPassword}</FieldError>
                     </div>
-                    <Input id="confirm-password" type="password" name='confirmed-password' placeholder='********' />
+                    <Input id="confirm-password" type="password" name='confirmed-password' placeholder='********' autoComplete="new-password" />
+                  </Field>
+                  <Field className={'col-span-2'}>
+                    {state.fieldErrors?.password && (
+                      <div className="mt-2 space-y-1 text-sm">
+                        {state.fieldErrors.password.map((error, index) => (
+                          <FieldError
+                            key={index}
+                            className="flex items-center gap-2 text-red-500"
+                          >
+                            {error}
+                          </FieldError>
+                        ))}
+                      </div>
+                    )}
                   </Field>
                 </Field>
               </Field>
@@ -168,6 +129,7 @@ export function SignupForm({ className, ...props }) {
               src="/logo.png"
               alt="EG MEN logo"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover dark:brightness-[0.5] dark:grayscale"
             />
           </div>

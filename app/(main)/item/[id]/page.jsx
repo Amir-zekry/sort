@@ -154,7 +154,7 @@ async function Page({ params }) {
                             <div className="p-1">
                                 <Card>
                                     <CardContent className="flex aspect-square items-center justify-center relative">
-                                        <Image src={image.image_url} alt="Item Image" fill className="object-contain" />
+                                        <Image src={image.image_url} alt="Item Image" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-contain" />
                                     </CardContent>
                                 </Card>
                             </div>

@@ -49,6 +49,7 @@ async function Products({ params }) {
                                 src={product.image}
                                 alt={product.name}
                                 fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                 className='object-contain transition-transform duration-500 group-hover:scale-105'
                             />
                         </div>
